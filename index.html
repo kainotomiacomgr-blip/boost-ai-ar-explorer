@@ -1,54 +1,16 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#062b39">
-<title>BOOST-AI | Real WebAR SDG Explorer</title>
-<script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-<style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#071a28;color:#fff;font-family:system-ui,-apple-system,Arial,sans-serif}
-.a-enter-vr,.a-enter-ar,.a-orientation-modal{display:none!important}
-#app{position:fixed;inset:0;z-index:8;pointer-events:none}
-header{pointer-events:auto;position:absolute;top:0;left:0;right:0;background:#043340df;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-header strong{color:#d9f66a;font-size:1.15rem}header small{font-size:.76rem}
-#tip{position:absolute;top:58px;left:5%;right:5%;text-align:center;background:#042e40e5;border:1px solid #45a5ad;border-radius:12px;padding:10px;font-size:.86rem;line-height:1.4;pointer-events:auto}
-#panel{pointer-events:auto;position:absolute;bottom:0;left:0;right:0;padding:12px 12px max(16px,env(safe-area-inset-bottom));background:linear-gradient(transparent,#041927 14%,#041927ef);max-height:52vh;overflow:auto}
-#buttons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
-.goal{border:1px solid #52969b;border-radius:11px;background:#145064;color:#fff;font-size:.83rem;padding:11px 4px;font-weight:800;cursor:pointer}.goal.active{outline:2px solid #dafa6e;background:#0b6472}.goal:focus-visible{outline:3px solid white}
-#info{margin-top:10px;padding:10px 14px;background:#082d3a;border:1px solid #2e6876;border-radius:12px}#info h2{font-size:1.07rem;color:#dbfa83;margin:0 0 6px}#info p{font-size:.87rem;line-height:1.4;margin:6px 0}#info b{color:#cdeaff}
-#markerLink{color:#e2fa8b;text-decoration:underline}
-#fallback{position:absolute;inset:28% 0 auto;text-align:center;color:#c1e3ea;z-index:0;font-weight:700;pointer-events:none}
-#fallback span{display:block;font-size:76px;animation:float 3s infinite alternate ease-in-out}@keyframes float{to{transform:translateY(-13px)}}
-@media(min-width:750px){#panel{max-width:680px;left:50%;transform:translateX(-50%);border-radius:16px 16px 0 0}#tip{left:50%;right:auto;transform:translateX(-50%);max-width:680px;width:90%}}
-@media(max-height:650px){#panel{max-height:45vh}#info p{font-size:.8rem}}
-</style></head><body>
-<div id="fallback"><span>🌍</span>Starting WebAR…</div>
-<a-scene embedded vr-mode-ui="enabled: false" renderer="logarithmicDepthBuffer: true; antialias: true; alpha: true" arjs="sourceType: webcam; facingMode: environment; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;" loading-screen="enabled:false">
-<a-marker preset="hiro" id="hiro" smooth="true" smoothCount="5" smoothTolerance=".01" smoothThreshold="2">
-<a-entity position="0 0.85 0">
-<a-sphere radius=".59" segments-width="40" segments-height="32" material="src: https://cdn.jsdelivr.net/gh/turban/webgl-earth@master/images/2_no_clouds_4k.jpg; roughness: 0.85; metalness: 0.05" animation="property:rotation;to:0 360 0;loop:true;dur:16000;easing:linear"></a-sphere>
-<a-torus radius=".83" radius-tubular=".012" arc="360" rotation="74 0 10" color="#bdf16d" opacity=".83"></a-torus>
-<a-entity animation="property: rotation; to: 0 360 0; dur: 7000; loop: true; easing: linear"><a-box position="1.05 0 0" width=".15" height=".09" depth=".12" color="#e7f6fa"></a-box><a-box position="1.18 0 0" width=".12" height=".16" depth=".015" color="#2dbdff"></a-box><a-box position=".92 0 0" width=".12" height=".16" depth=".015" color="#2dbdff"></a-box></a-entity>
-<a-text value="AI FOR EARTH" align="center" width="2.3" position="0 -.84 0" rotation="-30 0 0" color="#e4f5a4"></a-text>
-</a-entity>
-</a-marker>
-<a-entity camera></a-entity>
-</a-scene>
-<div id="app">
-<header><strong>BOOST-AI · SDG WebAR</strong><small>AI for Earth</small></header>
-<div id="tip" role="status">Point your camera at the <a id="markerLink" href="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/hiro.png" target="_blank" rel="noopener">HIRO AR marker</a> displayed on another screen or printed on paper. The 3D Earth will appear over it.</div>
-<div id="panel"><div id="buttons" aria-label="Choose an SDG">
-<button class="goal active" data-goal="9" aria-pressed="true">SDG 9</button><button class="goal" data-goal="13" aria-pressed="false">SDG 13</button><button class="goal" data-goal="15" aria-pressed="false">SDG 15</button><button class="goal" data-goal="17" aria-pressed="false">SDG 17</button>
-</div><section id="info" aria-live="polite"><h2 id="title"></h2><p id="overview"></p><p><b>How AI helps:</b> <span id="ai"></span></p><p><b>Practical example:</b> <span id="example"></span></p><p><b>Reflection:</b> <span id="question"></span></p></section></div></div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>BOOST-AI · Image Target WebAR</title>
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+<style>*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;background:#081e29;font-family:system-ui,Arial;color:white}.overlay{position:fixed;z-index:10;inset:0;pointer-events:none}.top{position:absolute;top:0;left:0;right:0;background:#06394aee;padding:12px 16px;text-align:center;font-weight:800;color:#ddf67d}.hint{position:absolute;top:51px;left:4%;right:4%;text-align:center;background:#092d3de8;border:1px solid #42acb9;border-radius:9px;padding:9px;font-size:14px}.panel{position:absolute;bottom:0;left:0;right:0;background:#092936f4;padding:12px;max-height:46vh;overflow:auto;pointer-events:auto}.goals{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.goals button{padding:12px 3px;border-radius:9px;border:1px solid #7ed4d6;color:white;background:#145164;font-weight:800}.goals button.active{background:#368377;outline:2px solid #dffc78}#details{font-size:.85rem;line-height:1.45}#details h2{font-size:1.03rem;color:#e3fb91;margin:10px 0 6px}#details p{margin:6px 0}.a-enter-vr{display:none!important}@media(min-width:800px){.panel{max-width:650px;left:50%;transform:translateX(-50%)}}</style></head>
+<body><a-scene mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; uiScanning: true; uiLoading: true; filterMinCF: 0.0001; filterBeta: 0.01" color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"><a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+<a-entity id="poster" mindar-image-target="targetIndex: 0"><a-entity position="0 .18 .17"><a-sphere radius=".24" segments-width="40" segments-height="30" material="src: https://cdn.jsdelivr.net/gh/turban/webgl-earth@master/images/2_no_clouds_4k.jpg; roughness: 0.75" animation="property:rotation;to:0 360 0;loop:true;dur:12500;easing:linear"></a-sphere><a-torus radius=".32" radius-tubular=".006" rotation="75 0 16" color="#c8f778"></a-torus><a-entity animation="property:rotation;to:0 360 0;loop:true;dur:6500;easing:linear"><a-box position=".32 0 0" width=".05" height=".035" depth=".035" color="#f0f5f6"></a-box></a-entity></a-entity><a-text value="AI FOR EARTH" color="#dffe97" position="0 -.38 .11" width="1.2" align="center"></a-text></a-entity></a-scene>
+<div class="overlay"><div class="top">BOOST-AI · Image-Triggered WebAR</div><div class="hint" id="hint">Allow camera permission, then point your phone at the complete “Scan to explore SDG impact” poster.</div><div class="panel"><div class="goals"><button data-goal="9" class="active">SDG 9</button><button data-goal="13">SDG 13</button><button data-goal="15">SDG 15</button><button data-goal="17">SDG 17</button></div><div id="details"><h2 id="title"></h2><p id="overview"></p><p><b>How AI helps:</b> <span id="ai"></span></p><p><b>Example:</b> <span id="example"></span></p><p><b>Reflect:</b> <span id="question"></span></p></div></div></div>
 <script>
-const content={
-9:{title:"SDG 9 — Industry, Innovation and Infrastructure",overview:"Supports resilient infrastructure, inclusive and sustainable industrialisation, and innovation.",ai:"AI can flag energy anomalies in manufacturing sensor data and support predictive maintenance and resource efficiency.",example:"A workshop uses smart-meter readings to detect unusually energy-intensive machines; technicians check the findings before acting.",question:"Which data would you need to assess industrial energy efficiency?"},
-13:{title:"SDG 13 — Climate Action",overview:"Calls for urgent action to combat climate change and its impacts.",ai:"AI can examine weather records and satellite imagery to help map climate risks and detect environmental changes.",example:"A local authority combines rainfall records, terrain data and satellite imagery to identify places potentially vulnerable to flooding.",question:"Why must local experts validate an AI-generated risk map?"},
-15:{title:"SDG 15 — Life on Land",overview:"Aims to protect and restore terrestrial ecosystems and biodiversity.",ai:"AI-assisted computer vision can classify wildlife photographs and identify possible changes in forest cover.",example:"A conservation team reviews AI-flagged satellite images to investigate potential deforestation, then verifies changes on site.",question:"How might a false positive affect conservation work?"},
-17:{title:"SDG 17 — Partnerships for the Goals",overview:"Strengthens collaboration, knowledge sharing and capacity for sustainable development.",ai:"Partners can combine approved environmental datasets and use shared analytical tools to coordinate research and interventions.",example:"Universities, NGOs and municipalities agree on common biodiversity indicators and exchange findings through a shared dashboard.",question:"What data-sharing safeguards should partners agree on?"}
+const sdgs={
+9:{title:"SDG 9 — Innovation and Infrastructure",overview:"Promotes resilient infrastructure and sustainable industry.",ai:"AI can detect manufacturing equipment anomalies and reduce wasted energy through sensor analysis.",example:"A factory identifies unusually energy-intensive machines from smart-meter patterns and verifies the findings.",question:"What measurements would make this analysis trustworthy?"},
+13:{title:"SDG 13 — Climate Action",overview:"Addresses climate change and associated risks.",ai:"AI can analyse satellite imagery, rainfall observations and land-cover data to support climate risk assessment.",example:"A city maps areas potentially at risk of flooding before experts validate the results.",question:"How should local knowledge inform an AI risk prediction?"},
+15:{title:"SDG 15 — Life on Land",overview:"Protects biodiversity and terrestrial ecosystems.",ai:"Computer vision can identify wildlife images and flag possible changes in forest cover.",example:"Conservation workers investigate changes flagged by AI-assisted satellite-image comparisons.",question:"What happens when a habitat change is incorrectly classified?"},
+17:{title:"SDG 17 — Partnerships",overview:"Strengthens cooperation and shared knowledge for sustainable development.",ai:"Data sharing and analytical tools can support collaboration between research groups, NGOs and public agencies.",example:"Partners combine approved biodiversity indicators in a common dashboard.",question:"What rules should partners agree before sharing data?"}
 };
-const buttons=[...document.querySelectorAll(".goal")];
-function selectGoal(id){const d=content[id];buttons.forEach(b=>{const on=b.dataset.goal===id;b.classList.toggle("active",on);b.setAttribute("aria-pressed",String(on))});for(const key of ["title","overview","ai","example","question"])document.getElementById(key).textContent=d[key]}
-buttons.forEach(b=>b.addEventListener("click",()=>selectGoal(b.dataset.goal)));selectGoal("9");
-const marker=document.getElementById("hiro"),tip=document.getElementById("tip");
-marker.addEventListener("markerFound",()=>{tip.textContent="3D Earth detected! Explore SDGs with the buttons below."});
-marker.addEventListener("markerLost",()=>{tip.innerHTML='Point your camera at the <a id="markerLink" href="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/hiro.png" target="_blank" rel="noopener">HIRO AR marker</a> to see the 3D Earth again.'});
+function select(id){const d=sdgs[id];document.querySelectorAll("[data-goal]").forEach(b=>b.classList.toggle("active",b.dataset.goal===id));for(const k of ["title","overview","ai","example","question"])document.getElementById(k).textContent=d[k]}
+document.querySelectorAll("[data-goal]").forEach(b=>b.addEventListener("click",()=>select(b.dataset.goal)));select("9");const target=document.getElementById("poster"),hint=document.getElementById("hint");target.addEventListener("targetFound",()=>hint.textContent="Poster recognized — the 3D Earth is anchored to your poster.");target.addEventListener("targetLost",()=>hint.textContent="Point the camera back at the full SDG poster to restore the Earth.");
 </script></body></html>
