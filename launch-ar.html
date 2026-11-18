@@ -12,39 +12,42 @@ main{min-height:100dvh;display:flex;flex-direction:column;max-width:650px;margin
 small{color:#cef481;font-weight:650}
 h1{font-size:clamp(1.65rem,7vw,2.4rem);line-height:1.05;margin:.3em 0 .45em;letter-spacing:-.035em}
 model-viewer{display:block;position:relative;width:100%;height:clamp(240px,57dvh,530px);background:radial-gradient(ellipse at 50% 45%,#476978,#172c38 72%);border:1px solid #3d5b69;border-radius:18px;--poster-color:#172c38}
-button{font:inherit;font-weight:800;cursor:pointer;min-height:48px;border-radius:12px;border:0;background:#cef481;color:#142419;padding:12px 20px}
-button[slot="ar-button"]{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);white-space:nowrap}
+.launch{display:inline-flex;align-items:center;gap:8px;font-weight:800;min-height:48px;border-radius:12px;background:#cef481;color:#142419;padding:12px 20px;text-decoration:none}.launch[rel="ar"]::after{content:"Start AR on iPhone / iPad"}.launch img{width:20px;height:20px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}[hidden]{display:none!important}
+
 a{color:#a8e9e0}
 p{margin:.65em 0}
-#ar-instruction{display:none;position:absolute;bottom:15%;left:8%;right:8%;text-align:center;color:white;background:#101c25ed;border-radius:12px;padding:12px;pointer-events:none}
-model-viewer[ar-status="session-started"] #ar-instruction{display:block}
-model-viewer[ar-status="object-placed"] #ar-instruction{display:none}
 </style>
 <main>
 <small>BOOST-AI · Module 1</small>
 <h1>The human quality check</h1>
-<model-viewer id="station" src="./inspection-station.glb" ar ar-modes="webxr scene-viewer quick-look" ar-placement="floor" camera-controls touch-action="pan-y" camera-orbit="32deg 66deg 1.35m" shadow-intensity="1" alt="Electronics inspection station with a cobot, camera and highlighted circuit board">
-<button slot="ar-button">Start AR</button>
-<div id="ar-instruction">Move your phone slowly to find a flat surface, then tap to place the station.</div>
+<div class="actions">
+<a id="ios" class="launch" rel="ar" href="./inspection-station.usdz" aria-label="Start AR on iPhone or iPad"><img alt="Start AR on iPhone or iPad" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l9 5v10l-9 5-9-5V7l9-5zm0 0v10m9-5l-9 5-9-5m9 5v10' stroke='%23142419' fill='none' stroke-width='2'/%3E%3C/svg%3E"></a>
+<a id="android" class="launch" href="intent://arvr.google.com/scene-viewer/1.0?file=https%3A%2F%2Fkainotomiacomgr-blip.github.io%2Fboost-ai-ar-explorer%2Finspection-station.glb&amp;mode=ar_preferred#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=https%3A%2F%2Fkainotomiacomgr-blip.github.io%2Fboost-ai-ar-explorer%2Flaunch-ar.html%3Ffallback%3Dandroid;end;">Start AR on Android</a>
+</div>
+<p id="status" role="status">Choose your phone’s AR button, then move your camera slowly over a flat surface.</p>
+<model-viewer id="station" src="./inspection-station.glb" camera-controls touch-action="pan-y" camera-orbit="32deg 66deg 1.35m" shadow-intensity="1" alt="Electronics inspection station with a cobot, camera and highlighted circuit board">
 </model-viewer>
-<p id="status" role="status">Tap <strong>Start AR</strong>, then point your camera at a flat surface.</p>
+
 <p><a href="./module-1.html#lesson">Continue to the case study</a></p>
 </main>
 <script>
-const station = document.querySelector('#station');
-const status = document.querySelector('#status');
-station.addEventListener('load', () => {
-  if (!station.canActivateAR) {
-    status.textContent = 'Open this link in Safari on a compatible iPhone or Chrome on a compatible Android phone to start AR. You can rotate the 3D model here.';
-  }
-});
-station.addEventListener('ar-status', ({detail}) => {
-  if (detail.status === 'failed') {
-    status.textContent = 'AR did not start. Open this link in your phone’s main browser and try again. You can also rotate the model here.';
-  }
-});
-station.addEventListener('error', () => {
-  status.textContent = 'The 3D model could not load. Check your connection and refresh.';
-});
+const statusMessage = document.querySelector('#status');
+const agent = navigator.userAgent;
+const isApple = /iPhone|iPad|iPod/.test(agent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isAndroid = /Android/i.test(agent);
+const appleLink = document.querySelector('#ios');
+const androidLink = document.querySelector('#android');
+if (isApple) {
+  androidLink.hidden = true;
+  const supportsQuickLook = appleLink.relList.supports('ar');
+  if (!supportsQuickLook) statusMessage.textContent = 'Open this page in Safari to start Apple Quick Look.';
+} else if (isAndroid) {
+  appleLink.hidden = true;
+} else {
+  statusMessage.textContent = 'Scan the QR code on a phone to place the station in AR. You can rotate the 3D model here.';
+}
+if (new URLSearchParams(location.search).get('fallback') === 'android') {
+  statusMessage.textContent = 'Android AR did not open. Try Chrome and check that Google Play Services for AR is installed. You can still rotate the model here.';
+}
 </script>
 </html>
