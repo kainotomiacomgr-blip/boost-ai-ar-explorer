@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Patagonia Packaging in AR | UNBOXING</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#15221c;color:#f5f3e8}
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh}
+#viewport{position:fixed;inset:0;overflow:hidden;pointer-events:none;isolation:isolate}
+main{position:fixed;inset:0;overflow:auto;display:grid;align-items:center;justify-items:center;padding:20px;background:radial-gradient(ellipse at 82% 8%,#355344,#15221c 65%)}
+main[hidden], [hidden]{display:none!important}
+.card{width:min(100%,490px);padding:clamp(22px,6vw,38px);border:1px solid #708578;border-radius:24px;background:#1d2d25;box-shadow:0 20px 75px #0b1512}
+.brand{font-size:.78rem;font-weight:800;letter-spacing:.18em;color:#b4e395}
+h1{font-size:clamp(2rem,7vw,3.4rem);line-height:1.03;margin:.45em 0}
+p{line-height:1.5;color:#e5ebe0}
+a,button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;border:0;border-radius:12px;padding:10px 15px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+button{background:#b4e395;color:#182719}
+button:disabled{opacity:.6}
+a{color:#f5f3e8;background:#354b3e}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+#hud{position:fixed;inset:auto 0 0;padding:16px;padding-bottom:max(16px,env(safe-area-inset-bottom));display:grid;justify-items:center;gap:8px;pointer-events:none}
+#hud>*{pointer-events:auto}
+#hint,#detail{margin:0;text-align:center;background:#15221cf2;border:1px solid #76857b;border-radius:14px;padding:10px 14px;max-width:34rem}
+#close{background:#f5f3e8;color:#182719}
+#warning{color:#ffd59f}
+</style>
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+<script defer src="./target.js"></script>
+<script defer src="./experience.js"></script>
+</head>
+<body>
+<div id="viewport"></div>
+<main id="intro">
+  <section class="card">
+    <span class="brand">UNBOXING</span>
+    <h1>Patagonia Packaging in AR</h1>
+    <p>See a 3D shipping box float above the case-study slide. Open the slide on a second screen or print it, then point your phone at the photo on the left.</p>
+    <div class="actions">
+      <button id="start" disabled>Start AR</button>
+      <a href="https://www.youtube.com/watch?v=JIC9DUkbic8" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
+    </div>
+    <p id="warning" role="status" hidden></p>
+  </section>
+</main>
+<section id="hud" aria-label="AR controls" hidden>
+  <p id="hint" role="status"></p>
+  <p id="detail" hidden></p>
+  <div class="actions">
+    <button id="next" type="button" hidden>Next insight</button>
+    <a href="https://www.youtube.com/watch?v=JIC9DUkbic8" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
+    <button id="close" type="button">Close AR</button>
+  </div>
+</section>
+<template id="scene">
+  <a-scene embedded vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"
+    renderer="colorManagement: true; alpha: true; antialias: true">
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <a-light type="ambient" intensity="0.85"></a-light>
+    <a-light type="directional" position="-1 2 3" intensity="0.85"></a-light>
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-entity position="0 0 .19" animation="property: position; from: 0 0 .19; to: 0 .045 .26; dir: alternate; loop: true; dur: 1350; easing: easeInOutSine">
+        <a-entity rotation="-22 0 0">
+          <a-entity animation="property: rotation; from: 0 15 0; to: 0 375 0; loop: true; dur: 11000; easing: linear">
+            <a-box width=".48" height=".30" depth=".33" color="#bc874e" material="roughness: .95"></a-box>
+            <a-box width=".49" height=".046" depth=".338" position="0 .133 0" color="#9a663a"></a-box>
+            <a-box width=".083" height=".306" depth=".342" color="#527647"></a-box>
+            <a-plane width=".24" height=".10" position=".086 .021 .172" color="#faf4db"></a-plane>
+            <a-text value="UNBOXING" align="center" color="#203a27" width=".65" position=".086 .025 .177"></a-text>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+    </a-entity>
+  </a-scene>
+</template>
+</body>
+</html>
