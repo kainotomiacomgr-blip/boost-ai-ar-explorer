@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101c25">
+<title>BOOST-AI | Launch AR</title>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.1.0/dist/model-viewer.min.js"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;background:#101c25;color:#eff8f5;font:1rem/1.4 system-ui,sans-serif}
+main{min-height:100dvh;display:flex;flex-direction:column;max-width:650px;margin:0 auto;padding:max(18px,env(safe-area-inset-top)) 18px max(18px,env(safe-area-inset-bottom))}
+small{color:#cef481;font-weight:650}
+h1{font-size:clamp(1.65rem,7vw,2.4rem);line-height:1.05;margin:.3em 0 .45em;letter-spacing:-.035em}
+model-viewer{display:block;position:relative;width:100%;height:clamp(240px,57dvh,530px);background:radial-gradient(ellipse at 50% 45%,#476978,#172c38 72%);border:1px solid #3d5b69;border-radius:18px;--poster-color:#172c38}
+button{font:inherit;font-weight:800;cursor:pointer;min-height:48px;border-radius:12px;border:0;background:#cef481;color:#142419;padding:12px 20px}
+button[slot="ar-button"]{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);white-space:nowrap}
+a{color:#a8e9e0}
+p{margin:.65em 0}
+#ar-instruction{display:none;position:absolute;bottom:15%;left:8%;right:8%;text-align:center;color:white;background:#101c25ed;border-radius:12px;padding:12px;pointer-events:none}
+model-viewer[ar-status="session-started"] #ar-instruction{display:block}
+model-viewer[ar-status="object-placed"] #ar-instruction{display:none}
+</style>
+<main>
+<small>BOOST-AI · Module 1</small>
+<h1>The human quality check</h1>
+<model-viewer id="station" src="./inspection-station.glb" ar ar-modes="webxr scene-viewer quick-look" ar-placement="floor" camera-controls touch-action="pan-y" camera-orbit="32deg 66deg 1.35m" shadow-intensity="1" alt="Electronics inspection station with a cobot, camera and highlighted circuit board">
+<button slot="ar-button">Start AR</button>
+<div id="ar-instruction">Move your phone slowly to find a flat surface, then tap to place the station.</div>
+</model-viewer>
+<p id="status" role="status">Tap <strong>Start AR</strong>, then point your camera at a flat surface.</p>
+<p><a href="./module-1.html#lesson">Continue to the case study</a></p>
+</main>
+<script>
+const station = document.querySelector('#station');
+const status = document.querySelector('#status');
+station.addEventListener('load', () => {
+  if (!station.canActivateAR) {
+    status.textContent = 'Open this link in Safari on a compatible iPhone or Chrome on a compatible Android phone to start AR. You can rotate the 3D model here.';
+  }
+});
+station.addEventListener('ar-status', ({detail}) => {
+  if (detail.status === 'failed') {
+    status.textContent = 'AR did not start. Open this link in your phone’s main browser and try again. You can also rotate the model here.';
+  }
+});
+station.addEventListener('error', () => {
+  status.textContent = 'The 3D model could not load. Check your connection and refresh.';
+});
+</script>
+</html>
