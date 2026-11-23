@@ -151,12 +151,9 @@ function stopCamera() {
   report('')
 }
 
-launch.addEventListener('click', async () => {
+async function openCamera() {
   if (busy) return
-  if (stream) {
-    stopCamera()
-    return
-  }
+  if (stream) return
   if (!navigator.mediaDevices?.getUserMedia) {
     report('Camera access is unavailable in this browser.')
     return
@@ -180,8 +177,13 @@ launch.addEventListener('click', async () => {
     busy = false
     launch.disabled = false
   }
+}
+launch.addEventListener('click', () => {
+  if (stream) stopCamera()
+  else openCamera()
 })
 window.addEventListener('pagehide', stopCamera)
+openCamera()
 </script>
 </body>
 </html>
