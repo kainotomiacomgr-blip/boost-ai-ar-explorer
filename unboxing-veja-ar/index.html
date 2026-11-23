@@ -59,16 +59,51 @@ footer button,.sections button{min-height:44px;border:1px solid #b2c4a1;border-r
 #box-details a{color:#d9efc6}
 #box-details h3{margin:.45rem 0}
 .sections{display:flex;gap:.45rem;flex-wrap:wrap}
+#objects{position:relative;isolation:isolate}body.camera-on #objects{position:fixed}
+#walker{position:absolute;z-index:3;pointer-events:none;left:11%;top:50%;height:110px;width:52px;transform:translate(-50%,-77%);filter:drop-shadow(0 3px 4px #0005)}
+.walker-body{position:absolute;inset:0;transform-origin:50% 61%}
+.head{position:absolute;left:21px;top:1px;width:20px;height:23px;border-radius:45%;background:#b67450;border-top:6px solid #332418}
+.head:after{content:"";position:absolute;right:-3px;top:7px;width:6px;height:5px;border-radius:50%;background:#b67450}
+.shirt{position:absolute;left:15px;top:24px;width:27px;height:40px;background:#6fba86;border-radius:10px 10px 4px 4px}
+.arm{position:absolute;left:30px;top:28px;width:8px;height:39px;border-radius:6px;background:linear-gradient(#6fba86 0 41%,#b67450 41%);transform-origin:50% 7%;transform:rotate(-12deg)}
+.leg{position:absolute;left:17px;top:61px;width:11px;height:40px;border-radius:5px;background:linear-gradient(#283b3d 0 35%,#b67450 35%);transform-origin:50% 4%}
+.leg:after{content:"";position:absolute;bottom:-3px;left:1px;width:17px;height:8px;border-radius:8px 9px 5px 6px;background:#b67450}
+.leg.back{left:28px;filter:brightness(.84)}
+.story-running #walker{animation:approach 3.2s ease-out both}
+.story-running .leg{animation:step .64s ease-in-out 5}
+.story-running .leg.back{animation-delay:-.32s}
+.story-running .walker-body{animation:lean 1.5s 3s ease-in-out both}
+.story-running .arm{animation:swing .64s ease-in-out 5,reach 1.4s 3.15s ease-in-out both}
+@keyframes approach{from{transform:translate(-170%,-77%)}to{transform:translate(-50%,-77%)}}
+@keyframes step{0%,100%{transform:rotate(-24deg)}50%{transform:rotate(26deg)}}
+@keyframes swing{0%,100%{transform:rotate(22deg)}50%{transform:rotate(-26deg)}}
+@keyframes lean{0%,100%{transform:rotate(0)}50%{transform:rotate(20deg)}}
+@keyframes reach{0%,100%{transform:rotate(-12deg)}55%{transform:rotate(-70deg)}}
+#objects .box-art{animation:none;width:min(44vw,245px)}
+#objects #unbox{margin-left:clamp(24px,10vw,55px)}
+#objects.story-running .box-opening,#objects.story-complete .box-opening{background:#67422d;clip-path:polygon(2% 39%,27% 9%,98% 24%,73% 56%)}
+#objects.story-running .box-top,#objects.story-running .box-lid{animation:lift-lid .6s 3.7s ease-out both}
+#objects.story-complete .box-top,#objects.story-complete .box-lid{transform:translateY(-32%) rotate(-12deg)}
+@keyframes lift-lid{to{transform:translateY(-32%) rotate(-12deg)}}
+#objects .box-art .shoe{position:absolute;inset:auto;top:37%;left:30%;width:43%;height:24%;z-index:2;opacity:0;transform:rotate(9deg);background:linear-gradient(#fff9e9 0 75%,#e3cfab 75%);border-radius:28% 65% 21% 21%;box-shadow:0 2px 4px #0005}
+.shoe:before{content:"";position:absolute;left:8%;bottom:21%;width:39%;height:128%;background:#faf0dc;clip-path:polygon(0 0,33% 9%,53% 34%,100% 74%,100% 100%,0 100%)}
+.shoe:after{content:"V";position:absolute;left:18%;bottom:24%;color:#35443f;font:900 clamp(.62rem,3.4vw,1.35rem)/1 system-ui}
+#objects .box-art .shoe.back{left:42%;top:30%;scale:.88;z-index:1}
+#objects.story-running .shoe{animation:reveal-shoe .55s 4.1s ease-out both}
+#objects.story-complete .shoe{opacity:1;transform:translateY(-26%) rotate(9deg)}
+@keyframes reveal-shoe{to{opacity:1;transform:translateY(-26%) rotate(9deg)}}
+@media(prefers-reduced-motion:reduce){#objects .box-top,#objects .box-lid{transition:none}}
 </style></head>
 <body>
 <video id="camera" autoplay muted playsinline webkit-playsinline hidden></video>
 <main>
 <header><p class="project">UNBOXING · WEBAR</p><h1>VEJA</h1><p class="topic">Follow wild Amazonian rubber from tree to sneaker sole.</p></header>
 <div class="objects" id="objects" hidden>
-<button id="unbox" type="button" aria-expanded="false" aria-controls="box-details"><span class="box-art" aria-hidden="true"><span class="box-opening"></span><span class="box-front"></span><span class="box-side"></span><span class="box-top"></span><span class="box-lid"></span><strong class="box-logo">VEJA</strong></span><span id="unbox-label">Open shoebox</span></button>
+<div id="walker" aria-hidden="true"><div class="walker-body"><span class="head"></span><span class="leg back"></span><span class="leg"></span><span class="shirt"></span><span class="arm"></span></div></div>
+<button id="unbox" type="button" aria-expanded="false" aria-controls="box-details"><span class="box-art" aria-hidden="true"><span class="box-opening"></span><span class="box-front"></span><span class="box-side"></span><span class="box-top"></span><span class="box-lid"></span><strong class="box-logo">VEJA</strong><span class="shoe back"></span><span class="shoe"></span></span><span id="unbox-label">Explore the sneakers</span></button>
 <a class="youtube" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" target="_blank" rel="noopener" aria-label="Watch VEJA’s film about Amazonian rubber on YouTube"></a>
 </div>
-<footer><p id="status" role="status">Point your camera at the sneaker photo.</p><button id="launch" type="button">Open AR camera</button> <button id="preview" type="button">Preview without scanning</button></footer>
+<footer><p id="status" role="status">Point your camera at the sneaker photo.</p><button id="launch" type="button">Open AR camera</button> <button id="preview" type="button">Preview without scanning</button> <button id="replay-story" type="button" hidden>Replay animation</button></footer>
 </main>
 <section id="box-details" aria-labelledby="box-title" hidden>
 <div class="dialog-top"><h2 id="box-title">Inside the shoebox</h2><button id="close-details" type="button">Close</button></div>
@@ -102,19 +137,46 @@ const unbox = document.querySelector('#unbox')
 const details = document.querySelector('#box-details')
 const closeDetails = document.querySelector('#close-details')
 let revealed = false
+const replay = document.querySelector('#replay-story')
+let storyTimer
+
+function completeStory() {
+  objects.classList.remove('story-running')
+  objects.classList.add('story-complete')
+  unbox.disabled = false
+  replay.hidden = false
+  report('The VEJA box is open. Tap the sneakers to explore their story.')
+}
+
+function playStory() {
+  clearTimeout(storyTimer)
+  if (!details.hidden) showDetails(false)
+  objects.classList.remove('story-running', 'story-complete')
+  replay.hidden = true
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    completeStory()
+    return
+  }
+  unbox.disabled = true
+  report('Watch the barefoot walker discover the VEJA sneakers.')
+  void objects.offsetWidth
+  objects.classList.add('story-running')
+  storyTimer = setTimeout(completeStory, 4750)
+}
+replay.addEventListener('click', playStory)
 function revealBox() {
   if (revealed) return
   revealed = true
   objects.hidden = false
   preview.hidden = true
   selectTopic('forest')
-  report('Tap the floating shoebox to explore the rubber supply chain.')
+  playStory()
 }
 preview.addEventListener('click', revealBox)
 function showDetails(visible) {
   details.hidden = !visible
   unbox.setAttribute('aria-expanded', String(visible))
-  document.querySelector('#unbox-label').textContent = visible ? 'Close shoebox' : 'Open shoebox'
+  document.querySelector('#unbox-label').textContent = visible ? 'Close sneaker story' : 'Explore the sneakers'
   if (visible) closeDetails.focus()
   else unbox.focus()
 }
