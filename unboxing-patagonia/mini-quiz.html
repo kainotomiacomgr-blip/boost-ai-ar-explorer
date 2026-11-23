@@ -1,0 +1,178 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Patagonia Packaging Mini Quiz</title>
+<style>
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:#142b24;color:#fffbea;font:1rem/1.45 system-ui,sans-serif}
+video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover}
+main{position:relative;min-height:100svh;display:grid;place-content:center;justify-items:center;gap:1rem;padding:16px;width:min(100%,32rem);margin:auto}
+#stage,footer{background:#163029f2;border:1px solid #dcf0b8;border-radius:18px;padding:1rem;width:100%;box-shadow:0 16px 38px #0008}
+#stage{animation:float 2.8s ease-in-out infinite alternate}
+#stage:focus-within{animation-play-state:paused}
+@keyframes float{to{transform:translateY(-9px)}}
+h1,h2,p{margin:.3rem 0 .6rem}h1{font-size:1.48rem}h2{font-size:1.15rem}
+#progress,#feedback{color:#dcf0b8}#answers{display:grid;gap:.45rem;margin:.75rem 0}
+button{min-height:44px;font:inherit;color:#fffbea;background:#294b3d;border:1px solid #adc8a5;border-radius:10px;padding:.48rem .73rem;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid #ffdf7d;outline-offset:3px}
+button.correct{color:#193227;background:#dcf0b8;font-weight:800}
+button.missed{background:#703c32}
+#next{background:#dcf0b8;color:#193227;font-weight:800}
+#try-again{display:flex;align-items:center;gap:.65rem;border-radius:12px;background:#f8de9f;color:#422819;padding:.6rem .75rem;font-weight:850}
+.retry-art{width:42px;height:42px;display:grid;place-items:center;flex:none;border-radius:50%;background:#62342b;color:#fff4db;font-size:1.75rem}
+#fireworks{position:fixed;z-index:3;inset:0;pointer-events:none;overflow:hidden}
+.spark{position:absolute;left:var(--x);top:var(--y);width:8px;height:4px;border-radius:3px;background:var(--color);box-shadow:0 0 6px var(--color);animation:burst 1.5s var(--delay) ease-out both}
+@keyframes burst{0%{opacity:0;transform:scale(.25)}18%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(90deg)}}
+@media(prefers-reduced-motion:reduce){#stage{animation:none}.spark{animation:none;transform:translate(var(--dx),var(--dy))}}
+#qr-view{text-align:center;padding:1rem}#qr-view img{display:block;width:min(78vw,410px);margin:1rem auto;image-rendering:pixelated}a{color:#dcf0b8}
+</style><body>
+<video id="camera" autoplay muted playsinline hidden></video><div id="fireworks" aria-hidden="true"></div>
+<main id="experience">
+<section id="stage" hidden aria-labelledby="quiz-title"><h1 id="quiz-title">Patagonia Packaging Mini Quiz</h1><p id="progress"></p><h2 id="question"></h2><div id="answers"></div>
+<div id="try-again" hidden><span class="retry-art" aria-hidden="true">↻</span><span>Try again</span></div>
+<p id="feedback" role="status"></p><button id="next" type="button" hidden>Next question</button></section>
+<footer><button id="camera-button" type="button">Open AR camera</button><p id="camera-note" role="status">Allow camera access to see the floating quiz.</p></footer>
+</main>
+<section id="qr-view" hidden><h1>Patagonia Packaging Mini Quiz</h1><p>Scan with your phone and allow camera access.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEEklEQVR4nO2dTWrrShBGTz0JMmxDFpClyDvIkt6a3g6spXgBAWkYkKk36C51K7kjyWB8/dXAWKYPSkPR9d8x54CM/xyhQbhw4cKFCxcuXPh9cSvSw3i6mZ3rb6ebMZ7i8TzH0vP93i78RfHB3d0nADr3y2zml+QOdG7nePQLnbu7+xY/+HbhL4aTdWiYgGHqvOifF4XLanZJmyUQ6y5PvXfhj8L7nz+Mp6/ex88Jh5s5acKGa7/4+LH0znzXtwt/TfyX1gEwXC2+zobDgv1x7VPvXfij8ey0AcxvbufVfRvcHWYzv9Blb87dlzu/XfhL4mOOVyG7bwB2nvv4oHP7dwI7c8sh7F3fLvzF8Gw1f5XF0rdB+jYfT122sA7f5j+XPvXehT8Kb2NYsl1dKDmUVLMpPx6L/VUMK3yfFP2ZANKC+xSqdwH8khYicweRPgFlToTvl2xhDcCZ39wAc+Z3Z8ia1jnMBqQJGz+WHtJqZp9678IfhTdnXTGaNSOcD7zOS/o4fiu2Vmed8N2y0bVSjCj5kviNXKVIC9X0ysIKPyBNWm7wJU64tFCUMJ9rJcLI/l9ZJ60TvlfirIszrISqXf6AVDLCUZENhZOFFb5fvJVV9Wp9n/WEm2gjXGmd8P3yq78EGtXLdjU3OaVietvQ46n3LvxR+M8YNtqdFppAtigm1Gyy/DrhB6SedSVeTR7Nm9P64UvTfSe/TvidtC5saD3riq55Sd9FcBGLpXXC98vGfEaUWlJ1QGNNNzkUWVjhB6Tx5kjFmytJ40jfUVRvaTlpnfD9UvN1+XGtiDXFMICNYqrnRPghqWddPeEiru2auKJUyYhEirRO+H6pCeI2aeLVuat12NW5m5Q5EX5IWgubA9RorVtrrrW/LopmqsMKPyKlv2649vh47iNgSBOQHBtPk5dBsfl9sdJzt/axP/XehT8Kbzudci+x129r+NqYXuXrhN+vIlbrsBtHzqO1s2k3WVvwpHXCd0lY2P8A0pflif/x88scwEiTW/5GD6Nt8afeu/BH4e08/3B9c0hfPcw9wK135n5x5pPluQkAZ34Px+6p9y78UXjTS9xWKZpiRB2ZcK8xrPw64QcktK5oWLTWsfbStXMTWTSZKPwYvu0lXu+lq5LWQbEaw4K0TvgR2eja2kucvOlqinVRvtDsv/Bj+Mavq7cmrjX/PIWd2v4m+XXC74TP61XDc4/ZRzuj6H59c8YPd0Yzi8vG7vh24a+F/+GuTixKYCdsuBo+fi7EtRNfvTInwu+tddDlWNWgW2w8dUu+unOYTuSTcJ2RffQfL/zJ8eQx++rf+ar/uDXsZnamzmN3zjDddGui8CPyI4aN1rra7rS556ReRaFoQvhuMf33OuHChQsXLly48L8C/x+GVU9cKutwWwAAAABJRU5ErkJggg==" alt="QR code for the Patagonia mini quiz"><a download="UNBOXING_Patagonia_Mini_Quiz_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEEklEQVR4nO2dTWrrShBGTz0JMmxDFpClyDvIkt6a3g6spXgBAWkYkKk36C51K7kjyWB8/dXAWKYPSkPR9d8x54CM/xyhQbhw4cKFCxcuXPh9cSvSw3i6mZ3rb6ebMZ7i8TzH0vP93i78RfHB3d0nADr3y2zml+QOdG7nePQLnbu7+xY/+HbhL4aTdWiYgGHqvOifF4XLanZJmyUQ6y5PvXfhj8L7nz+Mp6/ex88Jh5s5acKGa7/4+LH0znzXtwt/TfyX1gEwXC2+zobDgv1x7VPvXfij8ey0AcxvbufVfRvcHWYzv9Blb87dlzu/XfhL4mOOVyG7bwB2nvv4oHP7dwI7c8sh7F3fLvzF8Gw1f5XF0rdB+jYfT122sA7f5j+XPvXehT8Kb2NYsl1dKDmUVLMpPx6L/VUMK3yfFP2ZANKC+xSqdwH8khYicweRPgFlToTvl2xhDcCZ39wAc+Z3Z8ia1jnMBqQJGz+WHtJqZp9678IfhTdnXTGaNSOcD7zOS/o4fiu2Vmed8N2y0bVSjCj5kviNXKVIC9X0ysIKPyBNWm7wJU64tFCUMJ9rJcLI/l9ZJ60TvlfirIszrISqXf6AVDLCUZENhZOFFb5fvJVV9Wp9n/WEm2gjXGmd8P3yq78EGtXLdjU3OaVietvQ46n3LvxR+M8YNtqdFppAtigm1Gyy/DrhB6SedSVeTR7Nm9P64UvTfSe/TvidtC5saD3riq55Sd9FcBGLpXXC98vGfEaUWlJ1QGNNNzkUWVjhB6Tx5kjFmytJ40jfUVRvaTlpnfD9UvN1+XGtiDXFMICNYqrnRPghqWddPeEiru2auKJUyYhEirRO+H6pCeI2aeLVuat12NW5m5Q5EX5IWgubA9RorVtrrrW/LopmqsMKPyKlv2649vh47iNgSBOQHBtPk5dBsfl9sdJzt/axP/XehT8Kbzudci+x129r+NqYXuXrhN+vIlbrsBtHzqO1s2k3WVvwpHXCd0lY2P8A0pflif/x88scwEiTW/5GD6Nt8afeu/BH4e08/3B9c0hfPcw9wK135n5x5pPluQkAZ34Px+6p9y78UXjTS9xWKZpiRB2ZcK8xrPw64QcktK5oWLTWsfbStXMTWTSZKPwYvu0lXu+lq5LWQbEaw4K0TvgR2eja2kucvOlqinVRvtDsv/Bj+Mavq7cmrjX/PIWd2v4m+XXC74TP61XDc4/ZRzuj6H59c8YPd0Yzi8vG7vh24a+F/+GuTixKYCdsuBo+fi7EtRNfvTInwu+tddDlWNWgW2w8dUu+unOYTuSTcJ2RffQfL/zJ8eQx++rf+ar/uDXsZnamzmN3zjDddGui8CPyI4aN1rra7rS556ReRaFoQvhuMf33OuHChQsXLly48L8C/x+GVU9cKutwWwAAAABJRU5ErkJggg==">Download QR code</a> · <a href="./mini-quiz.html">Open quiz</a></section>
+<script>
+const camera=document.querySelector('#camera')
+const cameraButton=document.querySelector('#camera-button')
+const cameraNote=document.querySelector('#camera-note')
+const experience=document.querySelector('#experience')
+const stage=document.querySelector('#stage')
+const question=document.querySelector('#question')
+const progress=document.querySelector('#progress')
+const choices=document.querySelector('#answers')
+const retry=document.querySelector('#try-again')
+const feedback=document.querySelector('#feedback')
+const next=document.querySelector('#next')
+const fireworks=document.querySelector('#fireworks')
+const rounds=[{"title":"Check the supplier file","prompt":"Which evidence would you request to verify this paper box’s FSC claim?","choices":["An ISO 14001 certificate alone","A matching FSC claim on supplier documents","A photo of a recycling symbol"],"correct":1,"feedback":["ISO 14001 concerns environmental management. Check evidence tied to the box itself.","A matching claim helps trace the paper packaging through the supply chain.","A recycling symbol does not establish where the fibre came from."]},{"title":"Choose a durable pack","prompt":"A folded jacket must arrive dry and undamaged. Which pack would you pilot?","choices":["An oversized box with extra filler","A thin sleeve that split in handling","A snug recycled-cardboard pack that passed handling tests"],"correct":2,"feedback":["Extra space can mean more filler. Try a fit that has already passed handling tests.","The split signals a protection problem. Try the format that survived handling.","A snug pack that passed handling tests balances material use and protection."]},{"title":"Write the recycling label","prompt":"The shipment contains a cardboard box and removable plastic film. Which label is clearest?","choices":["Separate the film. Recycle cardboard and check local film collection.","Recycle everything together","Eco-friendly packaging"],"correct":0,"feedback":["Separating the materials gives the customer a practical action and accounts for local collection rules.","Film may require separate collection. Give instructions for each material.","A broad claim does not tell the customer where either material goes."]}]
+let index=0
+let solved=false
+let timer
+function clearFireworks(){
+  clearTimeout(timer)
+  fireworks.replaceChildren()
+}
+function celebrate(){
+  clearFireworks()
+  const colors=['#ffcf55','#ff7794','#bdfa88','#78dfff','#f8f5ff']
+  for(const [burst,[x,y]] of [[20,25],[75,29],[49,73]].entries()){
+    for(let ray=0;ray<24;ray++){
+      const angle=ray*Math.PI/12
+      const radius=ray%2===0?83:49
+      const spark=document.createElement('span')
+      spark.className='spark'
+      const props={x:x+'%',y:y+'%',dx:Math.cos(angle)*radius+'px',dy:Math.sin(angle)*radius+'px',color:colors[ray%colors.length],delay:burst*.13+'s'}
+      for(const [name,value] of Object.entries(props))spark.style.setProperty('--'+name,value)
+      fireworks.append(spark)
+    }
+  }
+  timer=setTimeout(clearFireworks,2100)
+}
+function showQuestion(){
+  clearFireworks()
+  solved=false
+  const round=rounds[index]
+  progress.textContent='Question '+(index+1)+' of '+rounds.length
+  question.textContent=round.prompt
+  choices.replaceChildren()
+  retry.hidden=true
+  next.hidden=true
+  feedback.textContent=''
+  for(const [i,label] of round.choices.entries()){
+    const button=document.createElement('button')
+    button.type='button'
+    button.textContent=label
+    button.addEventListener('click',()=>{
+      if(stage.hidden||solved)return
+      for(const option of choices.children)option.classList.remove('missed')
+      solved=i===round.correct
+      retry.hidden=solved
+      feedback.textContent=(solved?'Correct! ':'Try again. ')+round.feedback[i]
+      if(!solved){
+        clearFireworks()
+        button.classList.add('missed')
+        return
+      }
+      button.classList.add('correct')
+      button.textContent='✓ '+label
+      next.textContent=index===rounds.length-1?'Play again':'Next question'
+      next.hidden=false
+      if(index===rounds.length-1)progress.textContent='Quiz complete · 3 of 3 correct'
+      celebrate()
+    })
+    choices.append(button)
+  }
+}
+next.addEventListener('click',()=>{
+  if(!solved||stage.hidden)return
+  index=(index+1)%rounds.length
+  showQuestion()
+  choices.firstElementChild.focus()
+})
+showQuestion()
+let stream
+let requestInProgress = false
+let pageHidden = false
+function report(message) {
+  cameraNote.textContent = message
+  cameraNote.hidden = !message
+}
+function stopCamera() {
+  stream?.getTracks().forEach(track => track.stop())
+  stream = undefined
+  camera.srcObject = null
+  camera.hidden = true
+  stage.hidden = true
+  clearFireworks()
+  cameraButton.textContent = 'Open AR camera'
+}
+async function openCamera() {
+  if (requestInProgress || stream) return
+  if (!navigator.mediaDevices?.getUserMedia) {
+    report('Open this page in Safari or Chrome to use the camera.')
+    return
+  }
+  requestInProgress = true
+  cameraButton.disabled = true
+  report('Opening camera…')
+  try {
+    const newStream = await navigator.mediaDevices.getUserMedia({audio:false, video:{facingMode:{ideal:'environment'}}})
+    if (pageHidden) {
+      newStream.getTracks().forEach(track => track.stop())
+      return
+    }
+    stream = newStream
+    camera.srcObject = stream
+    await camera.play()
+    if (stream !== newStream) return
+    camera.hidden = false
+    stage.hidden = false
+    cameraButton.textContent = 'Close camera'
+    report('')
+  } catch {
+    stopCamera()
+    if (!pageHidden) report('Allow camera access to see the quiz over your surroundings.')
+  } finally {
+    requestInProgress = false
+    cameraButton.disabled = false
+  }
+}
+cameraButton.addEventListener('click', () => {
+  if (stream) stopCamera()
+  else openCamera()
+})
+window.addEventListener('pagehide', () => {
+  pageHidden = true
+  stopCamera()
+})
+window.addEventListener('pageshow', () => { pageHidden = false })
+
+if (new URLSearchParams(location.search).has('qr')) {
+  experience.hidden = true
+  document.querySelector('#qr-view').hidden = false
+} else {
+  openCamera()
+}
+
+
+</script></body></html>
