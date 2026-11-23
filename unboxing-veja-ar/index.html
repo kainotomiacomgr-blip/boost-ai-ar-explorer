@@ -1,153 +1,68 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>VEJA | UNBOXING WebAR</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>VEJA Packaging | UNBOXING WebAR</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;min-height:100svh;display:grid;place-items:center;padding:24px 20px;background:radial-gradient(ellipse at 50% 43%,#3d5946,#192c22 75%);color:#f8f8ed;font:1rem/1.5 system-ui,sans-serif;text-align:center}
-main{width:min(100%,34rem)}
-.project{margin:0 0 .55rem;color:#d2edb7;font-size:.8rem;font-weight:750;letter-spacing:.12em}
-h1{margin:0;font-size:clamp(2.5rem,10vw,4.4rem);line-height:1}
-.topic{margin:.6rem 0 0;color:#e4eadc}
-.objects{display:flex;align-items:center;justify-content:center;gap:clamp(12px,4vw,28px);min-height:clamp(180px,44vw,266px);padding-top:12px}
-.box-art{position:relative;width:min(66vw,340px);aspect-ratio:1.8;filter:drop-shadow(0 20px 12px #0007);animation:float 2.6s ease-in-out infinite alternate}
-.box-art span{position:absolute;inset:0}
-.box-top{background:#e7bf89;clip-path:polygon(1% 39%,27% 8%,99% 24%,73% 56%)}
-.box-front{background:#c79661;clip-path:polygon(2% 40%,73% 56%,73% 92%,2% 75%)}
-.box-side{background:#90633e;clip-path:polygon(73% 56%,98% 24%,98% 59%,73% 92%)}
-.box-lid{background:#f0c795;clip-path:polygon(1% 38%,73% 53%,99% 23%,99% 31%,73% 62%,1% 47%)}
-.box-logo{position:absolute;left:34%;top:56%;transform:translateX(-50%) rotate(7deg);color:#282018;font-size:clamp(1.25rem,7vw,2.4rem);font-weight:900;letter-spacing:.18em}
-@keyframes float{from{transform:translateY(10px)}to{transform:translateY(-16px)}}
-@media(prefers-reduced-motion:reduce){.box-art{animation:none}}
-.box-art{width:min(53vw,295px);flex:none}
-.youtube{display:inline-flex;align-items:center;justify-content:center;width:clamp(70px,20vw,120px);aspect-ratio:1.42;border-radius:25%;background:#f03;color:white;box-shadow:0 13px 23px #0006;animation:float 2.6s ease-in-out infinite alternate;animation-delay:-1.2s}
-.youtube::before{content:"";width:29%;aspect-ratio:1;background:white;clip-path:polygon(14% 0,100% 50%,14% 100%)}
-.youtube:hover,.youtube:focus-visible{animation-play-state:paused;background:#da002b}
-a:focus-visible{outline:3px solid #d2edb7;outline-offset:5px}
-.watch{display:inline-block;color:white;font-weight:700;text-underline-offset:.25em}
-.film{margin:.35rem 0 0;color:#e4eadc}
-@media(prefers-reduced-motion:reduce){.youtube{animation:none}}
-#camera{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;background:#192c22}
-[hidden]{display:none!important}
-main{position:relative}
-#launch{margin-top:1.3rem;padding:.75rem 1.2rem;border:0;border-radius:2rem;background:#d9efc6;color:#192c22;min-height:44px;font:inherit;font-weight:750;cursor:pointer}
-#status{margin:.55rem 0 0;font-size:.9rem}
-body.camera-on main{position:fixed;inset:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:max(18px,env(safe-area-inset-top)) 16px max(18px,env(safe-area-inset-bottom));pointer-events:none}
-body.camera-on header,body.camera-on footer{padding:.65rem .9rem;border-radius:1rem;background:#192c22e8}
-body.camera-on header h1{font-size:1.6rem}
-body.camera-on .topic,body.camera-on .film{display:none}
-body.camera-on .objects{position:fixed;left:var(--object-x,50%);top:var(--object-y,46%);transform:translate(-50%,-50%);min-height:0;padding:0}
-body.camera-on a,body.camera-on button{pointer-events:auto}
-#unbox{display:grid;justify-items:center;gap:.25rem;padding:0;border:0;background:none;color:#fff;font:inherit;cursor:pointer}
-#unbox-label{background:#192c22;color:#f8f8ed;border:1px solid #d2edb780;border-radius:2rem;padding:.3rem .75rem;font-weight:700}
-#unbox:focus-visible,#box-details button:focus-visible{outline:3px solid #d2edb7;outline-offset:4px}
-#unbox[aria-expanded="true"] .box-art{animation:none}
-.box-top,.box-lid{transition:transform .35s ease}
-#unbox[aria-expanded="true"] .box-top,#unbox[aria-expanded="true"] .box-lid{transform:translateY(-24%) rotate(-7deg)}
-#unbox[aria-expanded="true"] .box-opening{background:#5a3b29;clip-path:polygon(2% 39%,27% 9%,98% 24%,73% 56%)}
-@media(prefers-reduced-motion:reduce){.box-top,.box-lid{transition:none}}
-#box-details{position:fixed;z-index:3;inset:auto 0 0;overflow:auto;box-shadow:0 8px 35px #0009;width:min(calc(100% - 24px),30rem);max-height:70svh;margin:auto auto max(12px,env(safe-area-inset-bottom));border:1px solid #8b9f81;border-radius:18px;background:#172e23;color:#f8f8ed;padding:1rem;text-align:left}
-#box-details h2,#box-details p{margin:.25rem 0 .7rem}
-.dialog-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
-#box-details button{min-height:44px;border-radius:9px;border:1px solid #b2c4a1;background:#284837;color:white;padding:.36rem .65rem;font:inherit;cursor:pointer}
-#box-details button[aria-pressed="true"]{background:#d9efc6;color:#172e23}
-.dialog-actions{display:flex;gap:.45rem;flex-wrap:wrap}
-#answer-feedback{color:#dbefcb;margin-top:.65rem}
-
-#qr{padding:1.4rem;color:#fff}#qr img{display:block;width:min(78vw,410px);margin:1rem auto;image-rendering:pixelated}#qr a{color:#e1f4ce}
-footer button,.sections button{min-height:44px;border:1px solid #b2c4a1;border-radius:.7rem;background:#264536;color:#fff;font:inherit;padding:.35rem .65rem;cursor:pointer}
-#launch{margin:.4rem 0}
-#box-details{max-height:57svh}
-#box-details a{color:#d9efc6}
-#box-details h3{margin:.45rem 0}
-.sections{display:flex;gap:.45rem;flex-wrap:wrap}
-#objects{position:relative;isolation:isolate}body.camera-on #objects{position:fixed}
-#walker{position:absolute;z-index:3;pointer-events:none;left:11%;top:50%;height:110px;width:52px;transform:translate(-50%,-77%);filter:drop-shadow(0 3px 4px #0005)}
-.walker-body{position:absolute;inset:0;transform-origin:50% 61%}
-.head{position:absolute;left:21px;top:1px;width:20px;height:23px;border-radius:45%;background:#b67450;border-top:6px solid #332418}
-.head:after{content:"";position:absolute;right:-3px;top:7px;width:6px;height:5px;border-radius:50%;background:#b67450}
-.shirt{position:absolute;left:15px;top:24px;width:27px;height:40px;background:#6fba86;border-radius:10px 10px 4px 4px}
-.arm{position:absolute;left:30px;top:28px;width:8px;height:39px;border-radius:6px;background:linear-gradient(#6fba86 0 41%,#b67450 41%);transform-origin:50% 7%;transform:rotate(-12deg)}
-.leg{position:absolute;left:17px;top:61px;width:11px;height:40px;border-radius:5px;background:linear-gradient(#283b3d 0 35%,#b67450 35%);transform-origin:50% 4%}
-.leg:after{content:"";position:absolute;bottom:-3px;left:1px;width:17px;height:8px;border-radius:8px 9px 5px 6px;background:#b67450}
-.leg.back{left:28px;filter:brightness(.84)}
-.story-running #walker{animation:approach 3.2s ease-out both}
-.story-running .leg{animation:step .64s ease-in-out 5}
-.story-running .leg.back{animation-delay:-.32s}
-.story-running .walker-body{animation:lean 1.5s 3s ease-in-out both}
-.story-running .arm{animation:swing .64s ease-in-out 5,reach 1.4s 3.15s ease-in-out both}
-@keyframes approach{from{transform:translate(-170%,-77%)}to{transform:translate(-50%,-77%)}}
-@keyframes step{0%,100%{transform:rotate(-24deg)}50%{transform:rotate(26deg)}}
-@keyframes swing{0%,100%{transform:rotate(22deg)}50%{transform:rotate(-26deg)}}
-@keyframes lean{0%,100%{transform:rotate(0)}50%{transform:rotate(20deg)}}
-@keyframes reach{0%,100%{transform:rotate(-12deg)}55%{transform:rotate(-70deg)}}
-#objects .box-art{animation:none;width:min(44vw,245px)}
-#objects #unbox{margin-left:clamp(24px,10vw,55px)}
-#objects.story-running .box-opening,#objects.story-complete .box-opening{background:#67422d;clip-path:polygon(2% 39%,27% 9%,98% 24%,73% 56%)}
-#objects.story-running .box-top,#objects.story-running .box-lid{animation:lift-lid .6s 3.7s ease-out both}
-#objects.story-complete .box-top,#objects.story-complete .box-lid{transform:translateY(-32%) rotate(-12deg)}
-@keyframes lift-lid{to{transform:translateY(-32%) rotate(-12deg)}}
-#objects .box-art .shoe{position:absolute;inset:auto;top:37%;left:30%;width:43%;height:24%;z-index:2;opacity:0;transform:rotate(9deg);background:linear-gradient(#fff9e9 0 75%,#e3cfab 75%);border-radius:28% 65% 21% 21%;box-shadow:0 2px 4px #0005}
-.shoe:before{content:"";position:absolute;left:8%;bottom:21%;width:39%;height:128%;background:#faf0dc;clip-path:polygon(0 0,33% 9%,53% 34%,100% 74%,100% 100%,0 100%)}
-.shoe:after{content:"V";position:absolute;left:18%;bottom:24%;color:#35443f;font:900 clamp(.62rem,3.4vw,1.35rem)/1 system-ui}
-#objects .box-art .shoe.back{left:42%;top:30%;scale:.88;z-index:1}
-#objects.story-running .shoe{animation:reveal-shoe .55s 4.1s ease-out both}
-#objects.story-complete .shoe{opacity:1;transform:translateY(-26%) rotate(9deg)}
-@keyframes reveal-shoe{to{opacity:1;transform:translateY(-26%) rotate(9deg)}}
-@media(prefers-reduced-motion:reduce){#objects .box-top,#objects .box-lid{transition:none}}
-#objects{width:min(86vw,410px);min-height:clamp(180px,50vw,275px);justify-content:flex-end}
-body.camera-on #objects{min-height:clamp(180px,50vw,275px)}
-#objects #unbox{margin-left:0;pointer-events:none}
-#objects .box-art{width:min(45vw,235px)}
-#walker{left:36%;top:53%;scale:1.3}
-@keyframes approach{from{transform:translate(-215%,-77%)}to{transform:translate(-50%,-77%)}}
-@media(max-height:470px){#objects{min-height:150px}#walker{scale:1.05}}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:#163226;color:#f8f5e9;font:1rem/1.45 system-ui,sans-serif}
+video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover}
+main{position:relative;margin:auto;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:1rem;padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom))}
+header,footer{width:min(100%,31rem);padding:.8rem 1rem;border-radius:16px;background:#163226f2;text-align:center}
+h1,h2,p{margin:.2rem 0}.project{font-size:.76rem;font-weight:800;letter-spacing:.1em;color:#d4efad}
+button{min-height:44px;padding:.45rem .72rem;border:1px solid #bdd39e;border-radius:10px;color:inherit;background:#254a36;font:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid #e0f7ac;outline-offset:4px}
+#status{margin-bottom:.45rem}
+#hotspots{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(10px,4vw,24px);width:min(75vw,320px);z-index:1}
+.camera-on #hotspots{position:fixed;left:clamp(40%,var(--object-x,50%),60%);top:clamp(38%,var(--object-y,49%),58%);transform:translate(-50%,-50%)}
+#hotspots button{display:grid;justify-items:center;gap:.35rem;background:#163226eb;border-color:#dbecb5;border-radius:18px;padding:.55rem;font-weight:750;font-size:.83rem;animation:bob 2.7s ease-in-out infinite alternate}
+#hotspots button:nth-child(2n){animation-delay:-1.3s}
+#hotspots button:hover,#hotspots button:focus-visible,#hotspots button[aria-expanded=true]{animation-play-state:paused}
+.dot{display:grid;place-items:center;border-radius:50%;width:42px;height:42px;background:#d9f0ae;color:#182e20;font-size:1.25rem;box-shadow:0 0 0 4px #d9f0ae33}
+@keyframes bob{to{transform:translateY(-8px)}}@media(prefers-reduced-motion:reduce){#hotspots button{animation:none}}
+#fact{position:fixed;z-index:2;bottom:max(12px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(calc(100% - 24px),31rem);max-height:56svh;overflow:auto;background:#f8f4e8;color:#162e23;border-radius:17px;padding:1rem;box-shadow:0 12px 32px #0008}
+#fact button{float:right;color:white}#fact h2{padding-right:4rem;font-size:1.2rem}#fact a{color:#254a36}
+#qr{text-align:center;padding:1rem}#qr img{display:block;width:min(78vw,400px);margin:1rem auto;image-rendering:pixelated}#qr a{color:#d4efad}
 </style></head>
-<body>
-<video id="camera" autoplay muted playsinline webkit-playsinline hidden></video>
-<main>
-<header><p class="project">UNBOXING · WEBAR</p><h1>Barefoot to VEJA</h1></header>
-<div class="objects" id="objects" hidden>
-<div id="walker" aria-hidden="true"><div class="walker-body"><span class="head"></span><span class="leg back"></span><span class="leg"></span><span class="shirt"></span><span class="arm"></span></div></div>
-<div id="unbox" role="img" aria-label="VEJA shoebox revealing a pair of sneakers"><span class="box-art" aria-hidden="true"><span class="box-opening"></span><span class="box-front"></span><span class="box-side"></span><span class="box-top"></span><span class="box-lid"></span><strong class="box-logo">VEJA</strong><span class="shoe back"></span><span class="shoe"></span></span></div>
-</div>
-<footer><p id="status" role="status">Point your camera at the sneaker photo.</p><button id="launch" type="button">Open AR camera</button> <button id="preview" type="button">Preview without scanning</button> <button id="replay-story" type="button" hidden>Replay animation</button></footer>
-</main>
-<div id="qr" hidden><h1>Barefoot to VEJA · WebAR</h1><p>Scan with your phone, allow camera access, then aim at the sneaker photo.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEYElEQVR4nO2dTY6kOBBGXwxIuTRSHiCPYm4wRyr1keoGcJQ8QEl4mRLom4VtoLpnVTBTnZ0RC5SUeQqQrHD82WXigIx/HaHBcccdd9xxxx133PFzcSvSYn1qYewWKwPdYoxmlgdI9dH+PO2OvxqOJIkoSZoaaQiSNAFxAg00AhppCDPEqdGOGJ762x3/bjxV8xXvZtYHibEDe5sgT8JVzKw9Wbvjr4W3P91bfAdI1xnCR6vxNgNhxuK9RaRTtTvu+Cp5NYVG9jYtlt28sWtk/f+g3fGXwYOkof6yPplJU5lrZL+OEmFImk/W7vhL4qOZmXUAqQVoZH26iHhvsbd7i71NjYAlh7Cnanf8xfDs1+3LYuFhIi2mscM03h4GYYaxw/T50e9+ecefFN9lTohT/dsQpDzXAPLodkvwzInjp+BLMWkEZXOmIV1E1IyGZAbpUl2/87U7/lJ4XWFTly9Z4t3yUqrRwMojVwyaeY8/9bc7/r242W01c6nF+jxY7J80NeKTh3eqdsdfDS9+Xf41Nap1MKiOXCNJ887Xy7dyv87xL0uZPkAJEMLM5r7VOdmolGAnKLc+6xz/qmS/znL1y4A4LVgUQOpg7NdHw+x+neOn4MXWFSlmLjeeDMDm1+UVNmqmXtzWOX4Mzw11qc29TKUFJZTF1fpcDKsVsR9dU+fkb/Hyjj8bvvPrSs3/V+O2eXPV/3Nb5/gRqZ1O4aOF1CJSiwFGvLfzz/m6OHUIGtkp2h1/bTxdZG+asX4bC4+1XjGTewPG9XKqdsdfEc9tdKSW2qhex7ObB2jIk1D6FT+o3fFXw3dZ4txkVzLCdY/EAGUSbvm66PsmHD8kq183YfHdIL53lCa7MGNRS6uxA423NV+XrjVp99Tf7vh34TWGDeVS19BGpb94Z/WaOho8hnX8OG5v07Lb8ZpzIzlBly6qccXD9lXa87Q7/mp4XWHTNbenE4ctVXIRhA8TqcPgIiN1EO8Xz5w4fkRKLWz6bMNqu8n+yTV89WjC8WN4jWHD1sbelIamAdiXKqCeBxBq3dZnneNfxzUkMw15e9hiudNunXrWr6m68bbfX/F7vLzjT4evu3VmNluX49UcUmx2zeuwjp+Er/smroJ0nUVajDh1ti+3pg7idCXn9UhXjyYcPwEPc948YT3lJCcza+sKC+hHt3Y63R6+C9vxA1J7iXPNwdB4E4x9g8a/P0wkA4KA8NGWBpTgPSeOHxJ9ltJQp7UiEea18W4Ncz1z4vgx2Vf/15pXrFWyT5OQtQXFd+s4fkiqhZN2Z3UOeazRtlsxS5TXYR0/bdZNFEO2NtTt+psGtjPt8MyJ42fVYauUzMn7dSbHFbeHKWppKQWypS3HU5yh3XHHd1LtmvVAaUZhMbOuyQUK6/9D7Y7/4fja1SkgAWPfzDZ2EwbtTLZwqZnrcYpLqzgtFXvqb3f8u/B/iWHnXX0fam3sp13YXv13/Oti/t/rHHfccccdd9xxx/8I/B8392MxVCKaLAAAAABJRU5ErkJggg==" alt="QR code for the new VEJA experience"><a download="UNBOXING_VEJA_Scan_AR_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEYElEQVR4nO2dTY6kOBBGXwxIuTRSHiCPYm4wRyr1keoGcJQ8QEl4mRLom4VtoLpnVTBTnZ0RC5SUeQqQrHD82WXigIx/HaHBcccdd9xxxx133PFzcSvSYn1qYewWKwPdYoxmlgdI9dH+PO2OvxqOJIkoSZoaaQiSNAFxAg00AhppCDPEqdGOGJ762x3/bjxV8xXvZtYHibEDe5sgT8JVzKw9Wbvjr4W3P91bfAdI1xnCR6vxNgNhxuK9RaRTtTvu+Cp5NYVG9jYtlt28sWtk/f+g3fGXwYOkof6yPplJU5lrZL+OEmFImk/W7vhL4qOZmXUAqQVoZH26iHhvsbd7i71NjYAlh7Cnanf8xfDs1+3LYuFhIi2mscM03h4GYYaxw/T50e9+ecefFN9lTohT/dsQpDzXAPLodkvwzInjp+BLMWkEZXOmIV1E1IyGZAbpUl2/87U7/lJ4XWFTly9Z4t3yUqrRwMojVwyaeY8/9bc7/r242W01c6nF+jxY7J80NeKTh3eqdsdfDS9+Xf41Nap1MKiOXCNJ887Xy7dyv87xL0uZPkAJEMLM5r7VOdmolGAnKLc+6xz/qmS/znL1y4A4LVgUQOpg7NdHw+x+neOn4MXWFSlmLjeeDMDm1+UVNmqmXtzWOX4Mzw11qc29TKUFJZTF1fpcDKsVsR9dU+fkb/Hyjj8bvvPrSs3/V+O2eXPV/3Nb5/gRqZ1O4aOF1CJSiwFGvLfzz/m6OHUIGtkp2h1/bTxdZG+asX4bC4+1XjGTewPG9XKqdsdfEc9tdKSW2qhex7ObB2jIk1D6FT+o3fFXw3dZ4txkVzLCdY/EAGUSbvm66PsmHD8kq183YfHdIL53lCa7MGNRS6uxA423NV+XrjVp99Tf7vh34TWGDeVS19BGpb94Z/WaOho8hnX8OG5v07Lb8ZpzIzlBly6qccXD9lXa87Q7/mp4XWHTNbenE4ctVXIRhA8TqcPgIiN1EO8Xz5w4fkRKLWz6bMNqu8n+yTV89WjC8WN4jWHD1sbelIamAdiXKqCeBxBq3dZnneNfxzUkMw15e9hiudNunXrWr6m68bbfX/F7vLzjT4evu3VmNluX49UcUmx2zeuwjp+Er/smroJ0nUVajDh1ti+3pg7idCXn9UhXjyYcPwEPc948YT3lJCcza+sKC+hHt3Y63R6+C9vxA1J7iXPNwdB4E4x9g8a/P0wkA4KA8NGWBpTgPSeOHxJ9ltJQp7UiEea18W4Ncz1z4vgx2Vf/15pXrFWyT5OQtQXFd+s4fkiqhZN2Z3UOeazRtlsxS5TXYR0/bdZNFEO2NtTt+psGtjPt8MyJ42fVYauUzMn7dSbHFbeHKWppKQWypS3HU5yh3XHHd1LtmvVAaUZhMbOuyQUK6/9D7Y7/4fja1SkgAWPfzDZ2EwbtTLZwqZnrcYpLqzgtFXvqb3f8u/B/iWHnXX0fam3sp13YXv13/Oti/t/rHHfccccdd9xxx/8I/B8392MxVCKaLAAAAABJRU5ErkJggg==">Download QR code</a> · <a href="./?scene=barefoot">Open WebAR</a></div>
+<body><video id="camera" autoplay muted playsinline webkit-playsinline hidden></video>
+<main><header><p class="project">UNBOXING · WEBAR</p><h1>Inside the VEJA box</h1></header>
+<div id="hotspots" aria-label="Packaging facts" hidden><button type="button" data-fact="0" aria-controls="fact" aria-expanded="false"><span class="dot" aria-hidden="true">+</span>Box sizes</button><button type="button" data-fact="1" aria-controls="fact" aria-expanded="false"><span class="dot" aria-hidden="true">+</span>Less filler</button><button type="button" data-fact="2" aria-controls="fact" aria-expanded="false"><span class="dot" aria-hidden="true">+</span>Recycled fibre</button><button type="button" data-fact="3" aria-controls="fact" aria-expanded="false"><span class="dot" aria-hidden="true">+</span>FSC label</button></div>
+<footer><p id="status" role="status">Aim at the sneaker photo.</p><button id="launch" type="button">Open AR camera</button> <button id="preview" type="button">Preview without scanning</button></footer></main>
+<section id="fact" aria-labelledby="fact-title" hidden><button type="button" id="close-fact">Close</button><h2 id="fact-title"></h2><p id="fact-copy"></p><a href="https://project.veja-store.com/en/single/production" target="_blank" rel="noopener">VEJA’s packaging information</a></section>
+<div id="qr" hidden><h1>Inside the VEJA box</h1><p>Scan, allow camera access, and aim at the sneaker photo.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEPUlEQVR4nO2dQY7rNgyGP9YGspSBd4A5inyDHumhR+oNoqPkAAPIywA22IUoW8l0FbsIUpMLzzjxB40BgiJ/ShpRdlj6Yw8NjjvuuOOOO+64444fi4tZD2kA0rCIyLCIjJMISURgskux8bjRHT8b3pcf8Qow/QImAbgoTBeVNNiDQlCAbrbbI0Z3/Nz4tIavMKOqd5GRRYiqKmOY0StLeaTExENHd/xceP9vHwohK2noZtKQ0TRelHi7KEyHju74OfEfXhdvPZrGfhYAiTdBYRGgQ+Lfh47u+Dnx6nVBgQmkZG4ho0yDQFCE8N1r+vO7JHOtrvzR7+74m/EkIiIDEDPI71uPjHQKUw/xdlH5fbsosJQS9tDRHT8ZXmLdFr4U7lIuaUA0fd0FwgxpQPQx0r37j3f8o3EZWYQkPSJioglRVYFOSdKjqqqkYZGf+M7RHT8rPl0Uwl1U8yIiX/fWuaLOyAiUaTa5Suz4PisxjKBKzJ2qZtBrEe1miGpWhby5wfT60e/u+Lvw6j7ltxm9BlW9hhli7soMq9egZcI1d8ydutc5vsPMfzLoFUpwI2ZW/7MwZxcsEpoTfvS7O/4u/EGvC989TL/motLFDKUtG69LfT5kiHmppexHv7vj78LrDBsswkFQLXOtquV6QKequbPbqB7rHN9lWzWxTan2GaBXzOvMHTPUusK9zvFXzUKazjWvy6uvrdlczFtJUQsO9zrHX7cnWaSUCuWLdTaFzmpYzZufutc5fgQ+XRqpREaANFQN76/Bbsv64uNHd/w0+EM1oa1AYt9msDKjZHgmqXisc3yH1cqh06ZysDRvq1fXorVWs57XOb7Dam/CMrfm0mZzVsNiGgqunDi+x2o5ajVsK6QArTtmah/WlRPH99nmdTXMWdFqHlaluiqpYEKKe53jr9tPRZhGoHvow67LUtRjneO7rNHriputrrcKxE2XbF2R4l7n+A5rqglgDXNbcHtoi23JnVcTju/GQxVICHcxX5vqARSNhTXXO3J0x8+FN+vrbEHJ1gcLW71qk2uda6t5rHP8JdNHY9WLt57rs5qi6r0Jx/fjMrKIjFNd4xn1XrbHyvj4uOkqi/dhHd9jT9Gs9FxLSQHYDFtv210VHuscf9ma+dKcqwrET4sBYtX1XCV2/BB8i2syhrluxW70kvXsieJ6i++HdXyHlUyupmndrGkUO1gnDd+9Rbcwo+UQsbKXZ65ffPS7O/5mPFb5REaA9GWLAewknW0ZZ5gpUe/I0R0/Gb5uBaPJ17ZVJVvjta50Al9z4vjBuIj0pS0hMizlOCeRoVNiLkcnllxPxv9idMfPgT+f1amwiEZdemW6qMDSK1M/axLqqdksFfvod3f8XfgP5aRpPNSea7splu3sHZ9hHX/Vah8MYN0FG/ODr627YLdtFO51jr9u4v+9znHHHXfccccdd/x/gf8DKMIA2/XVWSYAAAAASUVORK5CYII=" alt="QR code for the VEJA packaging hotspots"><a download="VEJA_Packaging_AR_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEPUlEQVR4nO2dQY7rNgyGP9YGspSBd4A5inyDHumhR+oNoqPkAAPIywA22IUoW8l0FbsIUpMLzzjxB40BgiJ/ShpRdlj6Yw8NjjvuuOOOO+64444fi4tZD2kA0rCIyLCIjJMISURgskux8bjRHT8b3pcf8Qow/QImAbgoTBeVNNiDQlCAbrbbI0Z3/Nz4tIavMKOqd5GRRYiqKmOY0StLeaTExENHd/xceP9vHwohK2noZtKQ0TRelHi7KEyHju74OfEfXhdvPZrGfhYAiTdBYRGgQ+Lfh47u+Dnx6nVBgQmkZG4ho0yDQFCE8N1r+vO7JHOtrvzR7+74m/EkIiIDEDPI71uPjHQKUw/xdlH5fbsosJQS9tDRHT8ZXmLdFr4U7lIuaUA0fd0FwgxpQPQx0r37j3f8o3EZWYQkPSJioglRVYFOSdKjqqqkYZGf+M7RHT8rPl0Uwl1U8yIiX/fWuaLOyAiUaTa5Suz4PisxjKBKzJ2qZtBrEe1miGpWhby5wfT60e/u+Lvw6j7ltxm9BlW9hhli7soMq9egZcI1d8ydutc5vsPMfzLoFUpwI2ZW/7MwZxcsEpoTfvS7O/4u/EGvC989TL/motLFDKUtG69LfT5kiHmppexHv7vj78LrDBsswkFQLXOtquV6QKequbPbqB7rHN9lWzWxTan2GaBXzOvMHTPUusK9zvFXzUKazjWvy6uvrdlczFtJUQsO9zrHX7cnWaSUCuWLdTaFzmpYzZufutc5fgQ+XRqpREaANFQN76/Bbsv64uNHd/w0+EM1oa1AYt9msDKjZHgmqXisc3yH1cqh06ZysDRvq1fXorVWs57XOb7Dam/CMrfm0mZzVsNiGgqunDi+x2o5ajVsK6QArTtmah/WlRPH99nmdTXMWdFqHlaluiqpYEKKe53jr9tPRZhGoHvow67LUtRjneO7rNHriputrrcKxE2XbF2R4l7n+A5rqglgDXNbcHtoi23JnVcTju/GQxVICHcxX5vqARSNhTXXO3J0x8+FN+vrbEHJ1gcLW71qk2uda6t5rHP8JdNHY9WLt57rs5qi6r0Jx/fjMrKIjFNd4xn1XrbHyvj4uOkqi/dhHd9jT9Gs9FxLSQHYDFtv210VHuscf9ma+dKcqwrET4sBYtX1XCV2/BB8i2syhrluxW70kvXsieJ6i++HdXyHlUyupmndrGkUO1gnDd+9Rbcwo+UQsbKXZ65ffPS7O/5mPFb5REaA9GWLAewknW0ZZ5gpUe/I0R0/Gb5uBaPJ17ZVJVvjta50Al9z4vjBuIj0pS0hMizlOCeRoVNiLkcnllxPxv9idMfPgT+f1amwiEZdemW6qMDSK1M/axLqqdksFfvod3f8XfgP5aRpPNSea7splu3sHZ9hHX/Vah8MYN0FG/ODr627YLdtFO51jr9u4v+9znHHHXfccccdd/x/gf8DKMIA2/XVWSYAAAAASUVORK5CYII=">Download QR code</a> · <a href="./?scene=packaging">Open WebAR</a></div>
 <script>
-const objects = document.querySelector('#objects')
+const hotspots = document.querySelector('#hotspots')
 const preview = document.querySelector('#preview')
+const fact = document.querySelector('#fact')
+const buttons = [...hotspots.querySelectorAll('button')]
+const facts = [["Box sizes","19 sizes for a closer fit","VEJA reports using 19 shoebox sizes to avoid overusing materials. A box sized to the shoes leaves less empty space."],["Less filler","What a closer fit changes","A closer-fitting box can reduce the filler needed to keep shoes from shifting in transit."],["Recycled fibre","Less reliance on virgin fibre","The UNBOXING case study describes a blend of recycled and FSC-certified cardboard. Using recovered fibre can reduce the need for virgin fibre."],["FSC label","Look for the supplier number","VEJA says all its shoeboxes are FSC-certified. The FSC label on the box includes the certified supplier’s number."]]
+let activeButton
 let revealed = false
-const replay = document.querySelector('#replay-story')
-let storyTimer
-
-function completeStory() {
-  objects.classList.remove('story-running')
-  objects.classList.add('story-complete')
-  replay.hidden = false
-  report('The VEJA shoebox is open. Replay to watch the walk again.')
-}
-
-function playStory() {
-  clearTimeout(storyTimer)
-  objects.classList.remove('story-running', 'story-complete')
-  replay.hidden = true
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    completeStory()
-    return
-  }
-  report('Watch the barefoot walker discover the VEJA sneakers.')
-  void objects.offsetWidth
-  objects.classList.add('story-running')
-  storyTimer = setTimeout(completeStory, 4750)
-}
-replay.addEventListener('click', playStory)
 function revealBox() {
   if (revealed) return
   revealed = true
-  objects.hidden = false
+  hotspots.hidden = false
   preview.hidden = true
-  playStory()
+  report('Tap a floating dot to reveal a packaging fact.')
 }
 preview.addEventListener('click', revealBox)
+for (const button of buttons) {
+  button.addEventListener('click', () => {
+    activeButton?.setAttribute('aria-expanded', 'false')
+    activeButton = button
+    button.setAttribute('aria-expanded', 'true')
+    const [, title, copy] = facts[Number(button.dataset.fact)]
+    document.querySelector('#fact-title').textContent = title
+    document.querySelector('#fact-copy').textContent = copy
+    fact.hidden = false
+    document.querySelector('#close-fact').focus()
+  })
+}
+function closeFact() {
+  if (fact.hidden) return
+  fact.hidden = true
+  activeButton?.setAttribute('aria-expanded', 'false')
+  activeButton?.focus()
+}
+document.querySelector('#close-fact').addEventListener('click', closeFact)
+window.addEventListener('keydown', event => { if (event.key === 'Escape') closeFact() })
 const camera = document.querySelector('#camera')
 const launch = document.querySelector('#launch')
 const status = document.querySelector('#status')
@@ -218,7 +133,7 @@ async function startTracking(activeStream) {
     tracker.dummyRun(camera)
     if (stream !== activeStream) return
     tracker.processVideo(camera)
-    if (!revealed) report('Aim at the sneaker photo to unlock the shoebox.')
+    if (!revealed) report('Aim at the sneaker photo to reveal the packaging dots.')
   } catch {
     if (stream !== activeStream) return
     controller?.stopProcessVideo()
@@ -334,4 +249,5 @@ if (new URLSearchParams(location.search).has('qr')) {
 } else {
   openCamera()
 }
+
 </script></body></html>
