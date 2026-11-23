@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Bergzeit | Paper Mailer Trial</title>
+<style>
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:#172a23;color:#fff7e7;font:1rem/1.45 system-ui,sans-serif}
+video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+main{position:relative;width:min(100%,32rem);min-height:100svh;margin:auto;padding:max(14px,env(safe-area-inset-top)) 14px max(14px,env(safe-area-inset-bottom));display:flex;flex-direction:column;justify-content:space-between;gap:16px}
+header,footer,#stage{padding:1rem;background:#172a23f0;border:1px solid #ade1bd60;border-radius:16px}
+h1,h2,p{margin:.3rem 0}h1{font-size:1.45rem}h2{font-size:1.1rem}
+button{font:inherit;min-height:44px;border:1px solid #9fc9a5;border-radius:10px;background:#284936;color:white;padding:.45rem .7rem;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid #e8f5b7;outline-offset:3px}
+button:disabled{opacity:.55;cursor:default}
+.actions{display:flex;flex-wrap:wrap;gap:.4rem;margin:.65rem 0}
+#sample{width:100%;border-radius:10px;background:linear-gradient(165deg,#efca9c,#c99059);color:#292017;text-align:center;padding:1rem;margin:.65rem 0;font-weight:850;min-height:72px;display:grid;place-items:center;box-shadow:inset 0 -5px #7c4a3533}
+#sample[data-test="water"]{background:radial-gradient(ellipse at 60% 55%,#816b55 0 19%,transparent 25%),linear-gradient(165deg,#efca9c,#c99059)}
+#sample[data-test="tear"]{clip-path:polygon(0 0,100% 0,100% 100%,65% 100%,61% 65%,53% 100%,0 100%)}
+#sample[data-test="packing"]{box-shadow:inset 0 0 0 5px #9e6a43}
+#result,#feedback{color:#e0efb6;min-height:2.8em}
+#qr{text-align:center;padding:2rem 1rem}#qr img{display:block;width:min(78vw,410px);margin:1rem auto;image-rendering:pixelated}#qr a,a{color:#d6edb7}
+</style></head><body>
+<video id="camera" autoplay playsinline muted hidden></video>
+<main id="experience">
+<header><h1>Bergzeit paper mailer trial</h1><p>Test a sample before replacing plastic mailers.</p></header>
+<section id="stage" aria-label="Interactive paper mailer trial" hidden>
+<h2>Run the trial</h2>
+<p>Simulated results for this activity.</p>
+<div id="sample" aria-hidden="true">PAPER MAILER</div>
+<div class="actions">
+<button type="button" data-test="water">💧 Water test</button>
+<button type="button" data-test="tear">↯ Tear test</button>
+<button type="button" data-test="packing">▣ Packing test</button>
+</div>
+<p id="result" role="status">Choose a test to see what happens.</p>
+<p id="progress">0 of 3 tests complete</p>
+<button type="button" id="customer" disabled>Open customer feedback</button>
+<section id="decision" aria-labelledby="decision-title" hidden>
+<h2 id="decision-title">Make the rollout decision</h2>
+<p>Trial customer feedback: “The clothing arrived dry, but the edge of the mailer was torn.”</p>
+<div class="actions"><button type="button" data-choice="rollout">Roll out now</button><button type="button" data-choice="retest">Reinforce and retest</button></div>
+<p id="feedback" role="status"></p>
+<button type="button" id="reset">Run a new trial</button>
+</section>
+</section>
+<footer><button id="camera-button" type="button">Open AR camera</button><p id="status" role="status">Allow camera access to start the trial.</p></footer>
+</main>
+<section id="qr" hidden><h1>Bergzeit WebAR</h1><p>Scan with your phone, then allow camera access.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAENElEQVR4nO2dUYrkOAyGP20M/ejAHKCPktysmCPtDZKj1AEa4scCF5oH2YmrppeFSoaeJtJDqIR8uANC9i/JblF22PzPHhocd9xxxx133HHHHT8Wl2IBGZMIs4jImAIi/b3cigQg1VfH40Z3/KT4oKqqC+hEpzJGVeAukN5URjrVKd7EfqmqPuI7R3f8pHiq4Wt+vwnDNaA/+04ZFlBdgGEpr5aod+Tojp8LD0/3AgHm94wQF3R+v4kSMwKgpENHd9xxwEKaTql4o1wWYO7vAnQq4x8e3fFT4DXWRQULZFER4oco3ANzvyjQKfN4FwDavPK3/nbHvxg3ldoDpADD9U1lTG/KcA3I5RqQy9KZwhARkUNHd/xkOPpoEDNVzYJOMZvC/exlnb71tzv+Vbg5kvnVqlKLm8X8+S2xEO51jr9mJWhFVfOmYp3qRKcMWkJffQbudY4foyaGq6AkAeICpF4UQGdhTZr8sGzKgaM7fmp87kHGmNEpyZoluUtd5nVq6WNSsJcPHd3xk+FVICwU5xqWbSLNgJXAMnUSzs1K0GdYx1+zsq4D8ytVzWyuV2uuXas17Na9zvGXbcuXmF+thddy0RLwiput1X/3OsdftyZVN2i2LN3TNKu6dEXmDpqpF/c6x18007BC/AhK6mFYeqv5m5qdxzerSGx1MC1VsgNGd/yc+JqvyzabNrqCuMkM2vjnsc7xfXjb6TSPINBlGaaMkkIWqPm6+T0jw9Kj0KkcMrrj58ZTQC41hwJrqm6KGYgZGddUnefrHD8Cl4tmIIn5GnNfe+kG6zQB1eUuD0Wzw0Z3/Gz4mq/ryuJuqj0n7UJuodlagefrHN+Hr/m6rZcpt/1Nazal1CYAr/47flxtorpZLUYQi7itUa+r3hldwzp+BB5VmSVY9b/MtXVnIsSb2MV2VdB5vs7xPbbVt2oMK5m7EuFi219Xi2a+rnN8lz3U97tGV9izxmJtN15nYvc6x1+zh9qEai1L1IpsU4ddie1l9zrHX7Ia62gK/9uEW9VspgoJbc29zvGXrGk3sV9L0Qu2uNvczJ4teB3W8YNm2KaN+Fk+dPrUEeBqwvGDvG5NFVtX5xrmpqaN+DGH517n+D5cRERUr+tGnRQsXydly071tXL2k+frHN9l+mjb3v8SzRo1u+7W9syJ4/ts07A0cyhty3pNGrO2oPi6zvED8MEkRekblhGwva9WEUuBslHRLjc/XcfxA/B6VqeMAMSbyGUpR4cx9zWbN4tIu0fx7/jjHf9m+PNZnTr3H4Hh3zcF1A6M1UHvgXm0k8SCHUVxyOiOO262zaYpICNgzevEm4j0ZV0n458Z3fEz4L+d1TkoCOlHFujAFEbqcnFHi3X3in3rb3f8q/BPNGym0bCsx4ltu7DXw05cwzr+kon+/zv/bf7f6xx33HHHHXfcccf/FvwXp43cX3+G0FMAAAAASUVORK5CYII=" alt="QR code for the Bergzeit paper mailer experience"><a download="UNBOXING_Bergzeit_Trial_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAENElEQVR4nO2dUYrkOAyGP20M/ejAHKCPktysmCPtDZKj1AEa4scCF5oH2YmrppeFSoaeJtJDqIR8uANC9i/JblF22PzPHhocd9xxxx133HHHHT8Wl2IBGZMIs4jImAIi/b3cigQg1VfH40Z3/KT4oKqqC+hEpzJGVeAukN5URjrVKd7EfqmqPuI7R3f8pHiq4Wt+vwnDNaA/+04ZFlBdgGEpr5aod+Tojp8LD0/3AgHm94wQF3R+v4kSMwKgpENHd9xxwEKaTql4o1wWYO7vAnQq4x8e3fFT4DXWRQULZFER4oco3ANzvyjQKfN4FwDavPK3/nbHvxg3ldoDpADD9U1lTG/KcA3I5RqQy9KZwhARkUNHd/xkOPpoEDNVzYJOMZvC/exlnb71tzv+Vbg5kvnVqlKLm8X8+S2xEO51jr9mJWhFVfOmYp3qRKcMWkJffQbudY4foyaGq6AkAeICpF4UQGdhTZr8sGzKgaM7fmp87kHGmNEpyZoluUtd5nVq6WNSsJcPHd3xk+FVICwU5xqWbSLNgJXAMnUSzs1K0GdYx1+zsq4D8ytVzWyuV2uuXas17Na9zvGXbcuXmF+thddy0RLwiput1X/3OsdftyZVN2i2LN3TNKu6dEXmDpqpF/c6x18007BC/AhK6mFYeqv5m5qdxzerSGx1MC1VsgNGd/yc+JqvyzabNrqCuMkM2vjnsc7xfXjb6TSPINBlGaaMkkIWqPm6+T0jw9Kj0KkcMrrj58ZTQC41hwJrqm6KGYgZGddUnefrHD8Cl4tmIIn5GnNfe+kG6zQB1eUuD0Wzw0Z3/Gz4mq/ryuJuqj0n7UJuodlagefrHN+Hr/m6rZcpt/1Nazal1CYAr/47flxtorpZLUYQi7itUa+r3hldwzp+BB5VmSVY9b/MtXVnIsSb2MV2VdB5vs7xPbbVt2oMK5m7EuFi219Xi2a+rnN8lz3U97tGV9izxmJtN15nYvc6x1+zh9qEai1L1IpsU4ddie1l9zrHX7Ia62gK/9uEW9VspgoJbc29zvGXrGk3sV9L0Qu2uNvczJ4teB3W8YNm2KaN+Fk+dPrUEeBqwvGDvG5NFVtX5xrmpqaN+DGH517n+D5cRERUr+tGnRQsXydly071tXL2k+frHN9l+mjb3v8SzRo1u+7W9syJ4/ts07A0cyhty3pNGrO2oPi6zvED8MEkRekblhGwva9WEUuBslHRLjc/XcfxA/B6VqeMAMSbyGUpR4cx9zWbN4tIu0fx7/jjHf9m+PNZnTr3H4Hh3zcF1A6M1UHvgXm0k8SCHUVxyOiOO262zaYpICNgzevEm4j0ZV0n458Z3fEz4L+d1TkoCOlHFujAFEbqcnFHi3X3in3rb3f8q/BPNGym0bCsx4ltu7DXw05cwzr+kon+/zv/bf7f6xx33HHHHXfcccf/FvwXp43cX3+G0FMAAAAASUVORK5CYII=">Download QR code</a> · <a href="./trial.html">Open WebAR</a></section>
+<script>
+const camera = document.querySelector('#camera')
+const control = document.querySelector('#camera-button')
+const stage = document.querySelector('#stage')
+const status = document.querySelector('#status')
+let stream
+let requesting = false
+let pageActive = true
+
+function showCameraStage(visible) {
+  stage.hidden = !visible
+
+}
+
+function stopCamera(message = 'Allow camera access to start the trial.') {
+  const previousStream = stream
+  stream = undefined
+  previousStream?.getTracks().forEach(track => track.stop())
+  camera.srcObject = null
+  camera.hidden = true
+  showCameraStage(false)
+  control.textContent = 'Open AR camera'
+  status.textContent = message
+}
+
+function cameraIsActive() {
+  return stream?.getVideoTracks().some(track => track.readyState === 'live') && !camera.paused && !camera.hidden
+}
+
+async function openCamera() {
+  if (requesting || stream || !pageActive) return
+  if (!navigator.mediaDevices?.getUserMedia) {
+    status.textContent = 'Open this page in Safari or Chrome to use the camera.'
+    return
+  }
+  requesting = true
+  control.disabled = true
+  status.textContent = 'Allow camera access when prompted.'
+  try {
+    const activeStream = await navigator.mediaDevices.getUserMedia({audio:false, video:{facingMode:{ideal:'environment'}}})
+    if (!pageActive) {
+      activeStream.getTracks().forEach(track => track.stop())
+      return
+    }
+    stream = activeStream
+    for (const track of stream.getVideoTracks()) {
+      track.addEventListener('ended', () => {
+        if (stream === activeStream) stopCamera('Camera stopped. Tap Open AR camera to restart.')
+      }, {once:true})
+    }
+    camera.muted = true
+    camera.srcObject = activeStream
+    camera.hidden = false
+    await camera.play()
+    if (stream !== activeStream || !cameraIsActive()) return
+    showCameraStage(true)
+    control.textContent = 'Close camera'
+    status.textContent = ''
+  } catch (error) {
+    stopCamera(error.name === 'NotAllowedError'
+      ? 'Allow camera access in your browser settings, then tap Open AR camera.'
+      : 'Camera could not start. Tap Open AR camera to retry.')
+  } finally {
+    requesting = false
+    control.disabled = false
+  }
+}
+
+camera.addEventListener('pause', () => showCameraStage(false))
+camera.addEventListener('playing', () => {
+  if (cameraIsActive()) showCameraStage(true)
+})
+control.addEventListener('click', () => {
+  if (stream) stopCamera()
+  else openCamera()
+})
+window.addEventListener('pagehide', () => {
+  pageActive = false
+  stopCamera()
+})
+window.addEventListener('pageshow', () => { pageActive = true })
+if (new URLSearchParams(location.search).has('qr')) {
+  document.querySelector('#experience').hidden = true
+  document.querySelector('#qr').hidden = false
+} else {
+  openCamera()
+}
+
+const tests = {
+  water: ['DAMP PATCH', 'The surface darkens after a splash. In this simulation, the garment inside stays dry.'],
+  tear: ['EDGE SPLIT', 'A small nick grows into a tear when the edge is pulled.'],
+  packing: ['SEALED MAILER', 'The mailer fits a folded garment and seals at the packing station.']
+}
+const completed = new Set()
+const sample = document.querySelector('#sample')
+const result = document.querySelector('#result')
+const progress = document.querySelector('#progress')
+const customer = document.querySelector('#customer')
+const decision = document.querySelector('#decision')
+const feedback = document.querySelector('#feedback')
+for (const button of document.querySelectorAll('[data-test]')) {
+  button.addEventListener('click', () => {
+    if (!cameraIsActive() || stage.hidden) return
+    const test = button.dataset.test
+    sample.dataset.test = test
+    const [label, message] = tests[test]
+    sample.textContent = label
+    result.textContent = message
+    completed.add(test)
+    progress.textContent = completed.size + ' of 3 tests complete'
+    customer.disabled = completed.size < 3
+  })
+}
+customer.addEventListener('click', () => {
+  if (cameraIsActive() && completed.size === 3) {
+    decision.hidden = false
+    decision.querySelector('button').focus()
+  }
+})
+for (const button of document.querySelectorAll('[data-choice]')) {
+  button.addEventListener('click', () => {
+    if (!cameraIsActive() || decision.hidden) return
+    feedback.textContent = button.dataset.choice === 'retest'
+      ? 'Good call. Reinforce the weak edge, then repeat the packing and shipping trials before rolling out.'
+      : 'Check the tear test and customer feedback. The edge could fail during handling even though the contents stayed dry. Try the other decision.'
+  })
+}
+document.querySelector('#reset').addEventListener('click', () => {
+  completed.clear()
+  delete sample.dataset.test
+  sample.textContent = 'PAPER MAILER'
+  result.textContent = 'Choose a test to see what happens.'
+  progress.textContent = '0 of 3 tests complete'
+  customer.disabled = true
+  decision.hidden = true
+  feedback.textContent = ''
+  document.querySelector('[data-test]').focus()
+})
+</script></body></html>
