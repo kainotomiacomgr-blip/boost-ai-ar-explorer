@@ -93,49 +93,28 @@ footer button,.sections button{min-height:44px;border:1px solid #b2c4a1;border-r
 #objects.story-complete .shoe{opacity:1;transform:translateY(-26%) rotate(9deg)}
 @keyframes reveal-shoe{to{opacity:1;transform:translateY(-26%) rotate(9deg)}}
 @media(prefers-reduced-motion:reduce){#objects .box-top,#objects .box-lid{transition:none}}
+#objects{width:min(86vw,410px);min-height:clamp(180px,50vw,275px);justify-content:flex-end}
+body.camera-on #objects{min-height:clamp(180px,50vw,275px)}
+#objects #unbox{margin-left:0;pointer-events:none}
+#objects .box-art{width:min(45vw,235px)}
+#walker{left:36%;top:53%;scale:1.3}
+@keyframes approach{from{transform:translate(-215%,-77%)}to{transform:translate(-50%,-77%)}}
+@media(max-height:470px){#objects{min-height:150px}#walker{scale:1.05}}
 </style></head>
 <body>
 <video id="camera" autoplay muted playsinline webkit-playsinline hidden></video>
 <main>
-<header><p class="project">UNBOXING · WEBAR</p><h1>VEJA</h1><p class="topic">Follow wild Amazonian rubber from tree to sneaker sole.</p></header>
+<header><p class="project">UNBOXING · WEBAR</p><h1>Barefoot to VEJA</h1></header>
 <div class="objects" id="objects" hidden>
 <div id="walker" aria-hidden="true"><div class="walker-body"><span class="head"></span><span class="leg back"></span><span class="leg"></span><span class="shirt"></span><span class="arm"></span></div></div>
-<button id="unbox" type="button" aria-expanded="false" aria-controls="box-details"><span class="box-art" aria-hidden="true"><span class="box-opening"></span><span class="box-front"></span><span class="box-side"></span><span class="box-top"></span><span class="box-lid"></span><strong class="box-logo">VEJA</strong><span class="shoe back"></span><span class="shoe"></span></span><span id="unbox-label">Explore the sneakers</span></button>
-<a class="youtube" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" target="_blank" rel="noopener" aria-label="Watch VEJA’s film about Amazonian rubber on YouTube"></a>
+<div id="unbox" role="img" aria-label="VEJA shoebox revealing a pair of sneakers"><span class="box-art" aria-hidden="true"><span class="box-opening"></span><span class="box-front"></span><span class="box-side"></span><span class="box-top"></span><span class="box-lid"></span><strong class="box-logo">VEJA</strong><span class="shoe back"></span><span class="shoe"></span></span></div>
 </div>
 <footer><p id="status" role="status">Point your camera at the sneaker photo.</p><button id="launch" type="button">Open AR camera</button> <button id="preview" type="button">Preview without scanning</button> <button id="replay-story" type="button" hidden>Replay animation</button></footer>
 </main>
-<section id="box-details" aria-labelledby="box-title" hidden>
-<div class="dialog-top"><h2 id="box-title">Inside the shoebox</h2><button id="close-details" type="button">Close</button></div>
-<div class="sections" aria-label="Explore the shoebox"><button type="button" data-topic="material" aria-pressed="false">Cardboard</button><button type="button" data-topic="size" aria-pressed="false">Box size</button><button type="button" data-topic="challenge" aria-pressed="false">Fit challenge</button><button type="button" data-topic="forest" aria-pressed="true">Forest sourcing</button></div>
-<p id="material" hidden>The case study describes a blend of recycled and FSC-certified cardboard. Ask the supplier what share is recycled and which certification claim applies to the finished box.</p>
-<p id="size" hidden>A box sized to the shoes can reduce empty space and the need for filler. Check fit and protection using the actual shoe sizes you ship.</p>
-<div id="challenge" hidden><h3>Which box would you test first?</h3><div class="dialog-actions"><button type="button" data-choice="tight" aria-pressed="false">Too tight</button><button type="button" data-choice="fit" aria-pressed="false">Snug fit</button><button type="button" data-choice="large" aria-pressed="false">Oversized</button></div><p id="answer-feedback" role="status" hidden></p></div>
-<div id="forest">
-  <h3>From tree to sneaker sole</h3>
-  <div class="dialog-actions" aria-label="Explore the rubber supply chain">
-    <button type="button" data-rubber-step="tree" aria-pressed="true">Tap the tree</button>
-    <button type="button" data-rubber-step="premium" aria-pressed="false">Reward conservation</button>
-    <button type="button" data-rubber-step="sole" aria-pressed="false">Make the sole</button>
-  </div>
-  <p id="rubber-step" aria-live="polite">Rubber tappers collect latex from living Amazonian rubber trees. The trees can remain standing while providing income.</p>
-  <h3>Make a sourcing decision</h3>
-  <p>You’re buying wild rubber for sneaker soles. Which agreement better supports keeping the forest intact?</p>
-  <div class="dialog-actions">
-    <button type="button" data-rubber-answer="price" aria-pressed="false">Pay by volume alone</button>
-    <button type="button" data-rubber-answer="evidence" aria-pressed="false">Pay a premium tied to forest protection</button>
-  </div>
-  <p id="rubber-feedback" role="status" hidden></p>
-  <p><a href="https://project.veja-store.com/en/single/rubber" target="_blank" rel="noopener">Read VEJA’s rubber sourcing policy</a></p>
-</div>
-</section>
-<div id="qr" hidden><h1>VEJA WebAR</h1><p>Scan with your phone, allow camera access, then aim at the sneaker photo.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADn0lEQVR4nO2cwY3bMBBF/0QCfJSALWBLoTpIScGWlA6kUlJAAPK4gISfA2dEy+tcAhtrb/4cDNHWgyRgMPzzSdmIf4vl2z+CgEiRIkWKFClS5OOR5tHDpmIGYDObSg+bsO3DOGv65LsV+ZBkIklmgG+vpNnYERjeDcvYxRAdSZJH8jPuVuRDkmWvL8WMc+mBxXrUo/TLjDMAM+sf4W5FPhLZX4wNQ4YlAkR5WevRMgKWft7qmiK/FnmZQ0g/DVysW7FMHQhs/XUL6bmeU+T9yMihgQAKgGX0bwzDbwPQESm/rAYA59n0XM8p8u7kYmZmI4CUO9qPDCD9OhEpAzbVk7balt3qmiK/CAkeAxhIYFjBGR05D2t0bceYn+s5Rd6btAlAWEMAUHog5f2sYtZKlU03uabIr0KeaWq63tl6LlO3tkaMKKi9mqFYiKLnek6R9yNjLssdvfDENIZEn9WQuMbJudNcJvIimvXM+UwFMT7gmVMzLOXIOuWQyIiaQyl3NV9qzUkZqEPU71o27cPnek6R9yNdDy2vKyxxq8NqTAPdiuX77x4oI1D10LBbRM/1nCLvR4amLv1KlBGs+ZJHEOWl/kb3Hbce0tQiP0bMZUC1hhL9o9lFdUGf+yQnPSTyEJ4RwwoXRcM+rN3Y3qEhNJL0kMhDRMXZk2bwzPEODd6wtS5fdUjkMTwjADem22405o5xygrOQ/RvyiGRh2i9fVQaMipSrJw1Z9GVkXJI5FmEdF7d/AFwMBoRcrqerDok8kN4HaIb0159AJfYzE1JSw+JvBoxR/mue5/LMhCt/oVtrTok8jq5jPBKs4w+lwGlB9/s5MlV1VLW3g+RF1F9at/oWsZqQlua1+pTxw7YdyPKiVjG7jPvVuQjkoc11zAa4YXH5zKfxtTbi7wezWN0/TyEF9TUtfuO6stEXo3m+/jaGC98at86FF6kckjkVdLsleTcXnYd3g0Y3s2merT6K/k/8qb3OkReBI8RsgeA9/Fr7GMMA1t1SOQVsv3vR02fZfQ9i/VFDhuB+q5HFduffLciH4s896mrYK57p7tQRmdraDyzIVWHRO4RvT3QFl5j27R3Y23/UCOUQyL/RlYvaBk78s1O9Fa/9PuvHW268TVFPjd5WYdq0uxKuh7tXb78IZF/JweyraoCAMzGzbDYiUh58wbf/1rvNtcU+TXIs3cUsadPbB1qa/nhYuv9MpEfwvQf5yJFihQpUqTI/5z8A3GJVqg7sU1RAAAAAElFTkSuQmCC" alt="QR code for the new VEJA experience"><a download="UNBOXING_VEJA_Scan_AR_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADn0lEQVR4nO2cwY3bMBBF/0QCfJSALWBLoTpIScGWlA6kUlJAAPK4gISfA2dEy+tcAhtrb/4cDNHWgyRgMPzzSdmIf4vl2z+CgEiRIkWKFClS5OOR5tHDpmIGYDObSg+bsO3DOGv65LsV+ZBkIklmgG+vpNnYERjeDcvYxRAdSZJH8jPuVuRDkmWvL8WMc+mBxXrUo/TLjDMAM+sf4W5FPhLZX4wNQ4YlAkR5WevRMgKWft7qmiK/FnmZQ0g/DVysW7FMHQhs/XUL6bmeU+T9yMihgQAKgGX0bwzDbwPQESm/rAYA59n0XM8p8u7kYmZmI4CUO9qPDCD9OhEpAzbVk7balt3qmiK/CAkeAxhIYFjBGR05D2t0bceYn+s5Rd6btAlAWEMAUHog5f2sYtZKlU03uabIr0KeaWq63tl6LlO3tkaMKKi9mqFYiKLnek6R9yNjLssdvfDENIZEn9WQuMbJudNcJvIimvXM+UwFMT7gmVMzLOXIOuWQyIiaQyl3NV9qzUkZqEPU71o27cPnek6R9yNdDy2vKyxxq8NqTAPdiuX77x4oI1D10LBbRM/1nCLvR4amLv1KlBGs+ZJHEOWl/kb3Hbce0tQiP0bMZUC1hhL9o9lFdUGf+yQnPSTyEJ4RwwoXRcM+rN3Y3qEhNJL0kMhDRMXZk2bwzPEODd6wtS5fdUjkMTwjADem22405o5xygrOQ/RvyiGRh2i9fVQaMipSrJw1Z9GVkXJI5FmEdF7d/AFwMBoRcrqerDok8kN4HaIb0159AJfYzE1JSw+JvBoxR/mue5/LMhCt/oVtrTok8jq5jPBKs4w+lwGlB9/s5MlV1VLW3g+RF1F9at/oWsZqQlua1+pTxw7YdyPKiVjG7jPvVuQjkoc11zAa4YXH5zKfxtTbi7wezWN0/TyEF9TUtfuO6stEXo3m+/jaGC98at86FF6kckjkVdLsleTcXnYd3g0Y3s2merT6K/k/8qb3OkReBI8RsgeA9/Fr7GMMA1t1SOQVsv3vR02fZfQ9i/VFDhuB+q5HFduffLciH4s896mrYK57p7tQRmdraDyzIVWHRO4RvT3QFl5j27R3Y23/UCOUQyL/RlYvaBk78s1O9Fa/9PuvHW268TVFPjd5WYdq0uxKuh7tXb78IZF/JweyraoCAMzGzbDYiUh58wbf/1rvNtcU+TXIs3cUsadPbB1qa/nhYuv9MpEfwvQf5yJFihQpUqTI/5z8A3GJVqg7sU1RAAAAAElFTkSuQmCC">Download QR code</a> · <a href="./">Open WebAR</a></div>
+<div id="qr" hidden><h1>Barefoot to VEJA · WebAR</h1><p>Scan with your phone, allow camera access, then aim at the sneaker photo.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEYElEQVR4nO2dTY6kOBBGXwxIuTRSHiCPYm4wRyr1keoGcJQ8QEl4mRLom4VtoLpnVTBTnZ0RC5SUeQqQrHD82WXigIx/HaHBcccdd9xxxx133PFzcSvSYn1qYewWKwPdYoxmlgdI9dH+PO2OvxqOJIkoSZoaaQiSNAFxAg00AhppCDPEqdGOGJ762x3/bjxV8xXvZtYHibEDe5sgT8JVzKw9Wbvjr4W3P91bfAdI1xnCR6vxNgNhxuK9RaRTtTvu+Cp5NYVG9jYtlt28sWtk/f+g3fGXwYOkof6yPplJU5lrZL+OEmFImk/W7vhL4qOZmXUAqQVoZH26iHhvsbd7i71NjYAlh7Cnanf8xfDs1+3LYuFhIi2mscM03h4GYYaxw/T50e9+ecefFN9lTohT/dsQpDzXAPLodkvwzInjp+BLMWkEZXOmIV1E1IyGZAbpUl2/87U7/lJ4XWFTly9Z4t3yUqrRwMojVwyaeY8/9bc7/r242W01c6nF+jxY7J80NeKTh3eqdsdfDS9+Xf41Nap1MKiOXCNJ887Xy7dyv87xL0uZPkAJEMLM5r7VOdmolGAnKLc+6xz/qmS/znL1y4A4LVgUQOpg7NdHw+x+neOn4MXWFSlmLjeeDMDm1+UVNmqmXtzWOX4Mzw11qc29TKUFJZTF1fpcDKsVsR9dU+fkb/Hyjj8bvvPrSs3/V+O2eXPV/3Nb5/gRqZ1O4aOF1CJSiwFGvLfzz/m6OHUIGtkp2h1/bTxdZG+asX4bC4+1XjGTewPG9XKqdsdfEc9tdKSW2qhex7ObB2jIk1D6FT+o3fFXw3dZ4txkVzLCdY/EAGUSbvm66PsmHD8kq183YfHdIL53lCa7MGNRS6uxA423NV+XrjVp99Tf7vh34TWGDeVS19BGpb94Z/WaOho8hnX8OG5v07Lb8ZpzIzlBly6qccXD9lXa87Q7/mp4XWHTNbenE4ctVXIRhA8TqcPgIiN1EO8Xz5w4fkRKLWz6bMNqu8n+yTV89WjC8WN4jWHD1sbelIamAdiXKqCeBxBq3dZnneNfxzUkMw15e9hiudNunXrWr6m68bbfX/F7vLzjT4evu3VmNluX49UcUmx2zeuwjp+Er/smroJ0nUVajDh1ti+3pg7idCXn9UhXjyYcPwEPc948YT3lJCcza+sKC+hHt3Y63R6+C9vxA1J7iXPNwdB4E4x9g8a/P0wkA4KA8NGWBpTgPSeOHxJ9ltJQp7UiEea18W4Ncz1z4vgx2Vf/15pXrFWyT5OQtQXFd+s4fkiqhZN2Z3UOeazRtlsxS5TXYR0/bdZNFEO2NtTt+psGtjPt8MyJ42fVYauUzMn7dSbHFbeHKWppKQWypS3HU5yh3XHHd1LtmvVAaUZhMbOuyQUK6/9D7Y7/4fja1SkgAWPfzDZ2EwbtTLZwqZnrcYpLqzgtFXvqb3f8u/B/iWHnXX0fam3sp13YXv13/Oti/t/rHHfccccdd9xxx/8I/B8392MxVCKaLAAAAABJRU5ErkJggg==" alt="QR code for the new VEJA experience"><a download="UNBOXING_VEJA_Scan_AR_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEYElEQVR4nO2dTY6kOBBGXwxIuTRSHiCPYm4wRyr1keoGcJQ8QEl4mRLom4VtoLpnVTBTnZ0RC5SUeQqQrHD82WXigIx/HaHBcccdd9xxxx133PFzcSvSYn1qYewWKwPdYoxmlgdI9dH+PO2OvxqOJIkoSZoaaQiSNAFxAg00AhppCDPEqdGOGJ762x3/bjxV8xXvZtYHibEDe5sgT8JVzKw9Wbvjr4W3P91bfAdI1xnCR6vxNgNhxuK9RaRTtTvu+Cp5NYVG9jYtlt28sWtk/f+g3fGXwYOkof6yPplJU5lrZL+OEmFImk/W7vhL4qOZmXUAqQVoZH26iHhvsbd7i71NjYAlh7Cnanf8xfDs1+3LYuFhIi2mscM03h4GYYaxw/T50e9+ecefFN9lTohT/dsQpDzXAPLodkvwzInjp+BLMWkEZXOmIV1E1IyGZAbpUl2/87U7/lJ4XWFTly9Z4t3yUqrRwMojVwyaeY8/9bc7/r242W01c6nF+jxY7J80NeKTh3eqdsdfDS9+Xf41Nap1MKiOXCNJ887Xy7dyv87xL0uZPkAJEMLM5r7VOdmolGAnKLc+6xz/qmS/znL1y4A4LVgUQOpg7NdHw+x+neOn4MXWFSlmLjeeDMDm1+UVNmqmXtzWOX4Mzw11qc29TKUFJZTF1fpcDKsVsR9dU+fkb/Hyjj8bvvPrSs3/V+O2eXPV/3Nb5/gRqZ1O4aOF1CJSiwFGvLfzz/m6OHUIGtkp2h1/bTxdZG+asX4bC4+1XjGTewPG9XKqdsdfEc9tdKSW2qhex7ObB2jIk1D6FT+o3fFXw3dZ4txkVzLCdY/EAGUSbvm66PsmHD8kq183YfHdIL53lCa7MGNRS6uxA423NV+XrjVp99Tf7vh34TWGDeVS19BGpb94Z/WaOho8hnX8OG5v07Lb8ZpzIzlBly6qccXD9lXa87Q7/mp4XWHTNbenE4ctVXIRhA8TqcPgIiN1EO8Xz5w4fkRKLWz6bMNqu8n+yTV89WjC8WN4jWHD1sbelIamAdiXKqCeBxBq3dZnneNfxzUkMw15e9hiudNunXrWr6m68bbfX/F7vLzjT4evu3VmNluX49UcUmx2zeuwjp+Er/smroJ0nUVajDh1ti+3pg7idCXn9UhXjyYcPwEPc948YT3lJCcza+sKC+hHt3Y63R6+C9vxA1J7iXPNwdB4E4x9g8a/P0wkA4KA8NGWBpTgPSeOHxJ9ltJQp7UiEea18W4Ncz1z4vgx2Vf/15pXrFWyT5OQtQXFd+s4fkiqhZN2Z3UOeazRtlsxS5TXYR0/bdZNFEO2NtTt+psGtjPt8MyJ42fVYauUzMn7dSbHFbeHKWppKQWypS3HU5yh3XHHd1LtmvVAaUZhMbOuyQUK6/9D7Y7/4fja1SkgAWPfzDZ2EwbtTLZwqZnrcYpLqzgtFXvqb3f8u/B/iWHnXX0fam3sp13YXv13/Oti/t/rHHfccccdd9xxx/8I/B8392MxVCKaLAAAAABJRU5ErkJggg==">Download QR code</a> · <a href="./?scene=barefoot">Open WebAR</a></div>
 <script>
 const objects = document.querySelector('#objects')
 const preview = document.querySelector('#preview')
-const unbox = document.querySelector('#unbox')
-const details = document.querySelector('#box-details')
-const closeDetails = document.querySelector('#close-details')
 let revealed = false
 const replay = document.querySelector('#replay-story')
 let storyTimer
@@ -143,21 +122,18 @@ let storyTimer
 function completeStory() {
   objects.classList.remove('story-running')
   objects.classList.add('story-complete')
-  unbox.disabled = false
   replay.hidden = false
-  report('The VEJA box is open. Tap the sneakers to explore their story.')
+  report('The VEJA shoebox is open. Replay to watch the walk again.')
 }
 
 function playStory() {
   clearTimeout(storyTimer)
-  if (!details.hidden) showDetails(false)
   objects.classList.remove('story-running', 'story-complete')
   replay.hidden = true
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     completeStory()
     return
   }
-  unbox.disabled = true
   report('Watch the barefoot walker discover the VEJA sneakers.')
   void objects.offsetWidth
   objects.classList.add('story-running')
@@ -169,66 +145,9 @@ function revealBox() {
   revealed = true
   objects.hidden = false
   preview.hidden = true
-  selectTopic('forest')
   playStory()
 }
 preview.addEventListener('click', revealBox)
-function showDetails(visible) {
-  details.hidden = !visible
-  unbox.setAttribute('aria-expanded', String(visible))
-  document.querySelector('#unbox-label').textContent = visible ? 'Close sneaker story' : 'Explore the sneakers'
-  if (visible) closeDetails.focus()
-  else unbox.focus()
-}
-unbox.addEventListener('click', () => showDetails(details.hidden))
-closeDetails.addEventListener('click', () => showDetails(false))
-const topics = [...document.querySelectorAll('[data-topic]')]
-function selectTopic(name) {
-  for (const option of topics) {
-    const selected = option.dataset.topic === name
-    option.setAttribute('aria-pressed', String(selected))
-    document.getElementById(option.dataset.topic).hidden = !selected
-  }
-}
-for (const topic of topics) topic.addEventListener('click', () => selectTopic(topic.dataset.topic))
-
-const rubberSteps = {
-  tree: 'Rubber tappers collect latex from living Amazonian rubber trees. The trees can remain standing while providing income.',
-  premium: 'VEJA’s sourcing policy ties extra payments to forest conservation. Paying local rubber producers a premium linked to no-deforestation commitments gives them a financial incentive to keep tapping living trees and keep the forest standing.',
-  sole: 'VEJA uses wild Amazonian rubber in its sneaker soles. Sourcing connects a material choice to the people who harvest it.'
-}
-const stepButtons = [...document.querySelectorAll('[data-rubber-step]')]
-for (const step of stepButtons) {
-  step.addEventListener('click', () => {
-    for (const option of stepButtons) option.setAttribute('aria-pressed', String(option === step))
-    document.querySelector('#rubber-step').textContent = rubberSteps[step.dataset.rubberStep]
-  })
-}
-const rubberAnswers = [...document.querySelectorAll('[data-rubber-answer]')]
-for (const answer of rubberAnswers) {
-  answer.addEventListener('click', () => {
-    for (const option of rubberAnswers) option.setAttribute('aria-pressed', String(option === answer))
-    const feedback = document.querySelector('#rubber-feedback')
-    feedback.textContent = answer.dataset.rubberAnswer === 'evidence'
-      ? 'Good choice. The premium rewards keeping trees standing. Check where the rubber came from and how the agreement monitors forest cover before paying it.'
-      : 'Paying by volume rewards output. It gives producers no additional financial incentive to keep the forest standing. Try the agreement that ties extra payment to conservation.'
-    feedback.hidden = false
-  })
-}
-const explanations = {
-  tight: 'A box that presses against the shoes may damage them or be hard to close.',
-  fit: 'Good choice. A snug fit limits movement and leaves space for any protection the shoes need.',
-  large: 'An oversized box leaves more room for movement and can require extra filler.'
-}
-const choices = [...document.querySelectorAll('[data-choice]')]
-const feedback = document.querySelector('#answer-feedback')
-for (const choice of choices) {
-  choice.addEventListener('click', () => {
-    for (const option of choices) option.setAttribute('aria-pressed', String(option === choice))
-    feedback.textContent = explanations[choice.dataset.choice]
-    feedback.hidden = false
-  })
-}
 const camera = document.querySelector('#camera')
 const launch = document.querySelector('#launch')
 const status = document.querySelector('#status')
