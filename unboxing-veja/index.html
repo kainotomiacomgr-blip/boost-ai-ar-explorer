@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#192c22">
+<title>VEJA · UNBOXING AR case study</title>
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+<script src="./assets.js"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#192c22;color:#f8f8ed;font:1rem/1.45 system-ui,sans-serif}
+[hidden]{display:none!important}
+a-scene{position:fixed!important;inset:0;width:100vw!important;height:100dvh!important}
+.overlay{position:fixed;z-index:5;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom));gap:1rem}
+.tag{align-self:center;background:#192c22;color:#c9f0ad;border-radius:2rem;padding:.5rem 1rem;font-weight:700;letter-spacing:.09em;font-size:.78rem}
+section{pointer-events:auto;width:min(100%,29rem);margin-inline:auto;background:#f6f6ed;color:#192c22;border-radius:1rem;padding:1.1rem;box-shadow:0 4px 28px #0004;max-height:75dvh;overflow:auto}
+h1,h2{line-height:1.15;margin:0 0 .5rem}
+h1{font-size:clamp(1.65rem,6vw,2.45rem)}
+h2{font-size:1.3rem}
+p{margin:.4rem 0 .9rem}
+.action{display:inline-flex;justify-content:center;align-items:center;min-height:44px;padding:.65rem 1rem;border:0;border-radius:.5rem;background:#234a32;color:#fff;font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+.action:disabled{opacity:.65}
+.links{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:.75rem}
+.links a,summary{color:#214931;cursor:pointer}
+#reference{display:block;width:100%;border-radius:.5rem;margin:.75rem 0}
+#status{margin-bottom:.55rem}
+</style>
+</head>
+<body>
+<a-scene id="scene" embedded color-space="sRGB" renderer="alpha: true; antialias: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+  <a-assets><img id="sneaker-art" alt="" /></a-assets>
+  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+  <a-entity id="anchor" mindar-image-target="targetIndex: 0">
+    <a-image src="#sneaker-art" position="0 .11 .16" width=".82" height=".568"
+      material="shader: flat; transparent: true; alphaTest: .03; depthWrite: false"
+      animation="property: position; from: 0 .11 .16; to: 0 .22 .25; dur: 1600; dir: alternate; loop: true; easing: easeInOutSine"></a-image>
+  </a-entity>
+</a-scene>
+<main class="overlay">
+  <div class="tag">UNBOXING · AR CASE STUDY</div>
+  <section aria-label="VEJA case study">
+    <div id="intro">
+      <h1>VEJA</h1>
+      <p>Sustainable packaging &amp; forest-friendly sourcing</p>
+      <button id="start" class="action" disabled>Start AR</button>
+      <div class="links">
+        <details><summary>See the photo to scan</summary><img id="reference" alt="Two cream VEJA sneakers. Use this photo as the AR target."></details>
+        <a href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" target="_blank" rel="noopener">Watch without AR</a>
+      </div>
+    </div>
+    <p id="status" role="status" aria-live="polite">Loading camera tools…</p>
+    <div id="discovered" hidden>
+      <h2>From forest to footwear</h2>
+      <p>See how VEJA sources wild Amazonian rubber for its sneaker soles. Then consider how a box sized to the shoes could reduce empty space and the need for filler.</p>
+      <a class="action" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" target="_blank" rel="noopener">▶ Watch VEJA’s film on YouTube</a>
+    </div>
+  </section>
+</main>
+<script>
+const scene = document.querySelector('#scene')
+const anchor = document.querySelector('#anchor')
+const start = document.querySelector('#start')
+const status = document.querySelector('#status')
+const intro = document.querySelector('#intro')
+const discovered = document.querySelector('#discovered')
+
+async function prepare() {
+  if (!window.AFRAME?.components['mindar-image'] || !window.vejaAssets) {
+    status.textContent = 'The AR tools could not load. Reload the page or watch the video below.'
+    return
+  }
+
+  document.querySelector('#sneaker-art').src = window.vejaAssets.sneaker
+  document.querySelector('#reference').src = window.vejaAssets.reference
+  const targetResponse = await fetch(window.vejaAssets.target)
+  const targetUrl = URL.createObjectURL(await targetResponse.blob())
+  scene.setAttribute('mindar-image', {
+    imageTargetSrc: targetUrl,
+    autoStart: false,
+    uiScanning: false,
+    uiLoading: false,
+    uiError: false
+  })
+  if (!scene.hasLoaded) await new Promise(resolve => scene.addEventListener('loaded', resolve, {once:true}))
+  if (!navigator.mediaDevices?.getUserMedia) {
+    status.textContent = 'Open this page over HTTPS in a browser with camera access.'
+    return
+  }
+
+  status.textContent = 'Start the camera, then aim it at the sneaker photo on the slide.'
+  start.disabled = false
+  const showError = () => {
+    status.textContent = 'AR could not start. Check your camera permission, then try again.'
+    start.disabled = false
+    intro.hidden = false
+  }
+  scene.addEventListener('arError', showError)
+  scene.addEventListener('arReady', () => {
+    intro.hidden = true
+    status.textContent = 'Point your camera at the sneaker photo.'
+  })
+  anchor.addEventListener('targetFound', () => {
+    discovered.hidden = false
+    status.hidden = true
+  })
+  anchor.addEventListener('targetLost', () => {
+    status.hidden = false
+    status.textContent = 'Aim at the sneaker photo again to bring back the floating sneaker.'
+  })
+  start.addEventListener('click', async () => {
+    start.disabled = true
+    status.textContent = 'Starting camera…'
+    try {
+      await scene.systems['mindar-image-system'].start()
+    } catch {
+      showError()
+    }
+  })
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    anchor.querySelector('a-image').removeAttribute('animation')
+  }
+}
+prepare().catch(() => {
+  status.textContent = 'The AR experience could not load. You can still watch VEJA’s film.'
+})
+</script>
+</body>
+</html>
