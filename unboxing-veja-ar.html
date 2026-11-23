@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#152517"><title>VEJA | UNBOXING AR case study</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f6f3e9;color:#152517;font:1rem/1.45 system-ui,sans-serif}main{max-width:650px;margin:auto;padding:20px}small{color:#486b35;font-weight:750}h1{font-size:clamp(2rem,8vw,3.45rem);line-height:1.04;letter-spacing:-.05em;margin:.25em 0 .4em}h2{font-size:1.25rem;margin:.2em 0}.scene{height:clamp(245px,43vh,360px);border-radius:20px;position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at center,#e2eebd,#789472);display:grid;place-items:center}.scene video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.shadow{position:absolute;width:185px;height:24px;bottom:18%;border-radius:100%;filter:blur(10px);background:#22361e80}.float{perspective:620px;animation:bob 4s ease-in-out infinite}.box{width:180px;height:64px;position:relative;transform-style:preserve-3d;transform:rotateX(-22deg) rotateY(-29deg);transition:transform .35s}.box.turned{transform:rotateX(-24deg) rotateY(43deg)}.face{position:absolute;top:50%;left:50%;display:grid;place-items:center;backface-visibility:hidden;border:1px solid #76512f;color:#252c1a;background:#bf925e;font-weight:800}.front,.back{width:180px;height:64px}.front{transform:translate(-50%,-50%) translateZ(53px);background:linear-gradient(#886442 0 20%,#cba16c 21%);font-size:.78rem;letter-spacing:.13em;padding-top:9px}.back{transform:translate(-50%,-50%) rotateY(180deg) translateZ(53px)}.left,.right{width:106px;height:64px;background:linear-gradient(#755436 0 20%,#ab804f 21%)}.left{transform:translate(-50%,-50%) rotateY(-90deg) translateZ(90px)}.right{transform:translate(-50%,-50%) rotateY(90deg) translateZ(90px)}.top,.bottom{width:180px;height:106px}.top{transform:translate(-50%,-50%) rotateX(90deg) translateZ(32px);background:#d9b17d;font-size:1.5rem;letter-spacing:.14em}.bottom{transform:translate(-50%,-50%) rotateX(-90deg) translateZ(32px)}@keyframes bob{50%{translate:0 -12px}}@media(prefers-reduced-motion:reduce){.float{animation:none}.box{transition:none}}.row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.action,button{border:1px solid #668358;border-radius:10px;background:#ebf1da;color:#152517;padding:10px 13px;min-height:44px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer}.primary{background:#284928;color:white}.panel{padding:15px;border:1px solid #c7d0b8;border-radius:13px;background:#fffdf6;margin:14px 0}p{margin:.55em 0}.feedback{font-weight:650}[hidden]{display:none!important}
+</style></head><body><main>
+<small>UNBOXING · Packaging case study</small>
+<h1>VEJA’s shoebox</h1>
+<p>Explore how box size and cardboard sourcing affect the packaging of a pair of trainers.</p>
+<div class="scene" aria-label="Animated 3D illustration of a kraft shoebox">
+<video id="feed" autoplay muted playsinline hidden aria-hidden="true"></video><div class="shadow"></div>
+<div class="float"><div class="box" id="box" aria-hidden="true"><div class="face front">KRAFT CARDBOARD</div><div class="face back"></div><div class="face left"></div><div class="face right"></div><div class="face top">VEJA</div><div class="face bottom"></div></div></div>
+</div>
+<div class="row"><button id="camera" class="primary">Open camera AR</button><button id="turn" aria-pressed="false">Turn the box</button><a class="action" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" target="_blank" rel="noopener">Watch VEJA’s rubber sourcing video</a></div>
+<p id="camera-status" role="status" hidden></p>
+<section class="panel"><h2>Choose the packaging</h2><p>The trainers need to arrive protected. Which design would you try first to reduce empty space and filler?</p>
+<div class="row"><button data-answer="large">One large box with filler</button><button data-answer="fit">A box sized to fit</button></div><p id="feedback" class="feedback" role="status"></p></section>
+<section class="panel"><h2>Check the cardboard</h2><p>VEJA reports that its kraft shoeboxes are FSC-certified. For your own packaging, ask the supplier for its FSC certification details and verify the recycled content separately.</p><p><a href="https://project.veja-store.com/en/single/production">Read VEJA’s production and packaging information</a></p></section>
+</main><script>
+const box = document.querySelector('#box');
+document.querySelector('#turn').onclick = event => {
+  event.currentTarget.setAttribute('aria-pressed', box.classList.toggle('turned'));
+};
+document.querySelectorAll('[data-answer]').forEach(button => button.onclick = () => {
+  document.querySelector('#feedback').textContent = button.dataset.answer === 'fit'
+    ? 'A closer fit leaves less empty space and can reduce filler. Test that the box still protects the trainers in transit.'
+    : 'A single box size simplifies stock, but smaller pairs may need extra filler. Try sizing the box to the pair and check protection in transit.';
+});
+const feed = document.querySelector('#feed');
+const camera = document.querySelector('#camera');
+const statusMessage = document.querySelector('#camera-status');
+function closeCamera() {
+  feed.srcObject?.getTracks().forEach(track => track.stop());
+  feed.srcObject = null;
+  feed.hidden = true;
+  statusMessage.hidden = true;
+  camera.textContent = 'Open camera AR';
+}
+camera.onclick = async () => {
+  if (feed.srcObject) { closeCamera(); return; }
+  camera.disabled = true;
+  statusMessage.hidden = false;
+  statusMessage.textContent = 'Allow camera access to see the floating box over your surroundings.';
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});
+    feed.srcObject = stream;
+    await feed.play();
+    feed.hidden = false;
+    camera.textContent = 'Close camera';
+    statusMessage.textContent = 'The box floats over the camera view. Tap Turn the box to see another angle.';
+  } catch {
+    closeCamera();
+    statusMessage.hidden = false;
+    statusMessage.textContent = 'Camera access is unavailable. You can still turn the floating box and complete the case study.';
+  } finally {
+    camera.disabled = false;
+  }
+};
+window.addEventListener('pagehide',closeCamera);
+</script></body></html>
