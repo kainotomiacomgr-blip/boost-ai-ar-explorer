@@ -27,24 +27,29 @@ p{margin:.4rem 0 .9rem}
 .links a,summary{color:#214931;cursor:pointer}
 #reference{display:block;width:100%;border-radius:.5rem;margin:.75rem 0}
 #status{margin-bottom:.55rem}
+#shoebox{position:fixed;inset:0 0 15%;display:grid;place-items:center;pointer-events:none;z-index:-1}
+.box-art{position:relative;width:min(66vw,340px);aspect-ratio:1.8;filter:drop-shadow(0 20px 12px #0007);animation:float 2.6s ease-in-out infinite alternate}
+.box-art span{position:absolute;inset:0}
+.box-top{background:#e7bf89;clip-path:polygon(1% 39%,27% 8%,99% 24%,73% 56%)}
+.box-front{background:#c79661;clip-path:polygon(2% 40%,73% 56%,73% 92%,2% 75%)}
+.box-side{background:#90633e;clip-path:polygon(73% 56%,98% 24%,98% 59%,73% 92%)}
+.box-lid{background:#f0c795;clip-path:polygon(1% 38%,73% 53%,99% 23%,99% 31%,73% 62%,1% 47%)}
+.box-logo{position:absolute;left:34%;top:56%;transform:translateX(-50%) rotate(7deg);color:#282018;font-size:clamp(1.25rem,7vw,2.4rem);font-weight:900;letter-spacing:.18em}
+@keyframes float{from{transform:translateY(10px)}to{transform:translateY(-16px)}}
+@media(prefers-reduced-motion:reduce){.box-art{animation:none}}
+.preview{background:none;border:0;padding:.5rem 0;color:#214931;font:inherit;text-decoration:underline;cursor:pointer}
 </style>
 </head>
 <body>
 <a-scene id="scene" embedded color-space="sRGB" renderer="alpha: true; antialias: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
   <a-entity id="anchor" mindar-image-target="targetIndex: 0">
-    <a-entity id="shoebox" position="0 .07 .26"
-      animation="property: position; from: 0 .07 .26; to: 0 .19 .32; dur: 1550; dir: alternate; loop: true; easing: easeInOutSine">
-      <a-entity rotation="26 -22 -7">
-        <a-box width=".74" height=".23" depth=".38" color="#c99e6d"></a-box>
-        <a-box width=".78" height=".065" depth=".42" position="0 .116 0" color="#dfb88a"></a-box>
-        <a-text value="VEJA" align="center" color="#242019" width="1.35" position="0 .002 .192"></a-text>
-        <a-text value="VEJA" align="center" color="#242019" width="1.5" position="0 .15 0" rotation="-90 0 0"></a-text>
-      </a-entity>
-    </a-entity>
   </a-entity>
 </a-scene>
 <main class="overlay">
+  <div id="shoebox" role="img" aria-label="Floating VEJA cardboard shoebox" hidden>
+    <div class="box-art" aria-hidden="true"><span class="box-front"></span><span class="box-side"></span><span class="box-top"></span><span class="box-lid"></span><strong class="box-logo">VEJA</strong></div>
+  </div>
   <div class="tag">UNBOXING · AR CASE STUDY</div>
   <section aria-label="VEJA case study">
     <div id="intro">
@@ -53,9 +58,9 @@ p{margin:.4rem 0 .9rem}
       <button id="start" class="action" disabled>Start AR</button>
       <div class="links">
         <details><summary>See the photo to scan</summary><img id="reference" alt="Two cream VEJA sneakers. Use this photo as the AR target."></details>
-        <a href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" target="_blank" rel="noopener">Watch without AR</a>
       </div>
     </div>
+    <button id="preview" class="preview" type="button">Preview the floating shoebox</button>
     <p id="status" role="status" aria-live="polite">Loading camera tools…</p>
     <div id="discovered" hidden>
       <h2>From forest to footwear</h2>
@@ -71,10 +76,22 @@ const start = document.querySelector('#start')
 const status = document.querySelector('#status')
 const intro = document.querySelector('#intro')
 const discovered = document.querySelector('#discovered')
+const shoebox = document.querySelector('#shoebox')
+const preview = document.querySelector('#preview')
+
+function revealShoebox() {
+  shoebox.hidden = false
+  discovered.hidden = false
+  preview.hidden = true
+  status.hidden = true
+  intro.hidden = true
+}
+
+preview.addEventListener('click', revealShoebox)
 
 async function prepare() {
   if (!window.AFRAME?.components['mindar-image'] || !window.vejaAssets) {
-    status.textContent = 'The AR tools could not load. Reload the page or watch the video below.'
+    status.textContent = 'The AR tools could not load. You can still preview the shoebox and watch the film.'
     return
   }
 
@@ -106,14 +123,7 @@ async function prepare() {
     intro.hidden = true
     status.textContent = 'Point your camera at the sneaker photo.'
   })
-  anchor.addEventListener('targetFound', () => {
-    discovered.hidden = false
-    status.hidden = true
-  })
-  anchor.addEventListener('targetLost', () => {
-    status.hidden = false
-    status.textContent = 'Aim at the sneaker photo again to bring back the floating VEJA shoebox.'
-  })
+  anchor.addEventListener('targetFound', revealShoebox)
   start.addEventListener('click', async () => {
     start.disabled = true
     status.textContent = 'Starting camera…'
@@ -123,9 +133,6 @@ async function prepare() {
       showError()
     }
   })
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelector('#shoebox').removeAttribute('animation')
-  }
 }
 prepare().catch(() => {
   status.textContent = 'The AR experience could not load. You can still watch VEJA’s film.'
