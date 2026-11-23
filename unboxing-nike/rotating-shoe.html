@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Nike One Box | UNBOXING WebAR</title>
+<style>
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:#21170f;color:#fff8eb;font:1rem/1.45 system-ui,sans-serif}
+video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+main{position:relative;min-height:100svh;display:grid;place-items:center;padding:18px;text-align:center}
+#shoe-link{display:grid;justify-items:center;gap:.8rem;color:#fff8eb;text-decoration:none;animation:float 2.8s ease-in-out infinite alternate}
+#shoe-link:focus-visible,#camera-retry button:focus-visible{outline:3px solid #ffcf80;outline-offset:5px;border-radius:13px}
+#shoe-link:focus-visible,#shoe-link:hover{animation-play-state:paused}
+.shoe-cutout{display:block;position:relative;width:min(86vw,380px);aspect-ratio:569/290;filter:drop-shadow(0 15px 15px #0008);animation:shoe-turn 3.5s ease-in-out infinite alternate;transform-origin:center}
+.shoe-photo{position:absolute;display:block;width:114.24%;height:auto;left:-7.38%;top:-41.38%;clip-path:polygon(6.46% 80.91%,6.92% 74.84%,7.54% 71.80%,8.77% 66.59%,10.77% 64.86%,15.69% 62.47%,22.46% 60.09%,27.23% 57.48%,29.85% 53.36%,34.77% 49.24%,41.38% 44.03%,48.15% 38.61%,52.92% 33.62%,56.00% 29.07%,60.46% 26.03%,62.00% 27.77%,64.92% 34.27%,65.69% 38.61%,65.08% 39.70%,66.92% 41.87%,70.46% 44.25%,74.00% 45.99%,77.85% 46.42%,81.54% 45.55%,83.69% 43.38%,85.69% 39.48%,87.69% 36.88%,90.15% 35.79%,91.38% 36.23%,92.31% 37.96%,93.08% 42.73%,93.23% 47.72%,93.85% 52.28%,93.54% 57.05%,93.54% 66.59%,93.85% 76.14%,94.00% 81.78%,93.08% 84.82%,91.85% 86.55%,87.38% 87.85%,78.46% 88.29%,25.54% 88.50%,15.38% 87.85%,10.31% 86.77%,7.54% 85.25%)}
+@keyframes shoe-turn{from{transform:perspective(650px) rotateY(-30deg) rotateZ(-5deg)}to{transform:perspective(650px) rotateY(30deg) rotateZ(5deg)}}
+.caption{display:block;padding:.55rem 1rem;border-radius:30px;background:#21170ff2;border:1px solid #ffd190;font-weight:750;min-height:44px}
+#camera-retry{background:#21170ff2;border-radius:12px;padding:.75rem 1rem}
+button{font:inherit;min-height:44px;padding:.35rem .75rem;border:0;border-radius:8px;background:#ffd190;color:#21170f;cursor:pointer}
+#qr{text-align:center;padding:1rem}#qr img{width:min(78vw,410px);display:block;margin:1rem auto;image-rendering:pixelated}#qr a{color:#ffd190}
+@keyframes float{to{transform:translateY(-13px) rotate(-2deg)}}@media(prefers-reduced-motion:reduce){#shoe-link,.shoe-cutout{animation:none}}
+</style></head><body>
+<video id="camera" autoplay muted playsinline webkit-playsinline hidden></video>
+<main id="map-screen">
+<section id="stage" hidden><a id="shoe-link" href="https://www.youtube.com/watch?v=KUfe0jxWPXw" aria-label="Watch the video featuring Nike One Box on YouTube">
+<span class="shoe-cutout"><img class="shoe-photo" src="https://i8.amplience.net/i/jpl/jd_CT2302-100_C_0010_a?fmt=png-alpha&amp;w=650" alt="White Nike Air Force 1 sneaker with black Swoosh"></span>
+<span class="caption">▶ Tap the shoe to watch on YouTube</span>
+</a></section>
+<div id="camera-retry" hidden><p role="status">Allow camera access to see the floating shoe.</p><button type="button">Open camera</button></div>
+</main>
+<section id="qr" hidden><h1>Nike One Box</h1><p>Scan and allow camera access. Tap the rotating shoe to watch the video.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEbUlEQVR4nO2dUW6rSgyGPx9G4nGQuoAsZdhZ1SV1B7CULCAS8xgJ5PPgGaA9b4GrNjf2AyoKn0wka8b+7UxFOWDjnyM0OO6444477rjjjjt+Li7FAtKzCKOIQA4wduVWRAKQ66P9ed4df1E8qarqBPohrUJUBRaRPrcKNKo6LSI9jaqq6lf8oHfHXxTP6/IVZ0jTIiJdo6QJ7DJeZnu0rHpnenf8tfDw7V7SNcxCvAFxQi3W4oyka0DJp3p33HGzeBfVa2t7qLxPi5Tk7qIq/X/t3fFXwqOqDvZno9KziKoFXFPyuiGLAKCq88neHX9J3KrUDqxytdDLrZKuAXm/BuR9akqFIVLi75e8vOPPhltet2+LxbsoeREdO0THy12swhg7RL8++tMv7/iT4pgOklRLvQqgQ1S1WANMV9ndEguhw1N/d8d/Gs+BElexiHE65FZJOlNSutyuqd/Z3h1/LZyq+TZFJR5i1YsHml2YqU6Nycfb6uhrneMHcNUJRC4zkAPS24eLpXQWcJbh1S5ZCcff8PKOPx1OWbtMDGl2yV1N5Br7dMv17GFf6xx/3CzmBmDbPu02Tfv9lzSVTbjcetQ5/rCVuIozNdbWkIozOsR1EbRwrN1/jzrHHzfd22w1BNgFtrzO4i/pdvGoc/wYPnaLVPnkXhpfQyyLm/QswhqJ+tGtxe2veHnHnw3f5XX73XSnksxW4VpeN4CvdY6f0xGDeAuQAwrW84f0GWYBEAAduwZJU4dCo3KKd8dfG8+tyrvOiEhbhZRYWrA6xBnpSzO2XE717vgr4vI+geV1aQLp6+CJycc9oIOJxqr/4ge9O/5qeM3rTAIuIwCbhrIpdzu9bieuPPV3d/yn8KqcTOziqhYNWrv/rHMoq67iUef441bXutrpYguuqFWls1Wv8Y6Y4yfilteN0pZB9WRt2cXmm2pdcRfbXL2acPwYvs4SNwrxJiStUkkJuJsouUOgVSF3kK6tKyeOHzCLOkmfHUCrjAKM3S0ADQKBEmFxAuIc9lPFT/3dHf8p/GsNO6/Dm3UYYNeHBUpxEb377/ghq7NMm17ydQ6l9vw3ccVnThw/B086I/0qAY+y6sWs5WsOkK4iUoYBzvPu+Ivhq17X6LeNlE2W27ThIiS7Xuf4IduG6zapbpOFSw43UQfvNg3Po87xR63UsNDMkMVmTtRuWYJ9VirXm0AWIPrMieOHTL9a2Vxj3XUHWKvZ9dfaXk04fgK+ndVJ2WEXsQPrtpF18np+p59f5/ghK/GTBoD8ZseYCBEEBCW/adWQoR4PcPMa1vET8HpWZzmwaZu0YxH96Op8+ygi+5/M/o6Xd/zJ8O9ndSosgfT5NjNeFMbLHEi6hDIHwBK0PHeCd8cdN9vO2aGMEZfR4ngvZxWPXVNP7fxtL+/4U+Drr3UUyMDYN7OM3YRAmLFhlNzM9TjFJWiRVE7w7vhr4rs+LKxzm8Pabi0Niq3nX9uy6sqJ44+a+H+vc9xxxx133HHHHf9f4H8B+Ox1ewWvGJAAAAAASUVORK5CYII=" alt="QR code for the floating Nike shoe"><a download="UNBOXING_Nike_Rotating_Shoe_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEbUlEQVR4nO2dUW6rSgyGPx9G4nGQuoAsZdhZ1SV1B7CULCAS8xgJ5PPgGaA9b4GrNjf2AyoKn0wka8b+7UxFOWDjnyM0OO6444477rjjjjt+Li7FAtKzCKOIQA4wduVWRAKQ66P9ed4df1E8qarqBPohrUJUBRaRPrcKNKo6LSI9jaqq6lf8oHfHXxTP6/IVZ0jTIiJdo6QJ7DJeZnu0rHpnenf8tfDw7V7SNcxCvAFxQi3W4oyka0DJp3p33HGzeBfVa2t7qLxPi5Tk7qIq/X/t3fFXwqOqDvZno9KziKoFXFPyuiGLAKCq88neHX9J3KrUDqxytdDLrZKuAXm/BuR9akqFIVLi75e8vOPPhltet2+LxbsoeREdO0THy12swhg7RL8++tMv7/iT4pgOklRLvQqgQ1S1WANMV9ndEguhw1N/d8d/Gs+BElexiHE65FZJOlNSutyuqd/Z3h1/LZyq+TZFJR5i1YsHml2YqU6Nycfb6uhrneMHcNUJRC4zkAPS24eLpXQWcJbh1S5ZCcff8PKOPx1OWbtMDGl2yV1N5Br7dMv17GFf6xx/3CzmBmDbPu02Tfv9lzSVTbjcetQ5/rCVuIozNdbWkIozOsR1EbRwrN1/jzrHHzfd22w1BNgFtrzO4i/pdvGoc/wYPnaLVPnkXhpfQyyLm/QswhqJ+tGtxe2veHnHnw3f5XX73XSnksxW4VpeN4CvdY6f0xGDeAuQAwrW84f0GWYBEAAduwZJU4dCo3KKd8dfG8+tyrvOiEhbhZRYWrA6xBnpSzO2XE717vgr4vI+geV1aQLp6+CJycc9oIOJxqr/4ge9O/5qeM3rTAIuIwCbhrIpdzu9bieuPPV3d/yn8KqcTOziqhYNWrv/rHMoq67iUef441bXutrpYguuqFWls1Wv8Y6Y4yfilteN0pZB9WRt2cXmm2pdcRfbXL2acPwYvs4SNwrxJiStUkkJuJsouUOgVSF3kK6tKyeOHzCLOkmfHUCrjAKM3S0ADQKBEmFxAuIc9lPFT/3dHf8p/GsNO6/Dm3UYYNeHBUpxEb377/ghq7NMm17ydQ6l9vw3ccVnThw/B086I/0qAY+y6sWs5WsOkK4iUoYBzvPu+Ivhq17X6LeNlE2W27ThIiS7Xuf4IduG6zapbpOFSw43UQfvNg3Po87xR63UsNDMkMVmTtRuWYJ9VirXm0AWIPrMieOHTL9a2Vxj3XUHWKvZ9dfaXk04fgK+ndVJ2WEXsQPrtpF18np+p59f5/ghK/GTBoD8ZseYCBEEBCW/adWQoR4PcPMa1vET8HpWZzmwaZu0YxH96Op8+ygi+5/M/o6Xd/zJ8O9ndSosgfT5NjNeFMbLHEi6hDIHwBK0PHeCd8cdN9vO2aGMEZfR4ngvZxWPXVNP7fxtL+/4U+Drr3UUyMDYN7OM3YRAmLFhlNzM9TjFJWiRVE7w7vhr4rs+LKxzm8Pabi0Niq3nX9uy6sqJ44+a+H+vc9xxxx133HHHHf9f4H8B+Ox1ewWvGJAAAAAASUVORK5CYII=">Download QR code</a> · <a href="./rotating-shoe.html">Open WebAR</a></section>
+<script>
+const stage=document.querySelector('#stage')
+const shoe=document.querySelector('#shoe-link')
+shoe.addEventListener('click',event=>{
+  if(!stream||camera.hidden||camera.paused||stage.hidden)event.preventDefault()
+})
+const camera = document.querySelector('#camera')
+const retry = document.querySelector('#camera-retry')
+const openButton = retry.querySelector('button')
+let stream
+let opening = false
+let visible = true
+
+function closeCamera() {
+  const active = stream
+  stream = undefined
+  active?.getTracks().forEach(track => track.stop())
+  camera.srcObject = null
+  camera.hidden = true
+  stage.hidden = true
+  
+}
+
+async function openCamera() {
+  if (opening || stream || !visible) return
+  if (!navigator.mediaDevices?.getUserMedia) {
+    retry.hidden = false
+    retry.querySelector('p').textContent = 'Open this page in Safari or Chrome to use the camera.'
+    openButton.hidden = true
+    return
+  }
+  opening = true
+  openButton.disabled = true
+  try {
+    const active = await navigator.mediaDevices.getUserMedia({audio: false, video: {facingMode: {ideal: 'environment'}}})
+    if (!visible) {
+      active.getTracks().forEach(track => track.stop())
+      return
+    }
+    stream = active
+    camera.muted = true
+    camera.srcObject = active
+    camera.hidden = false
+    await camera.play()
+    if (stream !== active) return
+    retry.hidden = true
+    stage.hidden = false
+    
+  } catch {
+    closeCamera()
+    if (visible) retry.hidden = false
+  } finally {
+    opening = false
+    openButton.disabled = false
+  }
+}
+
+openButton.addEventListener('click', openCamera)
+camera.addEventListener('pause',()=>{stage.hidden=true})
+camera.addEventListener('playing',()=>{if(stream&&!camera.hidden){stage.hidden=false}})
+window.addEventListener('pagehide', () => {
+  visible = false
+  closeCamera()
+})
+window.addEventListener('pageshow', event => {
+  visible = true
+  if (event.persisted && !document.querySelector('#map-screen').hidden) openCamera()
+})
+if (new URLSearchParams(location.search).has('qr')) {
+  document.querySelector('#map-screen').hidden = true
+  document.querySelector('#qr').hidden = false
+} else {
+  openCamera()
+}
+
+
+</script></body></html>
