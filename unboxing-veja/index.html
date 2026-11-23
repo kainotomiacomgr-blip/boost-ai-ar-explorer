@@ -43,25 +43,24 @@ body.camera-on .objects{position:fixed;left:var(--object-x,50%);top:var(--object
 body.camera-on a,body.camera-on button{pointer-events:auto}
 #unbox{display:grid;justify-items:center;gap:.25rem;padding:0;border:0;background:none;color:#fff;font:inherit;cursor:pointer}
 #unbox-label{background:#192c22;color:#f8f8ed;border:1px solid #d2edb780;border-radius:2rem;padding:.3rem .75rem;font-weight:700}
-#unbox:focus-visible,dialog button:focus-visible{outline:3px solid #d2edb7;outline-offset:4px}
+#unbox:focus-visible,#box-details button:focus-visible{outline:3px solid #d2edb7;outline-offset:4px}
 #unbox[aria-expanded="true"] .box-art{animation:none}
 .box-top,.box-lid{transition:transform .35s ease}
 #unbox[aria-expanded="true"] .box-top,#unbox[aria-expanded="true"] .box-lid{transform:translateY(-24%) rotate(-7deg)}
 #unbox[aria-expanded="true"] .box-opening{background:#5a3b29;clip-path:polygon(2% 39%,27% 9%,98% 24%,73% 56%)}
 @media(prefers-reduced-motion:reduce){.box-top,.box-lid{transition:none}}
-dialog{width:min(calc(100% - 24px),30rem);max-height:70svh;margin:auto auto max(12px,env(safe-area-inset-bottom));border:1px solid #8b9f81;border-radius:18px;background:#172e23;color:#f8f8ed;padding:1rem;text-align:left}
-dialog::backdrop{background:#07110c66}
-dialog h2,dialog p{margin:.25rem 0 .7rem}
+#box-details{position:fixed;z-index:3;inset:auto 0 0;overflow:auto;box-shadow:0 8px 35px #0009;width:min(calc(100% - 24px),30rem);max-height:70svh;margin:auto auto max(12px,env(safe-area-inset-bottom));border:1px solid #8b9f81;border-radius:18px;background:#172e23;color:#f8f8ed;padding:1rem;text-align:left}
+#box-details h2,#box-details p{margin:.25rem 0 .7rem}
 .dialog-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
-dialog button{min-height:44px;border-radius:9px;border:1px solid #b2c4a1;background:#284837;color:white;padding:.36rem .65rem;font:inherit;cursor:pointer}
-dialog button[aria-pressed="true"]{background:#d9efc6;color:#172e23}
+#box-details button{min-height:44px;border-radius:9px;border:1px solid #b2c4a1;background:#284837;color:white;padding:.36rem .65rem;font:inherit;cursor:pointer}
+#box-details button[aria-pressed="true"]{background:#d9efc6;color:#172e23}
 .dialog-actions{display:flex;gap:.45rem;flex-wrap:wrap}
 #answer-feedback{color:#dbefcb;margin-top:.65rem}
 </style>
 <script defer src="./assets.js"></script>
 </head>
 <body>
-<video id="camera" playsinline autoplay muted hidden></video>
+<video id="camera" playsinline webkit-playsinline autoplay muted hidden></video>
 <main>
   <header>
   <p class="project">UNBOXING · CASE STUDY</p>
@@ -79,8 +78,8 @@ dialog button[aria-pressed="true"]{background:#d9efc6;color:#172e23}
   <p id="status" role="status" hidden></p>
   </footer>
 </main>
-<dialog id="box-details" aria-labelledby="box-title">
-  <div class="dialog-top"><h2 id="box-title">What’s inside?</h2><form method="dialog"><button type="submit">Close</button></form></div>
+<section id="box-details" aria-labelledby="box-title" hidden>
+  <div class="dialog-top"><h2 id="box-title">What’s inside?</h2><button id="close-details" type="button">Close</button></div>
   <p>The case study describes VEJA using size-specific cardboard boxes to reduce empty space and filler.</p>
   <h3>Choose a box for one pair</h3>
   <p>Which size would you test first to protect the shoes while using less filler?</p>
@@ -90,7 +89,7 @@ dialog button[aria-pressed="true"]{background:#d9efc6;color:#172e23}
     <button type="button" data-choice="large" aria-pressed="false">Oversized</button>
   </div>
   <p id="answer-feedback" role="status" hidden></p>
-</dialog>
+</section>
 <script>
 const unbox = document.querySelector('#unbox')
 const details = document.querySelector('#box-details')
@@ -102,12 +101,18 @@ const explanations = {
   large: 'Try again. An oversized box leaves more room for movement and may need extra filler.'
 }
 
+function showDetails(visible) {
+  details.hidden = !visible
+  unbox.setAttribute('aria-expanded', String(visible))
+  document.querySelector('#unbox-label').textContent = visible ? 'Close shoebox' : 'Open shoebox'
+}
+const closeDetails = document.querySelector('#close-details')
 unbox.addEventListener('click', () => {
-  unbox.setAttribute('aria-expanded', 'true')
-  details.showModal()
+  showDetails(details.hidden)
+  if (!details.hidden) closeDetails.focus()
 })
-details.addEventListener('close', () => {
-  unbox.setAttribute('aria-expanded', 'false')
+closeDetails.addEventListener('click', () => {
+  showDetails(false)
   unbox.focus()
 })
 for (const choice of choices) {
@@ -124,6 +129,7 @@ const status = document.querySelector('#status')
 let stream
 let controller
 let busy = false
+let pageActive = true
 
 function report(message) {
   status.textContent = message
@@ -156,7 +162,6 @@ function placeObjects(matrix, projection, markerSize) {
 }
 
 async function startTracking(activeStream) {
-  let tracker
   try {
     const [{Controller}, target] = await Promise.all([
       import('https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image.prod.js'),
@@ -165,7 +170,7 @@ async function startTracking(activeStream) {
     if (stream !== activeStream) return
     let markerSize
     let projection
-    tracker = new Controller({
+    const tracker = new Controller({
       inputWidth: camera.videoWidth,
       inputHeight: camera.videoHeight,
       onUpdate(update) {
@@ -206,20 +211,41 @@ function stopCamera() {
 }
 
 async function openCamera() {
-  if (busy) return
-  if (stream) return
+  if (busy || !pageActive) return
   if (!navigator.mediaDevices?.getUserMedia) {
     report('Camera access is unavailable in this browser.')
     return
   }
   busy = true
   launch.disabled = true
-  report('Opening the camera…')
+  report('Allow camera access when prompted.')
   try {
-    stream = await navigator.mediaDevices.getUserMedia({audio:false, video:{facingMode:{ideal:'environment'}}})
-    camera.srcObject = stream
+    if (!stream) {
+      const nextStream = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {facingMode: {ideal: 'environment'}}
+      })
+      if (!pageActive) {
+        nextStream.getTracks().forEach(track => track.stop())
+        return
+      }
+      stream = nextStream
+      camera.muted = true
+      camera.srcObject = stream
+    }
+    const activeStream = stream
     camera.hidden = false
-    await camera.play()
+    try {
+      await camera.play()
+    } catch {
+      if (stream === activeStream) {
+        camera.hidden = true
+        launch.textContent = 'Start camera preview'
+        report('Tap Start camera preview to show the live feed.')
+      }
+      return
+    }
+    if (stream !== activeStream) return
     document.body.classList.add('camera-on')
     launch.textContent = 'Close camera'
     report('The camera is open.')
@@ -233,10 +259,14 @@ async function openCamera() {
   }
 }
 launch.addEventListener('click', () => {
-  if (stream) stopCamera()
+  if (document.body.classList.contains('camera-on')) stopCamera()
   else openCamera()
 })
-window.addEventListener('pagehide', stopCamera)
+window.addEventListener('pagehide', () => {
+  pageActive = false
+  stopCamera()
+})
+window.addEventListener('pageshow', () => { pageActive = true })
 openCamera()
 </script>
 </body>
