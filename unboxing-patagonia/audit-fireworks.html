@@ -6,6 +6,10 @@
 #fireworks{position:fixed;inset:0;z-index:5;pointer-events:none;overflow:hidden}
 .spark{position:absolute;left:var(--x);top:var(--y);width:7px;height:7px;border-radius:50%;background:var(--color);animation:burst 1.15s var(--delay) ease-out both}
 @keyframes burst{0%{opacity:0;transform:scale(.2)}12%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.35)}}
+#fireworks{z-index:1000}
+.spark{width:10px;height:10px;box-shadow:0 0 12px var(--color);animation-duration:2.8s}
+#completion{color:#f8f0b5;font-weight:800;margin:.6rem 0}
+@media(prefers-reduced-motion:reduce){.spark{animation:none;opacity:.9;transform:translate(var(--dx),var(--dy))}}
 </style></head><body>
 <video id="camera" autoplay muted playsinline hidden></video>
 <div id="fireworks" aria-hidden="true"></div>
@@ -15,7 +19,7 @@
 <button class="object" data-round="1" aria-pressed="false"><span class="art parcel" aria-hidden="true">▥</span>Shipping box</button>
 <button class="object" data-round="2" aria-pressed="false"><span class="art label" aria-hidden="true">♻</span>Recycling tag</button>
 </div><section id="task" hidden><h2 id="title"></h2><p id="prompt"></p><div id="answers"></div><p id="feedback" role="status"></p></section></section>
-<footer><p id="progress" role="status">0 of 3 checks passed</p><p id="approved" hidden>Shipment approved. You checked the sourcing evidence, verified protection and gave the customer clear recycling instructions. <button id="reset" type="button">Audit another shipment</button></p><button id="camera-button" type="button">Open AR camera</button><p id="camera-note" role="status"></p><p><a href="https://eu.patagonia.com/gr/en/packaging.html">Patagonia’s packaging guidance</a></p></footer>
+<footer><p id="progress" role="status">0 of 3 checks passed</p><p id="approved" hidden>Shipment approved. You checked the sourcing evidence, verified protection and gave the customer clear recycling instructions.</p><div id="completion" hidden><p role="status">🎆 Audit complete!</p><button id="reset" type="button">Audit another shipment</button></div><button id="camera-button" type="button">Open AR camera</button><p id="camera-note" role="status"></p><p><a href="https://eu.patagonia.com/gr/en/packaging.html">Patagonia’s packaging guidance</a></p></footer>
 </main>
 <section id="qr-view" hidden><h1>Patagonia Packaging Audit</h1><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEDElEQVR4nO2dTW7jPAyGH3420KUMzAF6FOdmxXekuYF9lB6ggL0soICz0I+VdGcbyGTychE0th4oBghKfEm55hyw+b8jNAgXLly4cOHChQs/F7dsPcDV7FKvXbhaGnJZzdJHvnHa7MJfDcfd3Rnd3X3p3Kfg7r6AT8Ed6BxCTOPSkI2YnvrZhT8aX3P4so8FILjbZe3xKUTcP9/cLk0Q7E+eXfhr4f39hXn46h3A4WoOYISIz8MXznrq7MJfE//hdcnWof557YvrnT+78NfGg7tPAOPSudm7l+3b0jmsZj6tb0lRdvd48uzCXxKfzcxsAFh7GD977LLWDzq3jwXswjWlsKfOLvzF8JKbFiMlrQCjR3yiq/fi/WDlsML3WVlIAeiqaBLZNJRszddOXif8iBUdDjZZjnEBn2j9L40el/ohrxO+19ocdvz95mXD1kUbk6elbAIIC/luqI0qT/3swh+L2wVgfr+Ja3A1WHvsY+mc8dMMQoR5OHd24a+G5xW2Vr+yfOLF/5Jy0pTFbjIMrbDCd1mTvo4ek8OVzKHzXBFrEg4o4+R1wvfa5nApzFWHy2GuyscpEobicIp1wvdbVumC5zV0grSG5miW1JQiqeSek6LcyeuE77J7vW6ieF0r3+WtX15wF+R1wo9Y0etqgpDCXKyy3JZXwOad2tcJP2B5haVs5H6sqyWvJeReTu3rhJ/ldbkOUZwrqyTFzeLt/k9eJ/yQFW/KS+qWpTaraU5fa4hbkHIi/Ii12UTNYZNyciPftU4YpNcJP2KpDuvz0EUj9W120QDz2To31l9uqQ5LF42wwDhRimZP/ezCH4XfNJkEb6WSnEh0RTT2WqANOiMm/JCVvVqkFCNye/pdHbYR7aTXCT+Gt9lESlC3zGGh1esA7jQUeZ3wfdZkEzXWbfnqVofdltnG5HXC91jJJt4dI3ybA1t/XQ9rH21cfkUbp29jtpJSnDK78NfEm9pEyhymdLmrYnCEu3aTCe3rhB+yzeuKXlf7m4LfXGtMdVjhh6zs63IdNpfFtubhdIM2pWhaBZ762YU/Cm/f6bS1luQbZXFtO1KgecWTvE74LiteV7dvTeG1xDqovQGgk4nCT1OJq1QCNGck2r1eaQtIQ+R1wndb42v3vcShtDZlqbiWL3RGTPgZeFJ/F/LZ12SrpfOwecgCpYbxrbfrCD8BX+urhgG7hMgW4fx/e3PmoXNmM4P1zfPgv+PHC38y/Oe7Ot+/jfSuxHXAxk+rtYprD+Grd9ZBsU74Ebuvw7YaSntQ7CbDUB1W+BErsS44sIKzDim4+Tx0AFdj/N1FI8Se3POZ3xr76B8v/Enx+xy26WWvx67Z5LtauVCsE77fTP+9Trhw4cKFCxcu/J/A/wDq51VX4M21JAAAAABJRU5ErkJggg==" alt="QR code for Patagonia Packaging Audit"><a download="UNBOXING_Patagonia_Packaging_Audit_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEDElEQVR4nO2dTW7jPAyGH3420KUMzAF6FOdmxXekuYF9lB6ggL0soICz0I+VdGcbyGTychE0th4oBghKfEm55hyw+b8jNAgXLly4cOHChQs/F7dsPcDV7FKvXbhaGnJZzdJHvnHa7MJfDcfd3Rnd3X3p3Kfg7r6AT8Ed6BxCTOPSkI2YnvrZhT8aX3P4so8FILjbZe3xKUTcP9/cLk0Q7E+eXfhr4f39hXn46h3A4WoOYISIz8MXznrq7MJfE//hdcnWof557YvrnT+78NfGg7tPAOPSudm7l+3b0jmsZj6tb0lRdvd48uzCXxKfzcxsAFh7GD977LLWDzq3jwXswjWlsKfOLvzF8JKbFiMlrQCjR3yiq/fi/WDlsML3WVlIAeiqaBLZNJRszddOXif8iBUdDjZZjnEBn2j9L40el/ohrxO+19ocdvz95mXD1kUbk6elbAIIC/luqI0qT/3swh+L2wVgfr+Ja3A1WHvsY+mc8dMMQoR5OHd24a+G5xW2Vr+yfOLF/5Jy0pTFbjIMrbDCd1mTvo4ek8OVzKHzXBFrEg4o4+R1wvfa5nApzFWHy2GuyscpEobicIp1wvdbVumC5zV0grSG5miW1JQiqeSek6LcyeuE77J7vW6ieF0r3+WtX15wF+R1wo9Y0etqgpDCXKyy3JZXwOad2tcJP2B5haVs5H6sqyWvJeReTu3rhJ/ldbkOUZwrqyTFzeLt/k9eJ/yQFW/KS+qWpTaraU5fa4hbkHIi/Ii12UTNYZNyciPftU4YpNcJP2KpDuvz0EUj9W120QDz2To31l9uqQ5LF42wwDhRimZP/ezCH4XfNJkEb6WSnEh0RTT2WqANOiMm/JCVvVqkFCNye/pdHbYR7aTXCT+Gt9lESlC3zGGh1esA7jQUeZ3wfdZkEzXWbfnqVofdltnG5HXC91jJJt4dI3ybA1t/XQ9rH21cfkUbp29jtpJSnDK78NfEm9pEyhymdLmrYnCEu3aTCe3rhB+yzeuKXlf7m4LfXGtMdVjhh6zs63IdNpfFtubhdIM2pWhaBZ762YU/Cm/f6bS1luQbZXFtO1KgecWTvE74LiteV7dvTeG1xDqovQGgk4nCT1OJq1QCNGck2r1eaQtIQ+R1wndb42v3vcShtDZlqbiWL3RGTPgZeFJ/F/LZ12SrpfOwecgCpYbxrbfrCD8BX+urhgG7hMgW4fx/e3PmoXNmM4P1zfPgv+PHC38y/Oe7Ot+/jfSuxHXAxk+rtYprD+Grd9ZBsU74Ebuvw7YaSntQ7CbDUB1W+BErsS44sIKzDim4+Tx0AFdj/N1FI8Se3POZ3xr76B8v/Enx+xy26WWvx67Z5LtauVCsE77fTP+9Trhw4cKFCxcu/J/A/wDq51VX4M21JAAAAABJRU5ErkJggg==">Download QR code</a> · <a href="./audit-fireworks.html">Open WebAR</a></section>
 <script>
@@ -34,9 +38,10 @@ const rounds=[{"title":"Check the supplier file","prompt":"Which evidence would 
 const passed=new Set()
 const answered=new Set()
 const fireworks=document.querySelector('#fireworks')
+const completion=document.querySelector('#completion')
 let celebration
 function celebrate(){
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  completion.hidden=false
   clearTimeout(celebration)
   fireworks.replaceChildren()
   const colors=['#ffcf55','#ff7794','#bdfa88','#78dfff','#f8f5ff']
@@ -54,7 +59,7 @@ function celebrate(){
       fireworks.append(spark)
     }
   })
-  celebration=setTimeout(()=>fireworks.replaceChildren(),2400)
+  celebration=setTimeout(()=>fireworks.replaceChildren(),4300)
 }
 function updateProgress(){
   progress.textContent=passed.size+' of 3 checks passed'
@@ -93,6 +98,7 @@ objects.forEach((button,i)=>button.addEventListener('click',()=>selectRound(i)))
 document.querySelector('#reset').addEventListener('click',()=>{
   clearTimeout(celebration)
   fireworks.replaceChildren()
+  completion.hidden=true
   answered.clear()
   passed.clear()
   objects.forEach(button=>button.setAttribute('aria-pressed','false'))
