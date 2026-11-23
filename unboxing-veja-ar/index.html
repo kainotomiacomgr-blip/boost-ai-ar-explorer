@@ -26,13 +26,13 @@ button:focus-visible,a:focus-visible{outline:3px solid #e0f7ac;outline-offset:4p
 .shoebox{position:relative;width:122px;height:67px;animation:box-float 2.5s ease-in-out infinite alternate}
 .shoebox span{position:absolute;inset-inline:0;border-radius:5px}
 .box-back{inset-block:8px 2px;background:#593721;transform:skewX(-12deg)}
-.box-lid{top:1px;height:25px;background:#edc18d;border:2px solid #965b35;transform-origin:50% 65%;animation:open-lid .55s .15s ease-out both}
+.box-lid{top:1px;height:25px;background:#edc18d;border:2px solid #965b35;transform-origin:50% 65%;animation:open-lid .55s .8s ease-out both}
 .box-front{bottom:0;height:42px;background:linear-gradient(110deg,#e1a775,#a96941);border:2px solid #965b35;display:grid;place-items:center;color:#39261d;font-weight:900;letter-spacing:.14em;box-shadow:0 10px 18px #0007}
 #hotspots button{animation:release-dot .65s var(--release) cubic-bezier(.17,.75,.27,1) both,bob 2.7s calc(var(--release) + .65s) ease-in-out infinite alternate}
-#hotspots button:nth-of-type(1){--dx:var(--travel-x);--dy:var(--travel-y);--release:.48s}
-#hotspots button:nth-of-type(2){--dx:calc(-1 * var(--travel-x));--dy:var(--travel-y);--release:.61s}
-#hotspots button:nth-of-type(3){--dx:var(--travel-x);--dy:calc(-1 * var(--travel-y));--release:.74s}
-#hotspots button:nth-of-type(4){--dx:calc(-1 * var(--travel-x));--dy:calc(-1 * var(--travel-y));--release:.87s}
+#hotspots button:nth-of-type(1){--dx:var(--travel-x);--dy:var(--travel-y);--release:1.35s}
+#hotspots button:nth-of-type(2){--dx:calc(-1 * var(--travel-x));--dy:var(--travel-y);--release:1.48s}
+#hotspots button:nth-of-type(3){--dx:var(--travel-x);--dy:calc(-1 * var(--travel-y));--release:1.61s}
+#hotspots button:nth-of-type(4){--dx:calc(-1 * var(--travel-x));--dy:calc(-1 * var(--travel-y));--release:1.74s}
 #hotspots button:hover,#hotspots button:focus-visible,#hotspots button[aria-expanded=true]{animation-play-state:running,paused}
 @keyframes release-dot{0%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.14)}35%{opacity:1}100%{opacity:1;transform:translate(0,0) scale(1)}}
 @keyframes open-lid{to{transform:translateY(-28px) rotate(-15deg)}}
@@ -44,13 +44,17 @@ button:focus-visible,a:focus-visible{outline:3px solid #e0f7ac;outline-offset:4p
 @keyframes stow-dot{to{transform:translate(var(--dx),var(--dy)) scale(.12);opacity:0}}
 @media(prefers-reduced-motion:reduce){#hotspots button.returning{animation:none;opacity:0}}
 #hotspots button[hidden]{display:grid!important;visibility:hidden}
+@keyframes release-dot{0%{visibility:hidden;opacity:0;transform:translate(var(--dx),var(--dy)) scale(.14)}1%{visibility:visible}35%{opacity:1}100%{opacity:1;transform:translate(0,0) scale(1)}}
+@media(prefers-reduced-motion:reduce){#hotspots button{animation:show-dot .01s var(--release) both}.box-lid{animation:show-lid .01s .8s both}}
+@keyframes show-dot{from{visibility:hidden;opacity:0}to{visibility:visible;opacity:1}}
+@keyframes show-lid{from{transform:none}to{transform:translateY(-28px) rotate(-15deg)}}
 </style></head>
 <body><video id="camera" autoplay muted playsinline webkit-playsinline hidden></video>
 <main><header><p class="project">UNBOXING · WEBAR</p><h1>Inside the VEJA box</h1></header>
 <div id="hotspots" aria-label="Packaging facts" hidden><div class="box-scene" aria-hidden="true"><div class="shoebox"><span class="box-back"></span><span class="box-lid"></span><span class="box-front">VEJA</span></div></div><button type="button" data-fact="0" aria-controls="fact" aria-expanded="false"><span class="dot" aria-hidden="true">+</span>Box sizes</button><button type="button" data-fact="1" aria-controls="fact" aria-expanded="false"><span class="dot" aria-hidden="true">+</span>Less filler</button><button type="button" data-fact="2" aria-controls="fact" aria-expanded="false"><span class="dot" aria-hidden="true">+</span>Recycled fibre</button><button type="button" data-fact="3" aria-controls="fact" aria-expanded="false"><span class="dot" aria-hidden="true">+</span>FSC label</button></div>
 <footer><p id="status" role="status">Aim at the black-and-white VEJA logo.</p><button id="launch" type="button">Open AR camera</button></footer></main>
 <section id="fact" aria-labelledby="fact-title" hidden><button type="button" id="close-fact">Close</button><h2 id="fact-title"></h2><p id="fact-copy"></p><a href="https://project.veja-store.com/en/single/production" target="_blank" rel="noopener">VEJA’s packaging information</a></section>
-<div id="qr" hidden><h1>Inside the VEJA box</h1><p>Scan, allow camera access, and aim at the black-and-white VEJA logo.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEF0lEQVR4nO2dTWrsOhCFTz0beihDFpClyDu4SwpZ0tuBvZQs4II8DMicN5Bkycms5dDk9amBSP98qA3FKVWVpBjRYes/PTQgXLhw4cKFCxcu/Frcso3AOgFYp93Mpt1s3sywmhmw5SHZfN3swp8U9yTJAADYzebtRi4YiPU1Aj4ANjsSwECS5BnvnF34k+JbkS8fADIUmfNhoM0A+F4ULmnipbMLfy58/PbONsHgCKx/AoDtJRLbEOHDSwS2S2cXLhxAWteRHyNs3kbYjN3KMg+w+YdnF/4UeNE6RwAbYEnSXASxTQY4wuD+jlz//DUAQFtX/tXPLvzB+GqW1AwAUGRuILCNgP+40d4+bgSwpxT20tmFPxmetK7KF7HtxvX107hOSH8BLgLrBONZ6R7944X/atzS8s1GmE0Dge1Ge2MulWC1Ealesk67fcc7Zxf+bHjyJjIM5OIiyDAwretIkosj4XkMYSAXIFf4ll/97MIfhTfOlVwv+x8Jz1jKx+ThifGE/epnF/4oPEdOHwB4RiSHQ1U9DI3gkQHI3imvE363lQgL1MiZGhSLKxEWLoKLKzK3uKgIK7zH2gjL3HMtwTUCwJCXdHARQPmetE54h+UIWxv61f+q6mFIiUQeKK0T3mXV605Ja5G5ZnBFCZsM91c/u/BH4W2BJL0MZYWHtKQ76iUuNgmHvE54h9UctvhflrQUV7PCDcyhN5zUUV4n/C5ri3HhKIsUN8OxjTOntGmFB63rhPdYdinkLKFqXX4J4LTMyyUVeZ3wDmu0bjm2px/1uuaLvninqsTCr8omIr5lrq5NbusH6XyFtE74/cZqC2pykZv8JfTWhCNClRPh13XEytaSnLRmD6uqF46mWVD3X3iXlfBZWxBAKdAdhbzSDCvuqHqd8C6r67riZken/0upjqevyOuE323ltM52I7AZ4D9GABhoediN6zzG9NKHfaQPO8wvF8wu/Dnxcx+2JLK+SVqPLgXaTcbKYYV3WJtNhOFrqprDLMu6LsdareuEd1lZ17FpgaWhJrJJ+ty5uCKvE363FR86FYhzM+wo1ZE8bejU/jrhXcaz1TCbPq3HeBYAWfC0g114n9V4iXQy58t7rm5jz+cmmqKdvE74/XjxtQibHdncn5jqdQBScSV7565bE4V3WKrXlfP8QySwj+liHf+vgdheksQxXSK2pbt3Rl4yu/Cnxn0pn1SZ4wLAbNoNcOWykzRsujVReJeVHAKl+3rUho8NxeUo7BFr1RETfilub+Ekcz7dn3gjPD8Njev9xOzCnxPn++unNfU6uE9LByrebURNZG3+idmFPwd+6sOWikhzdVOupgyntqwirPA+S26W7ejvHxc7Na0KV+95ktcJ7zHTf68TLly4cOHChQv/X+D/Ab/AcCSBPlJtAAAAAElFTkSuQmCC" alt="QR code for the VEJA packaging hotspots"><a download="VEJA_Packaging_AR_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEF0lEQVR4nO2dTWrsOhCFTz0beihDFpClyDu4SwpZ0tuBvZQs4II8DMicN5Bkycms5dDk9amBSP98qA3FKVWVpBjRYes/PTQgXLhw4cKFCxcu/Frcso3AOgFYp93Mpt1s3sywmhmw5SHZfN3swp8U9yTJAADYzebtRi4YiPU1Aj4ANjsSwECS5BnvnF34k+JbkS8fADIUmfNhoM0A+F4ULmnipbMLfy58/PbONsHgCKx/AoDtJRLbEOHDSwS2S2cXLhxAWteRHyNs3kbYjN3KMg+w+YdnF/4UeNE6RwAbYEnSXASxTQY4wuD+jlz//DUAQFtX/tXPLvzB+GqW1AwAUGRuILCNgP+40d4+bgSwpxT20tmFPxmetK7KF7HtxvX107hOSH8BLgLrBONZ6R7944X/atzS8s1GmE0Dge1Ge2MulWC1Ealesk67fcc7Zxf+bHjyJjIM5OIiyDAwretIkosj4XkMYSAXIFf4ll/97MIfhTfOlVwv+x8Jz1jKx+ThifGE/epnF/4oPEdOHwB4RiSHQ1U9DI3gkQHI3imvE363lQgL1MiZGhSLKxEWLoKLKzK3uKgIK7zH2gjL3HMtwTUCwJCXdHARQPmetE54h+UIWxv61f+q6mFIiUQeKK0T3mXV605Ja5G5ZnBFCZsM91c/u/BH4W2BJL0MZYWHtKQ76iUuNgmHvE54h9UctvhflrQUV7PCDcyhN5zUUV4n/C5ri3HhKIsUN8OxjTOntGmFB63rhPdYdinkLKFqXX4J4LTMyyUVeZ3wDmu0bjm2px/1uuaLvninqsTCr8omIr5lrq5NbusH6XyFtE74/cZqC2pykZv8JfTWhCNClRPh13XEytaSnLRmD6uqF46mWVD3X3iXlfBZWxBAKdAdhbzSDCvuqHqd8C6r67riZken/0upjqevyOuE323ltM52I7AZ4D9GABhoediN6zzG9NKHfaQPO8wvF8wu/Dnxcx+2JLK+SVqPLgXaTcbKYYV3WJtNhOFrqprDLMu6LsdareuEd1lZ17FpgaWhJrJJ+ty5uCKvE363FR86FYhzM+wo1ZE8bejU/jrhXcaz1TCbPq3HeBYAWfC0g114n9V4iXQy58t7rm5jz+cmmqKdvE74/XjxtQibHdncn5jqdQBScSV7565bE4V3WKrXlfP8QySwj+liHf+vgdheksQxXSK2pbt3Rl4yu/Cnxn0pn1SZ4wLAbNoNcOWykzRsujVReJeVHAKl+3rUho8NxeUo7BFr1RETfilub+Ekcz7dn3gjPD8Njev9xOzCnxPn++unNfU6uE9LByrebURNZG3+idmFPwd+6sOWikhzdVOupgyntqwirPA+S26W7ejvHxc7Na0KV+95ktcJ7zHTf68TLly4cOHChQv/X+D/Ab/AcCSBPlJtAAAAAElFTkSuQmCC">Download QR code</a> · <a href="./?scene=shoebox&amp;v=larger-box">Open WebAR</a></div>
+<div id="qr" hidden><h1>Inside the VEJA box</h1><p>Scan, allow camera access, and aim at the black-and-white VEJA logo.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhIAAAISAQAAAACxRhsSAAAE+ElEQVR4nO2dUWrkOBCG/1ob+lENOUCOIt9gjxT2SHMD+yg5QEB6DMjUPkglyZ3A7DKJxmN+PXTSbveHBcWvUlWpWhS/Ora/fhkBkEEGGWSQQQYZZJBBRmNIGTNkwS6yAMB230UW7ALEGbJEEZE77D+Rct/J5kLGFRlz/uNXAIhPAOKTCrDPCgAKAAL3LgooxK/7rIhTQv7gy56DDDL+CyNWdXTvomu8aXkbZ8C/zsB2R3kBABGZv+M5yCDjszE/vNdNJsX2d4Juy00Bl+YspVU+xf/4+ucgg4z/w5AFu8CHXeA1ZdkUue8CHybNyjriOcgg4zBUVRVeVVXDpLrmy5PmF2+fAi7lm/N97WvrWeZCxuUZm9hm/iVMCh+A/II4w5zUm8oSLSQgIvL1z0EGGZ+OvIy35KkC78X+tjsEcAnlBYAi7gK4Y7L1LHMh47qMuu4nu+BUVTWZngIorqnaWJ2a5HLdJ2MIo3M5AacHc6z+ab4v2Fd8AHSt36WdkvHtjE5PzRKnfqdU5TWrKADo6lK2U+opGYMYZqcB2RJVA5CltHmlK2CLf5iqvE5KPSVjEAMmm+af+lD09MF2i7vqqrLWMBXtlIxvZ/T+qT/sqLQbwUQVzjZYnnpKxjiGaWKTzWqnqzts+uFUzTWdis9KOyVjKMO/imB7PjikdWQrXq3CL4vqJjc9Mr7iOcgg4/Nh+6iSMm27fFvZEyxWlVDiAlqUlft9MgYxjv5pW+hrYD9YIKpGrYqTqszvkzGMYeqIEo2y6H6COaQ1GmBvzWwn2ikZoxh1W98v6n2s1KL7nWuQo6tgPoqMYYxD3hSoxprQYvqWPDV3tV2jnpIxkiGLe5dmjuWz6oYiigDYRZY4l2ubiJS4wLnmQsalGZPmoNPW6kprIGq7Wzh1u9t9ACDL1z8HGWR8NlrSqSzloelpLeVHLeAPsCU/0D8lYzAjr+dFSncpRhhQrvlQtROTlvtqRcDJ5kLGFRmHuFQuMklWDHWsSKklqi1CQD0lYxCjs9M8qpT2GScAJULlSjSAdX1kjGQc46d9YbQZpsUASpmfhVgBMG9KxihG1dN2EDodP0192XTdPfWZ/rPMhYzrMh7rT/OSr1VZ15oyreejuvo/6ikZYxh99VMeZp3dGu+1t9h8m1fmo8gYxrA2PLFUkwqwz/ABKnCAAFMC4lMSOEARBYALwCb12P9Z5kLG1Rnyou+5xYnq600B7KJrnKEadouVxptie1bVNYp0ynqyuZBxRUbph7LJpOJXoLTqu79Zdz6nEMQ7dFsAIErpiepfZ3MVzjIXMq7LsD69CgDxDviwz8hrPAAgPiXdntMMuDdRYEoCWH+f3N73LHMh47qMPs7vLUKlrbFEy++vrh1IsVQA41JkjGH0/aXKCf3jBh/1Wm3k112jnZIxhHE4pq/9ib7DMaj0mEvtvks7JWMQo/3eCXLVad3gl/rTPh9V2qG2+r9zzYWMKzIe+0mj1fO3WtPqn2pXBwDqKRnDGF0ftHZwz3rz9RXTzZ7zJeZNyfitjDhDXl7r4adssbvIEkX0HxEph6Mj+6GQMYzx4Xd5in+qgNd8PiopsEOBNAvc2yw+HH+c5yxzIeO6jA+/d1JG3eCj9pdyFmfN7irAdZ+MUYy+6rl16/lQyn9oMlW/xn0UGYMYoj+/5ydjO8tcyCCDDDLIIIMMMsj48xn/Aqfh+UTmiGyYAAAAAElFTkSuQmCC" alt="QR code for the VEJA packaging hotspots"><a download="VEJA_Packaging_AR_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhIAAAISAQAAAACxRhsSAAAE+ElEQVR4nO2dUWrkOBCG/1ob+lENOUCOIt9gjxT2SHMD+yg5QEB6DMjUPkglyZ3A7DKJxmN+PXTSbveHBcWvUlWpWhS/Ora/fhkBkEEGGWSQQQYZZJBBRmNIGTNkwS6yAMB230UW7ALEGbJEEZE77D+Rct/J5kLGFRlz/uNXAIhPAOKTCrDPCgAKAAL3LgooxK/7rIhTQv7gy56DDDL+CyNWdXTvomu8aXkbZ8C/zsB2R3kBABGZv+M5yCDjszE/vNdNJsX2d4Juy00Bl+YspVU+xf/4+ucgg4z/w5AFu8CHXeA1ZdkUue8CHybNyjriOcgg4zBUVRVeVVXDpLrmy5PmF2+fAi7lm/N97WvrWeZCxuUZm9hm/iVMCh+A/II4w5zUm8oSLSQgIvL1z0EGGZ+OvIy35KkC78X+tjsEcAnlBYAi7gK4Y7L1LHMh47qMuu4nu+BUVTWZngIorqnaWJ2a5HLdJ2MIo3M5AacHc6z+ab4v2Fd8AHSt36WdkvHtjE5PzRKnfqdU5TWrKADo6lK2U+opGYMYZqcB2RJVA5CltHmlK2CLf5iqvE5KPSVjEAMmm+af+lD09MF2i7vqqrLWMBXtlIxvZ/T+qT/sqLQbwUQVzjZYnnpKxjiGaWKTzWqnqzts+uFUzTWdis9KOyVjKMO/imB7PjikdWQrXq3CL4vqJjc9Mr7iOcgg4/Nh+6iSMm27fFvZEyxWlVDiAlqUlft9MgYxjv5pW+hrYD9YIKpGrYqTqszvkzGMYeqIEo2y6H6COaQ1GmBvzWwn2ikZoxh1W98v6n2s1KL7nWuQo6tgPoqMYYxD3hSoxprQYvqWPDV3tV2jnpIxkiGLe5dmjuWz6oYiigDYRZY4l2ubiJS4wLnmQsalGZPmoNPW6kprIGq7Wzh1u9t9ACDL1z8HGWR8NlrSqSzloelpLeVHLeAPsCU/0D8lYzAjr+dFSncpRhhQrvlQtROTlvtqRcDJ5kLGFRmHuFQuMklWDHWsSKklqi1CQD0lYxCjs9M8qpT2GScAJULlSjSAdX1kjGQc46d9YbQZpsUASpmfhVgBMG9KxihG1dN2EDodP0192XTdPfWZ/rPMhYzrMh7rT/OSr1VZ15oyreejuvo/6ikZYxh99VMeZp3dGu+1t9h8m1fmo8gYxrA2PLFUkwqwz/ABKnCAAFMC4lMSOEARBYALwCb12P9Z5kLG1Rnyou+5xYnq600B7KJrnKEadouVxptie1bVNYp0ynqyuZBxRUbph7LJpOJXoLTqu79Zdz6nEMQ7dFsAIErpiepfZ3MVzjIXMq7LsD69CgDxDviwz8hrPAAgPiXdntMMuDdRYEoCWH+f3N73LHMh47qMPs7vLUKlrbFEy++vrh1IsVQA41JkjGH0/aXKCf3jBh/1Wm3k112jnZIxhHE4pq/9ib7DMaj0mEvtvks7JWMQo/3eCXLVad3gl/rTPh9V2qG2+r9zzYWMKzIe+0mj1fO3WtPqn2pXBwDqKRnDGF0ftHZwz3rz9RXTzZ7zJeZNyfitjDhDXl7r4adssbvIEkX0HxEph6Mj+6GQMYzx4Xd5in+qgNd8PiopsEOBNAvc2yw+HH+c5yxzIeO6jA+/d1JG3eCj9pdyFmfN7irAdZ+MUYy+6rl16/lQyn9oMlW/xn0UGYMYoj+/5ydjO8tcyCCDDDLIIIMMMsj48xn/Aqfh+UTmiGyYAAAAAElFTkSuQmCC">Download QR code</a> · <a href="./?scene=shoebox&amp;v=close-to-return">Open WebAR</a></div>
 <script>
 const hotspots = document.querySelector('#hotspots')
 const fact = document.querySelector('#fact')
@@ -85,7 +89,7 @@ function revealBox() {
 for (const button of buttons) {
   button.addEventListener('click', () => {
     if (!revealed || !cameraIsActive() || button.hidden || button.classList.contains('returning')) return
-    activeButton?.setAttribute('aria-expanded', 'false')
+    if (activeButton) return
     activeButton = button
     button.setAttribute('aria-expanded', 'true')
     const [, title, copy] = facts[Number(button.dataset.fact)]
@@ -93,25 +97,22 @@ for (const button of buttons) {
     document.querySelector('#fact-copy').textContent = copy
     fact.hidden = false
     document.querySelector('#close-fact').focus()
-    clearTimeout(returnTimers.get(button))
-    returnTimers.set(button, setTimeout(() => {
-      button.classList.add('returning')
-      returnTimers.set(button, setTimeout(() => {
-        // Keep its grid slot so the other dots stay in place.
-        button.hidden = true
-        returnTimers.delete(button)
-      }, 520))
-    }, 4000))
   })
 }
 function closeFact() {
   if (fact.hidden) return
   fact.hidden = true
-  activeButton?.setAttribute('aria-expanded', 'false')
-  const focusTarget = activeButton && !activeButton.hidden && !activeButton.classList.contains('returning')
-    ? activeButton
-    : buttons.find(button => !button.hidden && !button.classList.contains('returning')) ?? document.querySelector('#launch')
-  focusTarget.focus()
+  const returning = activeButton
+  activeButton = undefined
+  returning.setAttribute('aria-expanded', 'false')
+  returning.classList.add('returning')
+  returnTimers.set(returning, setTimeout(() => {
+    returning.hidden = true
+    returnTimers.delete(returning)
+  }, 520))
+  const focusTarget = buttons.find(button => !button.hidden && !button.classList.contains('returning'))
+  const nextControl = focusTarget ?? document.querySelector('#launch')
+  nextControl.focus()
 }
 document.querySelector('#close-fact').addEventListener('click', closeFact)
 window.addEventListener('keydown', event => { if (event.key === 'Escape') closeFact() })
