@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Paptic® | UNBOXING WebAR</title>
+<style>
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:radial-gradient(ellipse at 50% 40%,#46684f,#12281f 74%);color:#f7f8ef;font:1rem/1.45 system-ui,sans-serif}
+video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover}
+main{position:relative;margin:auto;max-width:36rem;min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;padding:max(14px,env(safe-area-inset-top)) 14px max(14px,env(safe-area-inset-bottom));gap:12px}
+header,.panel{background:#12281fef;border:1px solid #91b39566;border-radius:18px;padding:12px 15px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+h1,h2,p{margin:0}
+h1{font-size:1.65rem;line-height:1.1}h2{font-size:1.12rem}
+.project{font-size:.7rem;font-weight:800;letter-spacing:.12em;color:#cfecaf;margin-bottom:.25rem}
+button,a{font:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid #d7efba;outline-offset:3px}
+#camera-button,.tabs button,.answer{min-height:44px;border:1px solid #91b39588;border-radius:10px;background:#254433;color:#fff;padding:.42rem .67rem}
+#camera-button{font-size:.84rem}
+#camera-note{font-size:.8rem;margin:.4rem 0 0;color:#dcebde}
+.stage{display:grid;justify-items:center;gap:.3rem;align-content:center;min-height:190px}
+#package{position:relative;border:0;background:none;padding:0;width:190px;height:162px;color:#213429;animation:float 2.4s ease-in-out infinite alternate}
+#package:hover,#package:focus-visible{animation-play-state:paused}
+@keyframes float{from{transform:translateY(4px) rotate(-4deg)}to{transform:translateY(-7px) rotate(2deg)}}
+@media(prefers-reduced-motion:reduce){#package{animation:none}}
+.paper{position:absolute;inset:23px 28px 6px;border-radius:8px 8px 15px 15px;background:linear-gradient(105deg,#f8e3b8,#d5af78 80%,#9e774c 81%);box-shadow:0 14px 24px #0006;display:grid;place-content:center;gap:5px;font-size:1rem;font-weight:850;padding-right:12px}
+.paper small{font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.095em}
+.handle{position:absolute;top:5px;left:70px;border:7px solid #c69a61;border-radius:50% 50% 0 0;width:48px;height:37px}
+#package[data-form="mailer"] .handle,#package[data-form="sleeve"] .handle{display:none}
+#package[data-form="mailer"] .paper{inset:34px 11px 24px;border-top:15px solid #bb925f;border-radius:8px}
+#package[data-form="sleeve"] .paper{inset:9px 43px 9px;background:linear-gradient(110deg,#f9ece1,#c7a58c);border-radius:8px;border-top:5px double #9b7961;border-bottom:5px double #9b7961}
+.hint{font-size:.84rem;background:#12281feb;padding:.23rem .65rem;border-radius:2rem}
+.tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.7rem}
+.tabs button[aria-pressed="true"]{background:#d6edb7;color:#172b21;border-color:transparent;font-weight:750}
+.panel p{margin:.35rem 0 .55rem}.panel a{color:#d6edb7}
+.choices{display:flex;gap:.4rem;flex-wrap:wrap}.answer[aria-pressed="true"]{border-color:#d6edb7}
+#feedback{color:#def1c8}
+#qr-view{text-align:center;place-content:center;justify-content:center}
+#qr-view img{width:min(77vw,410px);image-rendering:pixelated;margin:1rem auto;display:block}
+#qr-view a{color:#d6edb7;display:inline-block;margin:.3rem}
+</style>
+</head>
+<body>
+<video id="camera" autoplay playsinline muted hidden></video>
+<main id="experience">
+<header>
+<div><p class="project">UNBOXING · WEBAR</p><h1>Paptic®</h1><p id="camera-note" role="status" hidden></p></div>
+<button id="camera-button" type="button">Open AR camera</button>
+</header>
+<section class="stage" aria-label="Floating packaging model">
+<button id="package" data-form="bag" type="button" aria-label="Carrier bag. Tap to change packaging format.">
+<span class="handle" aria-hidden="true"></span><span class="paper" aria-hidden="true">Paptic® <small id="package-label">Carrier bag</small></span>
+</button>
+<p class="hint">Tap the package to change its format</p>
+</section>
+<section class="panel" aria-label="Explore Paptic packaging">
+<nav class="tabs" aria-label="Case study sections">
+<button type="button" data-panel="material" aria-pressed="true">Material</button>
+<button type="button" data-panel="uses" aria-pressed="false">Applications</button>
+<button type="button" data-panel="challenge" aria-pressed="false">Challenge</button>
+</nav>
+<div id="material">
+<h2>From wood fibres to flexible packaging</h2>
+<p>Paptic® is a wood-fibre-based material designed for flexible packaging. Its textile-like feel and durability make it an option for replacing plastic film in some fashion and e-commerce applications.</p>
+<a href="https://www.paptic.com/" target="_blank" rel="noopener">Explore Paptic®</a>
+</div>
+<div id="uses" hidden>
+<h2 id="use-title">Carrier bag</h2>
+<p id="use-description">A handled bag for carrying purchases from a shop.</p>
+</div>
+<div id="challenge" hidden>
+<h2>Choose the packaging</h2>
+<p>Which format would you test first to ship a folded T-shirt directly to a customer?</p>
+<div class="choices">
+<button class="answer" type="button" data-answer="bag" aria-pressed="false">Carrier bag</button>
+<button class="answer" type="button" data-answer="mailer" aria-pressed="false">Mailer</button>
+<button class="answer" type="button" data-answer="sleeve" aria-pressed="false">Garment sleeve</button>
+</div>
+<p id="feedback" role="status" hidden></p>
+</div>
+</section>
+</main>
+<main id="qr-view" hidden>
+<h1>Paptic® WebAR</h1>
+<p>Scan with your phone camera.</p>
+<img width="410" height="410" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADsUlEQVR4nO2cUYrkOAyGP20C9ejAHKCOktxgjrT0keYG8VH6AA3OY0GC5kG246ruYWG2i0oV0kNTTucjNghb+qVElL+z+M9fguCkk0466aSTTjp5PFKy9faLKCIyLSIysQmw5aGIiEwPnq2ThyRHVVVNoLMNV3QOK/o2dCoydAp0qqqq1+QjZuvkIcml7i9BlSgntW1pWnoY30V0BkSk/75nOvkaZH8zljGBED5EWQYYZ9A4gIy/vuuZTr4WeetDRAEFVKBbga3/WkJ6rnU6eX8yqFooRFjtyNI5XERETsqYOvMjVV2PMFsnD0hGEREZgPH9pIwJ5N/6a7KbNkvLvuuZTr4IaWdZc1rFoaNcW9F4vgiEFb26638908lXJGUCZFpEGBMQz2u5BsBSNCMZ6rVnXKeT9yDJkk9Q1dmCos4CINXUqW1BmjAJaSd0fq51Onk/snhE4zlZaCzOtZrkmG9OWWh0H3KyWuMqhPoLsC1oJnuOHXJj8n3IyVvTauYgM/veVGwsw/1Ucx9yspjlZQKUzCt89MDWM6YfK/HnR48p1gpCqMnZc63TyfuRObfPrvJjlSpdazyXKCgOAGw9LFJS/Odap5P3IynHWKdNPDSmLsfZhFLQV109HnLyKyvtHCWZHxM0GT102qT1M3g85OSN7fGzqmbPaTUjsE6iPcv3fcjJa9v3odvhdaVV56BFQnIfcrK17BElFCoHWldk63ItW/J4yMkbq7m9AEsPhItAuEhOv/ZrgOaeokfN1skjktfxUA2dTaxuSx9W8PB4yMnPVs6ompfZOCf4dk8VsKmN+e5DTl6TIsMmMoWL6Jv0yEQp2ZtIVIZtS9ozrtPJe5BFp566VXJJYxPikOzfpQhyEWU56d6h9mzrdPJ+5G3/UKnbZ506p/WAqdie2zv52dqcvfyxf8xFY9z7Qbx/yMkvbI+pc+aV2viZrDZ+yt/ch5wstvd+CCxDeR8xt30IhA+BsPYmEI1peORsnTwi2fSgWWRkfa+1eJ9raKXw6vqQk38g9+9+EAfygfZ2zm8r2otnpliXutpzrtPJO5LjHli/98ByUnsjqOnJDytEU48ePFsnD0XWHjSqMF2r9altGLoh/Cxz8k+katoE6FTkXMtnS+mPnelUpm9+ppOvRoZaL3vv8zEWh+w+beZ/jNk6eRyy6omxRNf6NgDRvvuxWWQk+dN6j56tk0cim44P9u7Fca9wUIa7ij16PORkY6L/fc+X5t84d9JJJ5100kknX4T8DZ1zA6ecuqDVAAAAAElFTkSuQmCC" alt="QR code that opens the interactive Paptic WebAR experience">
+<div><a download="UNBOXING_Paptic_AR_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADsUlEQVR4nO2cUYrkOAyGP20C9ejAHKCOktxgjrT0keYG8VH6AA3OY0GC5kG246ruYWG2i0oV0kNTTucjNghb+qVElL+z+M9fguCkk0466aSTTjp5PFKy9faLKCIyLSIysQmw5aGIiEwPnq2ThyRHVVVNoLMNV3QOK/o2dCoydAp0qqqq1+QjZuvkIcml7i9BlSgntW1pWnoY30V0BkSk/75nOvkaZH8zljGBED5EWQYYZ9A4gIy/vuuZTr4WeetDRAEFVKBbga3/WkJ6rnU6eX8yqFooRFjtyNI5XERETsqYOvMjVV2PMFsnD0hGEREZgPH9pIwJ5N/6a7KbNkvLvuuZTr4IaWdZc1rFoaNcW9F4vgiEFb26638908lXJGUCZFpEGBMQz2u5BsBSNCMZ6rVnXKeT9yDJkk9Q1dmCos4CINXUqW1BmjAJaSd0fq51Onk/snhE4zlZaCzOtZrkmG9OWWh0H3KyWuMqhPoLsC1oJnuOHXJj8n3IyVvTauYgM/veVGwsw/1Ucx9yspjlZQKUzCt89MDWM6YfK/HnR48p1gpCqMnZc63TyfuRObfPrvJjlSpdazyXKCgOAGw9LFJS/Odap5P3IynHWKdNPDSmLsfZhFLQV109HnLyKyvtHCWZHxM0GT102qT1M3g85OSN7fGzqmbPaTUjsE6iPcv3fcjJa9v3odvhdaVV56BFQnIfcrK17BElFCoHWldk63ItW/J4yMkbq7m9AEsPhItAuEhOv/ZrgOaeokfN1skjktfxUA2dTaxuSx9W8PB4yMnPVs6ompfZOCf4dk8VsKmN+e5DTl6TIsMmMoWL6Jv0yEQp2ZtIVIZtS9ozrtPJe5BFp566VXJJYxPikOzfpQhyEWU56d6h9mzrdPJ+5G3/UKnbZ506p/WAqdie2zv52dqcvfyxf8xFY9z7Qbx/yMkvbI+pc+aV2viZrDZ+yt/ch5wstvd+CCxDeR8xt30IhA+BsPYmEI1peORsnTwi2fSgWWRkfa+1eJ9raKXw6vqQk38g9+9+EAfygfZ2zm8r2otnpliXutpzrtPJO5LjHli/98ByUnsjqOnJDytEU48ePFsnD0XWHjSqMF2r9altGLoh/Cxz8k+katoE6FTkXMtnS+mPnelUpm9+ppOvRoZaL3vv8zEWh+w+beZ/jNk6eRyy6omxRNf6NgDRvvuxWWQk+dN6j56tk0cim44P9u7Fca9wUIa7ij16PORkY6L/fc+X5t84d9JJJ5100kknX4T8DZ1zA6ecuqDVAAAAAElFTkSuQmCC">Download QR code</a> <a href="./">Open WebAR</a></div>
+</main>
+<script>
+const experience = document.querySelector('#experience')
+const camera = document.querySelector('#camera')
+const cameraButton = document.querySelector('#camera-button')
+const cameraNote = document.querySelector('#camera-note')
+const packageButton = document.querySelector('#package')
+const tabs = [...document.querySelectorAll('[data-panel]')]
+const answers = [...document.querySelectorAll('[data-answer]')]
+const feedback = document.querySelector('#feedback')
+
+const formats = {
+  bag: ['Carrier bag', 'A handled bag for carrying purchases from a shop.'],
+  mailer: ['E-commerce mailer', 'A flexible package designed to be sealed around an online order for delivery.'],
+  sleeve: ['Garment sleeve', 'An inner bag that keeps a folded garment together inside its shipping packaging.']
+}
+const formatNames = Object.keys(formats)
+
+function selectPanel(name) {
+  for (const tab of tabs) {
+    const selected = tab.dataset.panel === name
+    tab.setAttribute('aria-pressed', String(selected))
+    document.getElementById(tab.dataset.panel).hidden = !selected
+  }
+}
+
+function showFormat(form) {
+  const [label, description] = formats[form]
+  packageButton.dataset.form = form
+  packageButton.setAttribute('aria-label', label + '. Tap to change packaging format.')
+  document.querySelector('#package-label').textContent = label
+  document.querySelector('#use-title').textContent = label
+  document.querySelector('#use-description').textContent = description
+}
+
+packageButton.addEventListener('click', () => {
+  const current = formatNames.indexOf(packageButton.dataset.form)
+  showFormat(formatNames[(current + 1) % formatNames.length])
+  selectPanel('uses')
+})
+for (const tab of tabs) tab.addEventListener('click', () => selectPanel(tab.dataset.panel))
+
+const explanations = {
+  bag: 'A carrier bag is useful for taking purchases home. For parcel delivery, try a format with a secure closure.',
+  mailer: 'Good choice. A mailer can close around the folded T-shirt. Test seam strength and protection during delivery before switching.',
+  sleeve: 'A garment sleeve can keep the T-shirt together inside a parcel. For direct shipping, test a sealable mailer first.'
+}
+for (const answer of answers) {
+  answer.addEventListener('click', () => {
+    for (const option of answers) option.setAttribute('aria-pressed', String(option === answer))
+    showFormat(answer.dataset.answer)
+    feedback.textContent = explanations[answer.dataset.answer]
+    feedback.hidden = false
+  })
+}
+
+let stream
+let requestInProgress = false
+let pageHidden = false
+function report(message) {
+  cameraNote.textContent = message
+  cameraNote.hidden = !message
+}
+function stopCamera() {
+  stream?.getTracks().forEach(track => track.stop())
+  stream = undefined
+  camera.srcObject = null
+  camera.hidden = true
+  cameraButton.textContent = 'Open AR camera'
+}
+async function openCamera() {
+  if (requestInProgress || stream) return
+  if (!navigator.mediaDevices?.getUserMedia) {
+    report('Camera unavailable. You can still explore the package.')
+    return
+  }
+  requestInProgress = true
+  cameraButton.disabled = true
+  report('Opening camera…')
+  try {
+    const newStream = await navigator.mediaDevices.getUserMedia({audio:false, video:{facingMode:{ideal:'environment'}}})
+    if (pageHidden) {
+      newStream.getTracks().forEach(track => track.stop())
+      return
+    }
+    stream = newStream
+    camera.srcObject = stream
+    await camera.play()
+    if (stream !== newStream) return
+    camera.hidden = false
+    cameraButton.textContent = 'Close camera'
+    report('')
+  } catch {
+    stopCamera()
+    if (!pageHidden) report('Allow camera access to see the package over your surroundings.')
+  } finally {
+    requestInProgress = false
+    cameraButton.disabled = false
+  }
+}
+cameraButton.addEventListener('click', () => {
+  if (stream) stopCamera()
+  else openCamera()
+})
+window.addEventListener('pagehide', () => {
+  pageHidden = true
+  stopCamera()
+})
+window.addEventListener('pageshow', () => { pageHidden = false })
+
+if (new URLSearchParams(location.search).has('qr')) {
+  experience.hidden = true
+  document.querySelector('#qr-view').hidden = false
+} else {
+  openCamera()
+}
+</script>
+</body>
+</html>
