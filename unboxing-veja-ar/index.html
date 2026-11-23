@@ -55,29 +55,45 @@ body.camera-on a,body.camera-on button{pointer-events:auto}
 #qr{padding:1.4rem;color:#fff}#qr img{display:block;width:min(78vw,410px);margin:1rem auto;image-rendering:pixelated}#qr a{color:#e1f4ce}
 footer button,.sections button{min-height:44px;border:1px solid #b2c4a1;border-radius:.7rem;background:#264536;color:#fff;font:inherit;padding:.35rem .65rem;cursor:pointer}
 #launch{margin:.4rem 0}
-#box-details{max-height:45svh}
+#box-details{max-height:57svh}
 #box-details a{color:#d9efc6}
 #box-details h3{margin:.45rem 0}
 .sections{display:flex;gap:.45rem;flex-wrap:wrap}
-</style><script defer src="./target.js"></script></head>
+</style><script defer src="./targets.js"></script></head>
 <body>
 <video id="camera" autoplay muted playsinline webkit-playsinline hidden></video>
 <main>
-<header><p class="project">UNBOXING · WEBAR</p><h1>VEJA</h1><p class="topic">Explore the packaging behind a pair of sneakers.</p></header>
+<header><p class="project">UNBOXING · WEBAR</p><h1>VEJA</h1><p class="topic">Explore the packaging and rubber sourcing behind a pair of sneakers.</p></header>
 <div class="objects" id="objects" hidden>
 <button id="unbox" type="button" aria-expanded="false" aria-controls="box-details"><span class="box-art" aria-hidden="true"><span class="box-opening"></span><span class="box-front"></span><span class="box-side"></span><span class="box-top"></span><span class="box-lid"></span><strong class="box-logo">VEJA</strong></span><span id="unbox-label">Open shoebox</span></button>
 <a class="youtube" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" target="_blank" rel="noopener" aria-label="Watch VEJA’s film about Amazonian rubber on YouTube"></a>
 </div>
-<footer><p id="status" role="status">Point your camera at the sneaker photo.</p><button id="launch" type="button">Open AR camera</button> <button id="preview" type="button">Preview without scanning</button></footer>
+<footer><p id="status" role="status">Point your camera at the sneaker or rubber-tapping photo.</p><button id="launch" type="button">Open AR camera</button> <button id="preview" type="button">Preview without scanning</button></footer>
 </main>
 <section id="box-details" aria-labelledby="box-title" hidden>
 <div class="dialog-top"><h2 id="box-title">Inside the shoebox</h2><button id="close-details" type="button">Close</button></div>
-<div class="sections" aria-label="Explore the shoebox"><button type="button" data-topic="material" aria-pressed="true">Cardboard</button><button type="button" data-topic="size" aria-pressed="false">Box size</button><button type="button" data-topic="challenge" aria-pressed="false">Fit challenge</button></div>
+<div class="sections" aria-label="Explore the shoebox"><button type="button" data-topic="material" aria-pressed="true">Cardboard</button><button type="button" data-topic="size" aria-pressed="false">Box size</button><button type="button" data-topic="challenge" aria-pressed="false">Fit challenge</button><button type="button" data-topic="forest" aria-pressed="false">Forest sourcing</button></div>
 <p id="material">The case study describes a blend of recycled and FSC-certified cardboard. Ask the supplier what share is recycled and which certification claim applies to the finished box.</p>
 <p id="size" hidden>A box sized to the shoes can reduce empty space and the need for filler. Check fit and protection using the actual shoe sizes you ship.</p>
 <div id="challenge" hidden><h3>Which box would you test first?</h3><div class="dialog-actions"><button type="button" data-choice="tight" aria-pressed="false">Too tight</button><button type="button" data-choice="fit" aria-pressed="false">Snug fit</button><button type="button" data-choice="large" aria-pressed="false">Oversized</button></div><p id="answer-feedback" role="status" hidden></p></div>
+<div id="forest" hidden>
+  <h3>From tree to sneaker sole</h3>
+  <div class="dialog-actions" aria-label="Explore the rubber supply chain">
+    <button type="button" data-rubber-step="tree" aria-pressed="true">Tap the tree</button>
+    <button type="button" data-rubber-step="premium" aria-pressed="false">Pay a premium</button>
+    <button type="button" data-rubber-step="sole" aria-pressed="false">Make the sole</button>
+  </div>
+  <p id="rubber-step" aria-live="polite">Rubber tappers collect latex from living Amazonian rubber trees. The trees can remain standing while providing income.</p>
+  <h3>What would you verify as a buyer?</h3>
+  <div class="dialog-actions">
+    <button type="button" data-rubber-answer="price" aria-pressed="false">Price alone</button>
+    <button type="button" data-rubber-answer="evidence" aria-pressed="false">Origin and forest monitoring</button>
+  </div>
+  <p id="rubber-feedback" role="status" hidden></p>
+  <p><a href="https://project.veja-store.com/en/single/rubber" target="_blank" rel="noopener">Read VEJA’s rubber sourcing policy</a></p>
+</div>
 </section>
-<div id="qr" hidden><h1>VEJA WebAR</h1><p>Scan with your phone, allow camera access, then aim at the sneaker photo.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADn0lEQVR4nO2cwY3bMBBF/0QCfJSALWBLoTpIScGWlA6kUlJAAPK4gISfA2dEy+tcAhtrb/4cDNHWgyRgMPzzSdmIf4vl2z+CgEiRIkWKFClS5OOR5tHDpmIGYDObSg+bsO3DOGv65LsV+ZBkIklmgG+vpNnYERjeDcvYxRAdSZJH8jPuVuRDkmWvL8WMc+mBxXrUo/TLjDMAM+sf4W5FPhLZX4wNQ4YlAkR5WevRMgKWft7qmiK/FnmZQ0g/DVysW7FMHQhs/XUL6bmeU+T9yMihgQAKgGX0bwzDbwPQESm/rAYA59n0XM8p8u7kYmZmI4CUO9qPDCD9OhEpAzbVk7balt3qmiK/CAkeAxhIYFjBGR05D2t0bceYn+s5Rd6btAlAWEMAUHog5f2sYtZKlU03uabIr0KeaWq63tl6LlO3tkaMKKi9mqFYiKLnek6R9yNjLssdvfDENIZEn9WQuMbJudNcJvIimvXM+UwFMT7gmVMzLOXIOuWQyIiaQyl3NV9qzUkZqEPU71o27cPnek6R9yNdDy2vKyxxq8NqTAPdiuX77x4oI1D10LBbRM/1nCLvR4amLv1KlBGs+ZJHEOWl/kb3Hbce0tQiP0bMZUC1hhL9o9lFdUGf+yQnPSTyEJ4RwwoXRcM+rN3Y3qEhNJL0kMhDRMXZk2bwzPEODd6wtS5fdUjkMTwjADem22405o5xygrOQ/RvyiGRh2i9fVQaMipSrJw1Z9GVkXJI5FmEdF7d/AFwMBoRcrqerDok8kN4HaIb0159AJfYzE1JSw+JvBoxR/mue5/LMhCt/oVtrTok8jq5jPBKs4w+lwGlB9/s5MlV1VLW3g+RF1F9at/oWsZqQlua1+pTxw7YdyPKiVjG7jPvVuQjkoc11zAa4YXH5zKfxtTbi7wezWN0/TyEF9TUtfuO6stEXo3m+/jaGC98at86FF6kckjkVdLsleTcXnYd3g0Y3s2merT6K/k/8qb3OkReBI8RsgeA9/Fr7GMMA1t1SOQVsv3vR02fZfQ9i/VFDhuB+q5HFduffLciH4s896mrYK57p7tQRmdraDyzIVWHRO4RvT3QFl5j27R3Y23/UCOUQyL/RlYvaBk78s1O9Fa/9PuvHW268TVFPjd5WYdq0uxKuh7tXb78IZF/JweyraoCAMzGzbDYiUh58wbf/1rvNtcU+TXIs3cUsadPbB1qa/nhYuv9MpEfwvQf5yJFihQpUqTI/5z8A3GJVqg7sU1RAAAAAElFTkSuQmCC" alt="QR code for the new VEJA experience"><a download="UNBOXING_VEJA_Scan_AR_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADn0lEQVR4nO2cwY3bMBBF/0QCfJSALWBLoTpIScGWlA6kUlJAAPK4gISfA2dEy+tcAhtrb/4cDNHWgyRgMPzzSdmIf4vl2z+CgEiRIkWKFClS5OOR5tHDpmIGYDObSg+bsO3DOGv65LsV+ZBkIklmgG+vpNnYERjeDcvYxRAdSZJH8jPuVuRDkmWvL8WMc+mBxXrUo/TLjDMAM+sf4W5FPhLZX4wNQ4YlAkR5WevRMgKWft7qmiK/FnmZQ0g/DVysW7FMHQhs/XUL6bmeU+T9yMihgQAKgGX0bwzDbwPQESm/rAYA59n0XM8p8u7kYmZmI4CUO9qPDCD9OhEpAzbVk7balt3qmiK/CAkeAxhIYFjBGR05D2t0bceYn+s5Rd6btAlAWEMAUHog5f2sYtZKlU03uabIr0KeaWq63tl6LlO3tkaMKKi9mqFYiKLnek6R9yNjLssdvfDENIZEn9WQuMbJudNcJvIimvXM+UwFMT7gmVMzLOXIOuWQyIiaQyl3NV9qzUkZqEPU71o27cPnek6R9yNdDy2vKyxxq8NqTAPdiuX77x4oI1D10LBbRM/1nCLvR4amLv1KlBGs+ZJHEOWl/kb3Hbce0tQiP0bMZUC1hhL9o9lFdUGf+yQnPSTyEJ4RwwoXRcM+rN3Y3qEhNJL0kMhDRMXZk2bwzPEODd6wtS5fdUjkMTwjADem22405o5xygrOQ/RvyiGRh2i9fVQaMipSrJw1Z9GVkXJI5FmEdF7d/AFwMBoRcrqerDok8kN4HaIb0159AJfYzE1JSw+JvBoxR/mue5/LMhCt/oVtrTok8jq5jPBKs4w+lwGlB9/s5MlV1VLW3g+RF1F9at/oWsZqQlua1+pTxw7YdyPKiVjG7jPvVuQjkoc11zAa4YXH5zKfxtTbi7wezWN0/TyEF9TUtfuO6stEXo3m+/jaGC98at86FF6kckjkVdLsleTcXnYd3g0Y3s2merT6K/k/8qb3OkReBI8RsgeA9/Fr7GMMA1t1SOQVsv3vR02fZfQ9i/VFDhuB+q5HFduffLciH4s896mrYK57p7tQRmdraDyzIVWHRO4RvT3QFl5j27R3Y23/UCOUQyL/RlYvaBk78s1O9Fa/9PuvHW268TVFPjd5WYdq0uxKuh7tXb78IZF/JweyraoCAMzGzbDYiUh58wbf/1rvNtcU+TXIs3cUsadPbB1qa/nhYuv9MpEfwvQf5yJFihQpUqTI/5z8A3GJVqg7sU1RAAAAAElFTkSuQmCC">Download QR code</a> · <a href="./">Open WebAR</a></div>
+<div id="qr" hidden><h1>VEJA WebAR</h1><p>Scan with your phone, allow camera access, then aim at the sneaker or rubber-tapping photo.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADn0lEQVR4nO2cwY3bMBBF/0QCfJSALWBLoTpIScGWlA6kUlJAAPK4gISfA2dEy+tcAhtrb/4cDNHWgyRgMPzzSdmIf4vl2z+CgEiRIkWKFClS5OOR5tHDpmIGYDObSg+bsO3DOGv65LsV+ZBkIklmgG+vpNnYERjeDcvYxRAdSZJH8jPuVuRDkmWvL8WMc+mBxXrUo/TLjDMAM+sf4W5FPhLZX4wNQ4YlAkR5WevRMgKWft7qmiK/FnmZQ0g/DVysW7FMHQhs/XUL6bmeU+T9yMihgQAKgGX0bwzDbwPQESm/rAYA59n0XM8p8u7kYmZmI4CUO9qPDCD9OhEpAzbVk7balt3qmiK/CAkeAxhIYFjBGR05D2t0bceYn+s5Rd6btAlAWEMAUHog5f2sYtZKlU03uabIr0KeaWq63tl6LlO3tkaMKKi9mqFYiKLnek6R9yNjLssdvfDENIZEn9WQuMbJudNcJvIimvXM+UwFMT7gmVMzLOXIOuWQyIiaQyl3NV9qzUkZqEPU71o27cPnek6R9yNdDy2vKyxxq8NqTAPdiuX77x4oI1D10LBbRM/1nCLvR4amLv1KlBGs+ZJHEOWl/kb3Hbce0tQiP0bMZUC1hhL9o9lFdUGf+yQnPSTyEJ4RwwoXRcM+rN3Y3qEhNJL0kMhDRMXZk2bwzPEODd6wtS5fdUjkMTwjADem22405o5xygrOQ/RvyiGRh2i9fVQaMipSrJw1Z9GVkXJI5FmEdF7d/AFwMBoRcrqerDok8kN4HaIb0159AJfYzE1JSw+JvBoxR/mue5/LMhCt/oVtrTok8jq5jPBKs4w+lwGlB9/s5MlV1VLW3g+RF1F9at/oWsZqQlua1+pTxw7YdyPKiVjG7jPvVuQjkoc11zAa4YXH5zKfxtTbi7wezWN0/TyEF9TUtfuO6stEXo3m+/jaGC98at86FF6kckjkVdLsleTcXnYd3g0Y3s2merT6K/k/8qb3OkReBI8RsgeA9/Fr7GMMA1t1SOQVsv3vR02fZfQ9i/VFDhuB+q5HFduffLciH4s896mrYK57p7tQRmdraDyzIVWHRO4RvT3QFl5j27R3Y23/UCOUQyL/RlYvaBk78s1O9Fa/9PuvHW268TVFPjd5WYdq0uxKuh7tXb78IZF/JweyraoCAMzGzbDYiUh58wbf/1rvNtcU+TXIs3cUsadPbB1qa/nhYuv9MpEfwvQf5yJFihQpUqTI/5z8A3GJVqg7sU1RAAAAAElFTkSuQmCC" alt="QR code for the new VEJA experience"><a download="UNBOXING_VEJA_Scan_AR_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADn0lEQVR4nO2cwY3bMBBF/0QCfJSALWBLoTpIScGWlA6kUlJAAPK4gISfA2dEy+tcAhtrb/4cDNHWgyRgMPzzSdmIf4vl2z+CgEiRIkWKFClS5OOR5tHDpmIGYDObSg+bsO3DOGv65LsV+ZBkIklmgG+vpNnYERjeDcvYxRAdSZJH8jPuVuRDkmWvL8WMc+mBxXrUo/TLjDMAM+sf4W5FPhLZX4wNQ4YlAkR5WevRMgKWft7qmiK/FnmZQ0g/DVysW7FMHQhs/XUL6bmeU+T9yMihgQAKgGX0bwzDbwPQESm/rAYA59n0XM8p8u7kYmZmI4CUO9qPDCD9OhEpAzbVk7balt3qmiK/CAkeAxhIYFjBGR05D2t0bceYn+s5Rd6btAlAWEMAUHog5f2sYtZKlU03uabIr0KeaWq63tl6LlO3tkaMKKi9mqFYiKLnek6R9yNjLssdvfDENIZEn9WQuMbJudNcJvIimvXM+UwFMT7gmVMzLOXIOuWQyIiaQyl3NV9qzUkZqEPU71o27cPnek6R9yNdDy2vKyxxq8NqTAPdiuX77x4oI1D10LBbRM/1nCLvR4amLv1KlBGs+ZJHEOWl/kb3Hbce0tQiP0bMZUC1hhL9o9lFdUGf+yQnPSTyEJ4RwwoXRcM+rN3Y3qEhNJL0kMhDRMXZk2bwzPEODd6wtS5fdUjkMTwjADem22405o5xygrOQ/RvyiGRh2i9fVQaMipSrJw1Z9GVkXJI5FmEdF7d/AFwMBoRcrqerDok8kN4HaIb0159AJfYzE1JSw+JvBoxR/mue5/LMhCt/oVtrTok8jq5jPBKs4w+lwGlB9/s5MlV1VLW3g+RF1F9at/oWsZqQlua1+pTxw7YdyPKiVjG7jPvVuQjkoc11zAa4YXH5zKfxtTbi7wezWN0/TyEF9TUtfuO6stEXo3m+/jaGC98at86FF6kckjkVdLsleTcXnYd3g0Y3s2merT6K/k/8qb3OkReBI8RsgeA9/Fr7GMMA1t1SOQVsv3vR02fZfQ9i/VFDhuB+q5HFduffLciH4s896mrYK57p7tQRmdraDyzIVWHRO4RvT3QFl5j27R3Y23/UCOUQyL/RlYvaBk78s1O9Fa/9PuvHW268TVFPjd5WYdq0uxKuh7tXb78IZF/JweyraoCAMzGzbDYiUh58wbf/1rvNtcU+TXIs3cUsadPbB1qa/nhYuv9MpEfwvQf5yJFihQpUqTI/5z8A3GJVqg7sU1RAAAAAElFTkSuQmCC">Download QR code</a> · <a href="./">Open WebAR</a></div>
 <script>
 const objects = document.querySelector('#objects')
 const preview = document.querySelector('#preview')
@@ -103,12 +119,36 @@ function showDetails(visible) {
 unbox.addEventListener('click', () => showDetails(details.hidden))
 closeDetails.addEventListener('click', () => showDetails(false))
 const topics = [...document.querySelectorAll('[data-topic]')]
-for (const topic of topics) {
-  topic.addEventListener('click', () => {
-    for (const option of topics) {
-      option.setAttribute('aria-pressed', String(option === topic))
-      document.getElementById(option.dataset.topic).hidden = option !== topic
-    }
+function selectTopic(name) {
+  for (const option of topics) {
+    const selected = option.dataset.topic === name
+    option.setAttribute('aria-pressed', String(selected))
+    document.getElementById(option.dataset.topic).hidden = !selected
+  }
+}
+for (const topic of topics) topic.addEventListener('click', () => selectTopic(topic.dataset.topic))
+
+const rubberSteps = {
+  tree: 'Rubber tappers collect latex from living Amazonian rubber trees. The trees can remain standing while providing income.',
+  premium: 'VEJA describes offering conservation bonuses and monitoring deforestation under its rubber sourcing protocol.',
+  sole: 'VEJA uses wild Amazonian rubber in its sneaker soles. Sourcing connects a material choice to the people who harvest it.'
+}
+const stepButtons = [...document.querySelectorAll('[data-rubber-step]')]
+for (const step of stepButtons) {
+  step.addEventListener('click', () => {
+    for (const option of stepButtons) option.setAttribute('aria-pressed', String(option === step))
+    document.querySelector('#rubber-step').textContent = rubberSteps[step.dataset.rubberStep]
+  })
+}
+const rubberAnswers = [...document.querySelectorAll('[data-rubber-answer]')]
+for (const answer of rubberAnswers) {
+  answer.addEventListener('click', () => {
+    for (const option of rubberAnswers) option.setAttribute('aria-pressed', String(option === answer))
+    const feedback = document.querySelector('#rubber-feedback')
+    feedback.textContent = answer.dataset.rubberAnswer === 'evidence'
+      ? 'Good choice. Check where the rubber was collected and how the supplier monitors forest cover and follows up on losses.'
+      : 'Price alone gives no evidence about where the rubber came from or what happened to forest cover. Try the other option.'
+    feedback.hidden = false
   })
 }
 const explanations = {
@@ -175,14 +215,23 @@ async function startTracking(activeStream) {
     camera.width = camera.videoWidth
     camera.height = camera.videoHeight
     if (!camera.width || !camera.height) throw new Error('Camera frame dimensions are unavailable')
-    let markerSize
+    let markerSizes
+    let lastTarget = -1
     let projection
     const tracker = new Controller({
       inputWidth: camera.width,
       inputHeight: camera.height,
       onUpdate(update) {
         if (stream === activeStream && update.type === 'updateMatrix') {
-          if (update.worldMatrix && markerSize) revealBox()
+          const markerSize = markerSizes?.[update.targetIndex]
+          if (update.worldMatrix && markerSize) {
+            revealBox()
+            if (update.targetIndex !== lastTarget) {
+              selectTopic(update.targetIndex === 1 ? 'forest' : 'material')
+              if (update.targetIndex === 1) showDetails(true)
+              lastTarget = update.targetIndex
+            }
+          }
           placeObjects(update.worldMatrix, projection, markerSize)
         }
       }
@@ -190,11 +239,11 @@ async function startTracking(activeStream) {
     controller = tracker
     projection = tracker.getProjectionMatrix()
     const result = tracker.addImageTargetsFromBuffer(target)
-    markerSize = result.dimensions[0]
+    markerSizes = result.dimensions
     tracker.dummyRun(camera)
     if (stream !== activeStream) return
     tracker.processVideo(camera)
-    if (!revealed) report('Aim at the sneaker photo to unlock the shoebox.')
+    if (!revealed) report('Aim at the sneaker or rubber-tapping photo to unlock the shoebox.')
   } catch {
     if (stream !== activeStream) return
     controller?.stopProcessVideo()
@@ -226,7 +275,7 @@ async function openCamera() {
   }
   busy = true
   launch.disabled = true
-  report('Allow camera access, then aim at the sneaker photo.')
+  report('Allow camera access, then aim at the sneaker or rubber-tapping photo.')
   try {
     if (!stream) {
       const nextStream = await navigator.mediaDevices.getUserMedia({
