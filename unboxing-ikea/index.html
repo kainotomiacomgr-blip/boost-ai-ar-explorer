@@ -1,0 +1,267 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>IKEA Flat-Pack Lab | UNBOXING WebAR</title>
+<style>
+*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:#112849;color:#fff9e7;font:1rem/1.45 system-ui,sans-serif}video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}main{position:relative;display:flex;flex-direction:column;justify-content:space-between;min-height:100svh;width:min(100%,36rem);margin:auto;padding:max(12px,env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom));gap:10px}header,footer,.panel{background:#122a4cf2;border:1px solid #aac4df80;border-radius:16px;padding:.75rem .95rem}h1,h2,p{margin:.25rem 0}h1{font-size:1.5rem}h2{font-size:1.15rem}.brand{font-size:.72rem;font-weight:800;letter-spacing:.12em;color:#ffda66}button{font:inherit;min-height:44px;border:1px solid #b8cde7;border-radius:10px;background:#24476d;color:white;padding:.4rem .6rem;cursor:pointer}button[aria-pressed=true],.primary{background:#ffdb65;border-color:#ffdb65;color:#162b4a;font-weight:750}button:focus-visible,a:focus-visible{outline:3px solid #ffdf7a;outline-offset:3px}button:disabled{opacity:.55}.stations{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:.65rem}.icon{display:grid;place-items:center;min-height:76px;gap:.3rem;font-size:.85rem;animation:float 2.5s ease-in-out infinite alternate}.icon:nth-child(2){animation-delay:-.8s}.icon:nth-child(3){animation-delay:-1.6s}.icon:focus-visible,.icon[aria-pressed=true]{animation-play-state:paused}.icon span{font-size:1.4rem}.actions{display:flex;gap:.4rem;flex-wrap:wrap;margin:.6rem 0}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem;margin:.45rem 0}.metrics div{background:#0f2542;border-radius:8px;padding:.4rem;font-size:.78rem}.metrics strong{display:block;color:#ffe08a;font-size:1.03rem}.metric-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin:.6rem 0}.metric-grid span{height:12px;border-radius:2px;background:#ffe08a}.meter{display:block;width:100%;height:1rem;accent-color:#ffe08a}.test-result{color:#ffebaa}.reference{color:#ffe8a1}.qr-view{text-align:center;padding:1rem}.qr-view img{display:block;width:min(78vw,410px);margin:1rem auto;image-rendering:pixelated}@keyframes float{to{transform:translateY(-6px)}}@media(prefers-reduced-motion:reduce){.icon{animation:none}}
+#pack-model{margin:.85rem auto;width:min(44vw,175px);height:62px;background:linear-gradient(105deg,#e2b372 0 75%,#a7713e 76%);color:#392713;box-shadow:0 10px 12px #0005;border-radius:5px;display:grid;place-items:center;font-size:.84rem;font-weight:850;transform:skewY(-5deg);transition:height .25s ease}
+#pack-model[data-format=flat]{height:33px}
+#drop-visual{margin:.5rem auto;width:46px;height:35px;border-radius:4px;background:#dfb37c;color:#392713;font-weight:850;display:grid;place-items:center}
+#drop-visual.dropping{animation:drop .48s ease-in both}
+@keyframes drop{0%{transform:translateY(-12px) rotate(-11deg)}78%{transform:translateY(5px) rotate(10deg)}100%{transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){#drop-visual.dropping{animation:none}#pack-model{transition:none}}
+</style></head><body>
+<video id="camera" autoplay playsinline webkit-playsinline muted hidden></video>
+<main><header><p class="brand">UNBOXING · WEBAR</p><h1>IKEA Flat-Pack Lab</h1><p>Ship 100 side tables in one load. Protect the corners and use as little space as possible.</p></header>
+<section id="lab" hidden aria-label="Interactive packaging lab">
+<nav class="stations" aria-label="Lab stations"><button class="icon" data-station="design" aria-pressed="true"><span aria-hidden="true">▱</span>Design</button><button class="icon" data-station="test" aria-pressed="false"><span aria-hidden="true">▣</span>Drop test</button><button class="icon" data-station="load" aria-pressed="false"><span aria-hidden="true">▰</span>Load truck</button></nav>
+<div class="panel">
+<section id="design"><h2>Choose the format</h2><div class="actions"><button data-format="assembled" aria-pressed="true">Assembled</button><button data-format="flat" aria-pressed="false">Flat-pack</button></div>
+<h2>Choose corner protection</h2><div class="actions"><button data-protection="none" aria-pressed="true">No inserts</button><button data-protection="paper" aria-pressed="false">Folded paper inserts</button></div><div id="pack-model" aria-hidden="true">PACK SAMPLE</div><p id="spec"></p></section>
+<section id="test" hidden><h2>Run a simulated corner-drop test</h2><p>Check whether the selected pack protects the corners during handling.</p><div id="drop-visual" aria-hidden="true">▣</div><button id="drop" type="button" class="primary">Drop the pack</button><p id="test-result" class="test-result" role="status"></p></section>
+<section id="load" hidden><h2>Fill the truck bay</h2><p>Bay dimensions: 240 × 120 × 120 cm. Floor layout: 12 packages per layer.</p><div class="metric-grid" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="metrics"><div><strong id="layers"></strong>Layers</div><div><strong id="capacity"></strong>Units per bay</div><div><strong id="loads"></strong>Loads for 100</div></div><progress id="load-meter" class="meter" max="100" aria-label="Share of the 100 tables that fit in one bay"></progress><div class="actions"><button id="ship" class="primary" type="button">Submit shipping plan</button><button id="restart" type="button">Reset lab</button></div><p id="shipping-result" class="test-result" role="status"></p></section>
+<p><small>Teaching simulation. Dimensions and drop outcomes are illustrative.</small></p>
+</div></section>
+<footer><p id="status" role="status">Aim at the IKEA building on the case-study slide.</p><button id="launch" type="button">Open AR camera</button> <a class="reference" href="https://www.ikea.com/global/en/our-business/how-we-work/our-packaging-journey/" target="_blank" rel="noopener">IKEA’s packaging journey</a></footer>
+</main>
+<section id="qr" class="qr-view" hidden><h1>IKEA Flat-Pack Lab</h1><p>Scan the QR code, allow camera access, then aim at the IKEA building on the slide.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADm0lEQVR4nO2cXYrjOhBGT10Z+tGGLCBLUXYwS7pryg7spfQCBuTHBpmaB0mOkg73wtChk+arh+7Y8cEWfNSfyjHn72z55y9BEClSpEiRIkWKfD7Sqg3YaR2w02oGbGYntvZpbVedvvlpRT4XOZR/cQZYD/hyzPgyhWxxBl+m5MaY3CBkAOz7nlbkM5Pr7l/WAWICFnvzevhu5jNgZsPX3VPkzyCHm2Nrf4x4PmDRwZcJLJ6/6p4ifxZ5qyFgM19O4MsUcNiG+y2k11qnyMeRTUOjAysQz1NzRuNvA4IT0yEbQK+m11qnyIeTi5mZTUAVTXDi+5sTE9ipXLSVsuyr7inyh5DFD3X+ZZkwZwWHjC/HD4Mx49de6NXWKfLRpJ2A1hUKzjJtVs8BsJpdXFU994rrFPkIEi+Wgrt7xmeAWM6Bz2PGPdVzHTG/1jpFPo5simhScU/BS/AqkhozRM/t4qI1aUhkZ+7uJXWGXS9FNGOvnHJJTPJDIm/NdwOqkymxbCbULLoe0kU1aUjkbp2GYgteVSopeI1liZYPje1qaUhktVLbWzwfMqwHt5g2WH7lwZdji2XLBMA2wGqtxH+tdYp8HNnl1JcIVlLnEsvGVqG5Z+VDIu9Zi02ZlgC1Kt8TUNrWe1k/g/IhkTfW0mlqxhNTFVKty8ZW4O9Vm/yQyGurGhqrH+q9Twp7UzHj81gVJg2JvLauT11UcvE0ux+6dBZrZiQNibxL1v2ybp46uM/rAIwf+5Z96xl999OKfBqyy4dK5VWjGlA0xCWTVj4k8q5dNaarXlpnce9TJ3pdSUMiP5M+r1bGhOzfFBzWt5Znj96Xad1I2iuuU+QjyDoLu/zKQ3mHYzlmLKZDOW8wZIcPc9Y3Z5nCdz6tyGck93zo8/zQXNqLe3qk2l7kfbvU9vUwtS9qGIObKRBpSOS1+W7F0wB1o77WZXV0qCoHtNch8sb62j5BGwDpe4yXOUbFMpF3zK/tyhmFfUi2bbyqPyTyk9X5oXoUMnEGZ53KrzdYfB8wCMB6yKhPLfKzdT3GOjVE3X2dgRbLfB8ACa58SOSVtXel1wniubwhPQCbeUwTpWcEwFKc1WaaYxT5n6TPBLcTwc2ONbGuG6/dt197T5GvTfbvBu1FV33fPl16jKEfklVOLfLKbvOhvQbrR2MT+wya5odE3tqlPwRtc+NmAKRW9Envl4m8Z+b/f81d02+cixQpUqRIkSJ/CPkHs7FXvTlsKgMAAAAASUVORK5CYII=" alt="QR code for the IKEA Flat-Pack Lab"><a class="reference" download="UNBOXING_IKEA_Flat_Pack_Lab_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADm0lEQVR4nO2cXYrjOhBGT10Z+tGGLCBLUXYwS7pryg7spfQCBuTHBpmaB0mOkg73wtChk+arh+7Y8cEWfNSfyjHn72z55y9BEClSpEiRIkWKfD7Sqg3YaR2w02oGbGYntvZpbVedvvlpRT4XOZR/cQZYD/hyzPgyhWxxBl+m5MaY3CBkAOz7nlbkM5Pr7l/WAWICFnvzevhu5jNgZsPX3VPkzyCHm2Nrf4x4PmDRwZcJLJ6/6p4ifxZ5qyFgM19O4MsUcNiG+y2k11qnyMeRTUOjAysQz1NzRuNvA4IT0yEbQK+m11qnyIeTi5mZTUAVTXDi+5sTE9ipXLSVsuyr7inyh5DFD3X+ZZkwZwWHjC/HD4Mx49de6NXWKfLRpJ2A1hUKzjJtVs8BsJpdXFU994rrFPkIEi+Wgrt7xmeAWM6Bz2PGPdVzHTG/1jpFPo5simhScU/BS/AqkhozRM/t4qI1aUhkZ+7uJXWGXS9FNGOvnHJJTPJDIm/NdwOqkymxbCbULLoe0kU1aUjkbp2GYgteVSopeI1liZYPje1qaUhktVLbWzwfMqwHt5g2WH7lwZdji2XLBMA2wGqtxH+tdYp8HNnl1JcIVlLnEsvGVqG5Z+VDIu9Zi02ZlgC1Kt8TUNrWe1k/g/IhkTfW0mlqxhNTFVKty8ZW4O9Vm/yQyGurGhqrH+q9Twp7UzHj81gVJg2JvLauT11UcvE0ux+6dBZrZiQNibxL1v2ybp46uM/rAIwf+5Z96xl999OKfBqyy4dK5VWjGlA0xCWTVj4k8q5dNaarXlpnce9TJ3pdSUMiP5M+r1bGhOzfFBzWt5Znj96Xad1I2iuuU+QjyDoLu/zKQ3mHYzlmLKZDOW8wZIcPc9Y3Z5nCdz6tyGck93zo8/zQXNqLe3qk2l7kfbvU9vUwtS9qGIObKRBpSOS1+W7F0wB1o77WZXV0qCoHtNch8sb62j5BGwDpe4yXOUbFMpF3zK/tyhmFfUi2bbyqPyTyk9X5oXoUMnEGZ53KrzdYfB8wCMB6yKhPLfKzdT3GOjVE3X2dgRbLfB8ACa58SOSVtXel1wniubwhPQCbeUwTpWcEwFKc1WaaYxT5n6TPBLcTwc2ONbGuG6/dt197T5GvTfbvBu1FV33fPl16jKEfklVOLfLKbvOhvQbrR2MT+wya5odE3tqlPwRtc+NmAKRW9Envl4m8Z+b/f81d02+cixQpUqRIkSJ/CPkHs7FXvTlsKgMAAAAASUVORK5CYII=">Download QR code</a> · <a class="reference" href="./">Open WebAR</a></section>
+<script>
+const lab=document.querySelector('#lab')
+const stations=[...document.querySelectorAll('[data-station]')]
+const formats=[...document.querySelectorAll('[data-format]')]
+const protections=[...document.querySelectorAll('[data-protection]')]
+let revealed=false
+let format='assembled'
+let protection='none'
+let tested=false
+function hideFacts(){
+  revealed=false
+  lab.hidden=true
+}
+function cameraIsActive(){
+  return stream?.getVideoTracks().some(track=>track.readyState==='live') && !camera.paused && !camera.hidden
+}
+function revealBox(){
+  if(revealed||!cameraIsActive())return
+  revealed=true
+  lab.hidden=false
+  report('Building recognised. Choose a station to begin.')
+}
+function selectStation(name){
+  if(!revealed||!cameraIsActive())return
+  stations.forEach(button=>{
+    const selected=button.dataset.station===name
+    button.setAttribute('aria-pressed',String(selected))
+    document.getElementById(button.dataset.station).hidden=!selected
+  })
+}
+function updatePlan(){
+  document.querySelector('#pack-model').dataset.format=format
+  const height=format==='flat'?12:32
+  const layers=Math.floor(120/height)
+  const capacity=12*layers
+  document.querySelector('#spec').textContent='Pack dimensions: 60 × 40 × '+height+' cm.'
+  document.querySelector('#layers').textContent=layers
+  document.querySelector('#capacity').textContent=capacity
+  document.querySelector('#loads').textContent=Math.ceil(100/capacity)
+  document.querySelector('#load-meter').value=Math.min(100,capacity)
+  formats.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.format===format)))
+  protections.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.protection===protection)))
+  document.querySelector('#test-result').textContent=''
+  document.querySelector('#shipping-result').textContent=''
+  tested=false
+}
+stations.forEach(button=>button.addEventListener('click',()=>selectStation(button.dataset.station)))
+formats.forEach(button=>button.addEventListener('click',()=>{if(!cameraIsActive())return;format=button.dataset.format;updatePlan()}))
+protections.forEach(button=>button.addEventListener('click',()=>{if(!cameraIsActive())return;protection=button.dataset.protection;updatePlan()}))
+document.querySelector('#drop').addEventListener('click',()=>{
+  if(!cameraIsActive())return
+  const sample=document.querySelector('#drop-visual')
+  sample.classList.remove('dropping')
+  void sample.offsetWidth
+  sample.classList.add('dropping')
+  tested=true
+  document.querySelector('#test-result').textContent=protection==='paper'
+    ? 'Pass. The folded paper insert cushions the corner in this simulation.'
+    : 'Fail. The unprotected corner dents on landing. Try a paper insert and repeat the test.'
+  document.querySelector('#shipping-result').textContent=''
+})
+document.querySelector('#ship').addEventListener('click',()=>{
+  if(!cameraIsActive())return
+  document.querySelector('#shipping-result').textContent=!tested
+    ? 'Run the drop test before submitting this design.'
+    : protection!=='paper'
+    ? 'Protection check failed. Add corner inserts and retest.'
+    : format!=='flat'
+    ? 'Protection passed. This plan needs three bays for 100 tables. Try a flatter format.'
+    : 'Plan approved. All 100 tables fit in one bay, and the corners passed the simulated drop test.'
+})
+document.querySelector('#restart').addEventListener('click',()=>{
+  if(!cameraIsActive())return
+  format='assembled';protection='none';updatePlan();selectStation('design')
+})
+updatePlan()
+const camera = document.querySelector('#camera')
+camera.addEventListener('pause', hideFacts)
+const launch = document.querySelector('#launch')
+const status = document.querySelector('#status')
+let stream
+let controller
+let busy = false
+let pageActive = true
+
+function report(message) {
+  status.textContent = message
+  status.hidden = !message
+}
+
+async function startTracking(activeStream) {
+  try {
+    const [{Controller}, target] = await Promise.all([
+      import('https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image.prod.js'),
+      import("./building-target.js").then(() => Uint8Array.from(atob(window.vejaTarget), character => character.charCodeAt(0)).buffer)
+    ])
+    if (stream !== activeStream) return
+    // MindAR draws the video using its width and height attributes.
+    // CSS sizes the preview independently of the source frame.
+    camera.width = camera.videoWidth
+    camera.height = camera.videoHeight
+    if (!camera.width || !camera.height) throw new Error('Camera frame dimensions are unavailable')
+    let markerSize
+    const tracker = new Controller({
+      inputWidth: camera.width,
+      inputHeight: camera.height,
+      onUpdate(update) {
+        if (stream === activeStream && update.type === 'updateMatrix') {
+          if (update.targetIndex !== 0) return
+          if (update.worldMatrix && markerSize) revealBox()
+        }
+      }
+    })
+    controller = tracker
+    const result = tracker.addImageTargetsFromBuffer(target)
+    markerSize = result.dimensions[0]
+    tracker.dummyRun(camera)
+    if (stream !== activeStream) return
+    tracker.processVideo(camera)
+    if (!revealed) report('Aim at the IKEA building photo to reveal the packaging lab.')
+  } catch {
+    if (stream !== activeStream) return
+    controller?.stopProcessVideo()
+    controller?.dispose()
+    controller = undefined
+    report('Photo tracking could not load. Close and reopen the camera to try again.')
+  }
+}
+
+function stopCamera() {
+  hideFacts()
+  controller?.stopProcessVideo()
+  controller?.dispose()
+  controller = undefined
+  stream?.getTracks().forEach(track => track.stop())
+  stream = undefined
+  camera.srcObject = null
+  camera.hidden = true
+  document.body.classList.remove('camera-on')
+  launch.textContent = 'Open AR camera'
+  report('')
+}
+
+async function requestCamera() {
+  try {
+    return await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: {facingMode: {ideal: 'environment'}, width: {ideal: 960}, height: {ideal: 720}}
+    })
+  } catch (error) {
+    if (!['NotFoundError', 'OverconstrainedError'].includes(error.name)) throw error
+    return navigator.mediaDevices.getUserMedia({audio: false, video: true})
+  }
+}
+
+function cameraErrorMessage(error) {
+  switch (error.name) {
+    case 'NotAllowedError':
+    case 'SecurityError':
+      return 'Camera access is blocked. Open this link in Safari or Chrome and allow camera access in the site settings.'
+    case 'NotReadableError':
+    case 'AbortError':
+      return 'The camera could not start. Close other apps or tabs using it, then tap Open AR camera.'
+    case 'NotFoundError':
+    case 'OverconstrainedError':
+      return 'No usable camera was found.'
+    default:
+      return 'Could not open the camera. Tap Open AR camera to try again.'
+  }
+}
+
+async function openCamera() {
+  if (busy || !pageActive) return
+  if (!navigator.mediaDevices?.getUserMedia) {
+    report('This browser cannot access the camera. Open the experience in Safari or Chrome,.')
+    return
+  }
+  busy = true
+  launch.disabled = true
+  report('Allow camera access, then aim at the IKEA building photo.')
+  const promptTimer = setTimeout(() => {
+    if (!stream && pageActive) report('Still waiting for camera permission. Check for the browser prompt or open the link in Safari or Chrome.')
+  }, 7000)
+  try {
+    if (!stream) {
+      const nextStream = await requestCamera()
+      if (!pageActive) {
+        nextStream.getTracks().forEach(track => track.stop())
+        return
+      }
+      stream = nextStream
+      for (const track of nextStream.getVideoTracks()) {
+        track.addEventListener('ended', () => {
+          if (stream === nextStream) stopCamera()
+        }, {once: true})
+      }
+      camera.muted = true
+      camera.srcObject = stream
+    }
+    const activeStream = stream
+    camera.hidden = false
+    try {
+      await camera.play()
+    } catch {
+      if (stream === activeStream) {
+        camera.hidden = true
+        launch.textContent = 'Start camera preview'
+        report('Tap Start camera preview to show the live feed.')
+      }
+      return
+    }
+    if (stream !== activeStream) return
+    document.body.classList.add('camera-on')
+    launch.textContent = 'Close camera'
+    report('Camera is open. Loading photo recognition…')
+    startTracking(stream)
+  } catch (error) {
+    stopCamera()
+    if (pageActive) report(cameraErrorMessage(error))
+  } finally {
+    clearTimeout(promptTimer)
+    busy = false
+    launch.disabled = false
+  }
+}
+launch.addEventListener('click', () => {
+  if (document.body.classList.contains('camera-on')) stopCamera()
+  else openCamera()
+})
+window.addEventListener('pagehide', () => {
+  pageActive = false
+  stopCamera()
+})
+window.addEventListener('pageshow', () => { pageActive = true })
+if (new URLSearchParams(location.search).has('qr')) {
+  document.querySelector('main').hidden = true
+  document.querySelector('#qr').hidden = false
+} else {
+  openCamera()
+}
+
+
+</script></body></html>
