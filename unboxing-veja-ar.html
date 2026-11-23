@@ -4,23 +4,20 @@
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f6f3e9;color:#152517;font:1rem/1.45 system-ui,sans-serif}main{max-width:650px;margin:auto;padding:20px}small{color:#486b35;font-weight:750}h1{font-size:clamp(2rem,8vw,3.45rem);line-height:1.04;letter-spacing:-.05em;margin:.25em 0 .4em}h2{font-size:1.25rem;margin:.2em 0}.scene{height:clamp(245px,43vh,360px);border-radius:20px;position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at center,#e2eebd,#789472);display:grid;place-items:center}.scene video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.shadow{position:absolute;width:185px;height:24px;bottom:18%;border-radius:100%;filter:blur(10px);background:#22361e80}.float{perspective:620px;animation:bob 4s ease-in-out infinite}.box{width:180px;height:64px;position:relative;transform-style:preserve-3d;transform:rotateX(-22deg) rotateY(-29deg);transition:transform .35s}.box.turned{transform:rotateX(-24deg) rotateY(43deg)}.face{position:absolute;top:50%;left:50%;display:grid;place-items:center;backface-visibility:hidden;border:1px solid #76512f;color:#252c1a;background:#bf925e;font-weight:800}.front,.back{width:180px;height:64px}.front{transform:translate(-50%,-50%) translateZ(53px);background:linear-gradient(#886442 0 20%,#cba16c 21%);font-size:.78rem;letter-spacing:.13em;padding-top:9px}.back{transform:translate(-50%,-50%) rotateY(180deg) translateZ(53px)}.left,.right{width:106px;height:64px;background:linear-gradient(#755436 0 20%,#ab804f 21%)}.left{transform:translate(-50%,-50%) rotateY(-90deg) translateZ(90px)}.right{transform:translate(-50%,-50%) rotateY(90deg) translateZ(90px)}.top,.bottom{width:180px;height:106px}.top{transform:translate(-50%,-50%) rotateX(90deg) translateZ(32px);background:#d9b17d;font-size:1.5rem;letter-spacing:.14em}.bottom{transform:translate(-50%,-50%) rotateX(-90deg) translateZ(32px)}@keyframes bob{50%{translate:0 -12px}}@media(prefers-reduced-motion:reduce){.float{animation:none}.box{transition:none}}.row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.action,button{border:1px solid #668358;border-radius:10px;background:#ebf1da;color:#152517;padding:10px 13px;min-height:44px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer}.primary{background:#284928;color:white}.panel{padding:15px;border:1px solid #c7d0b8;border-radius:13px;background:#fffdf6;margin:14px 0}p{margin:.55em 0}.feedback{font-weight:650}[hidden]{display:none!important}
 #tracker{position:absolute;inset:0;overflow:hidden;isolation:isolate;z-index:2}#tracker>video{z-index:0!important}a-scene{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:1;background:transparent!important}#marker-preview{display:block;width:100%;max-width:520px;height:auto;margin:12px auto;border-radius:12px}.marker-help{font-size:.92rem}summary{cursor:pointer;font-weight:700}
-.sneaker-hero{margin:0;width:min(88%,455px);animation:bob 4s ease-in-out infinite}.sneaker-hero img{display:block;width:100%;aspect-ratio:723/450;object-fit:cover;border-radius:14px;box-shadow:0 18px 26px #14251e50}.video-cta{display:inline-flex;align-items:center;gap:.55em;background:#ad1824;color:#fff}.camera-options{margin-top:16px}@media(prefers-reduced-motion:reduce){.sneaker-hero{animation:none}}
+#scanner-hint{width:min(90%,460px);margin:0}#scanner-hint img{display:block;width:100%;height:auto;border-radius:12px}#ar-video{background:#b31425;color:white;border-color:#b31425}.camera-active{overflow:hidden}.camera-active .scene{position:fixed;inset:0;width:100%;height:100%;height:100dvh;border-radius:0;z-index:10;background:#121d13}.camera-active #scanner-controls{position:fixed;z-index:13;bottom:max(14px,env(safe-area-inset-bottom));left:12px;right:12px;justify-content:center;margin:0}.camera-active #camera-status{position:fixed;z-index:13;top:max(10px,env(safe-area-inset-top));left:5%;right:5%;padding:10px;border-radius:12px;background:#152517eb;color:white;text-align:center;margin:0}.camera-active #scan-guide{position:fixed;inset:22% 9% 25%;border:2px dashed #f5ffe3bb;border-radius:22px;pointer-events:none;z-index:12}.camera-active #preview,.camera-active #turn{display:none}.camera-active #camera{background:#f5f7ed;color:#152517}.camera-active #tracker{background:#121d13}.camera-active #ar-video{box-shadow:0 3px 15px #0007}
 </style></head><body><main>
 <small>UNBOXING · Packaging case study</small>
-<h1>VEJA’s shoebox</h1>
-<p>Explore how box size and cardboard sourcing affect the packaging of a pair of trainers.</p>
+<h1>VEJA · Unbox the story</h1>
+<p>Start the camera and aim it at the full VEJA sneaker photo on your slide.</p>
 <div class="scene" aria-label="Packaging preview and sneaker photo camera view">
-<div id="tracker" hidden></div><figure id="sneaker-hero" class="sneaker-hero"><img src="./veja-shoes-marker.jpg" width="723" height="450" alt="Two cream VEJA sneakers with dark V logos" fetchpriority="high"></figure><div id="box-preview" hidden>
+<div id="tracker" hidden></div><figure id="scanner-hint"><img src="./veja-shoes-marker.jpg" width="723" height="450" alt="VEJA sneaker photo to scan"></figure><div id="box-preview" hidden>
 <div class="shadow"></div>
 <div class="float"><div class="box" id="box" aria-hidden="true"><div class="face front">KRAFT CARDBOARD</div><div class="face back"></div><div class="face left"></div><div class="face right"></div><div class="face top">VEJA</div><div class="face bottom"></div></div></div>
 </div></div>
-<div class="row"><a class="action video-cta" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" target="_blank" rel="noopener"><span aria-hidden="true">▶</span> Watch on YouTube</a></div>
-<p>See how VEJA sources wild rubber for its sneaker soles in the Amazon.</p>
-<details class="camera-options"><summary>Scan the shoe photo in camera AR</summary>
-<div class="row"><button id="camera" class="primary">Start camera</button><button id="preview" aria-pressed="false">Preview the shoebox</button><button id="turn" aria-pressed="false" hidden>Turn the box</button></div>
-<p id="camera-status" role="status">Point your camera at the sneaker photo on the VEJA slide. Keep the entire photo in view.</p>
-</details>
-<section class="panel" aria-labelledby="company-title">
+<div id="scanner-controls" class="row"><button id="camera" class="primary">Start camera</button><a id="ar-video" class="action video-link" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" target="_blank" rel="noopener" hidden>▶ Watch on YouTube</a><button id="preview" aria-pressed="false">Preview without camera</button><button id="turn" aria-pressed="false" hidden>Turn the box</button></div>
+<p id="camera-status" role="status">Use the photo on your slide, a printout, or a second screen.</p>
+<div id="scan-guide" aria-hidden="true" hidden></div>
+<section id="company" class="panel" aria-labelledby="company-title" hidden>
 <h2 id="company-title">Meet VEJA</h2>
 <p>VEJA is a French sneaker brand that uses organic cotton and wild Amazonian rubber. Its kraft shoeboxes are FSC-certified.</p>
 <div class="row"><a class="action" href="https://project.veja-store.com/en/single/production" target="_blank" rel="noopener">About VEJA’s materials and packaging</a></div>
@@ -55,8 +52,12 @@ document.querySelectorAll('[data-answer]').forEach(button => button.onclick = ()
 const host = document.querySelector('#tracker');
 const camera = document.querySelector('#camera');
 const preview = document.querySelector('#preview');
-const hint = document.querySelector('#sneaker-hero');
+const hint = document.querySelector('#scanner-hint');
 const statusMessage = document.querySelector('#camera-status');
+const company = document.querySelector("#company");
+const guide = document.querySelector('#scan-guide');
+const videoLink = document.querySelector('#ar-video');
+let recognised = false;
 let scene;
 let tracker;
 let state = 'idle';
@@ -66,6 +67,8 @@ preview.onclick = () => {
   hint.hidden = !boxPreview.hidden;
   document.querySelector('#turn').hidden = boxPreview.hidden;
   preview.setAttribute('aria-pressed', !boxPreview.hidden);
+  company.hidden = boxPreview.hidden && !recognised;
+  videoLink.hidden = company.hidden;
 };
 function stop(message) {
   const video = tracker?.video;
@@ -78,6 +81,9 @@ function stop(message) {
     video?.remove();
   }
   state = 'idle';
+  document.body.classList.remove('camera-active');
+  guide.hidden = true;
+  videoLink.hidden = !recognised;
   host.hidden = true;
   preview.disabled = false;
   camera.disabled = false;
@@ -91,15 +97,21 @@ function mount() {
     state = 'ready';
     camera.disabled = false;
     camera.textContent = 'Close camera';
-    statusMessage.textContent = 'Camera ready. Point at the full sneaker photo.';
+    guide.hidden = false;
+    statusMessage.textContent = 'Frame the full sneaker photo.';
   });
   scene.addEventListener('arError', () => stop('Camera tracking could not start. Allow camera access in your browser and try again.'));
   const target = scene.querySelector('#shoe-target');
   target.addEventListener('targetFound', () => {
-    statusMessage.textContent = 'Photo recognised. The sneaker image is anchored to the picture.';
+    recognised = true;
+    company.hidden = false;
+    guide.hidden = true;
+    videoLink.hidden = false;
+    statusMessage.textContent = 'Photo recognised. Watch VEJA’s Amazonian rubber story.';
   });
   target.addEventListener('targetLost', () => {
-    statusMessage.textContent = 'Photo out of view. Aim at the complete sneaker photo again.';
+    guide.hidden = false;
+    statusMessage.textContent = 'Aim at the photo again to bring back the floating image.';
   });
 }
 camera.onclick = () => {
@@ -109,6 +121,9 @@ camera.onclick = () => {
     return;
   }
   state = 'starting';
+  document.body.classList.add('camera-active');
+  videoLink.hidden = true;
+  camera.textContent = 'Starting camera…';
   camera.disabled = true;
   preview.disabled = true;
   host.hidden = false;
