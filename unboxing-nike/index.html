@@ -1,0 +1,124 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Nike One Box | UNBOXING WebAR</title>
+<style>
+*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;color:#fff8eb;background:#24180f;font:1rem/1.45 system-ui,sans-serif}video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}main{position:relative;width:min(100%,35rem);min-height:100svh;margin:auto;padding:16px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;gap:1rem}header,footer{width:100%;border:1px solid #ead0a577;background:#24180ff0;border-radius:16px;padding:.8rem 1rem;text-align:center}h1,p{margin:.25rem 0}h1{font-size:1.65rem}button{font:inherit;min-height:44px;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #ffce75;outline-offset:4px}#stage{width:100%}.objects{display:flex;justify-content:center;align-items:center;gap:1rem;min-height:195px}.object{border:0;background:none;color:#fff8eb;display:grid;gap:.65rem;justify-items:center;padding:0;animation:float 2.5s ease-in-out infinite alternate}.object:nth-child(2){animation-delay:-1.25s}.object:focus-visible,.object:hover{animation-play-state:paused}.caption{background:#24180f;padding:.36rem .58rem;border-radius:20px;font-weight:750;font-size:.85rem}.box{width:min(49vw,210px);height:95px;position:relative;background:linear-gradient(110deg,#dbad72 0 73%,#9b693b 74%);border-radius:5px;box-shadow:0 14px 16px #0006;display:grid;place-items:center;transform:skewY(-5deg);color:#302014;font-weight:900;transition:width .35s,height .35s}.box:before{content:"";position:absolute;inset:0 0 auto;height:16px;background:#ecc694;border-bottom:3px solid #a47043;border-radius:4px}.inner{position:absolute;top:-15px;width:64%;height:25px;border:2px solid #9b693b;border-radius:4px;background:#f4d1a1}.label-art{width:min(26vw,105px);min-height:63px;display:grid;place-items:center;background:#f9efdb;color:#25190e;border-radius:5px;transform:rotate(10deg);font-size:.76rem;font-weight:900;box-shadow:0 8px 12px #0006}.label-art:after{content:"";width:55%;height:12px;background:repeating-linear-gradient(90deg,#261c15 0 2px,transparent 2px 4px);margin-bottom:.4rem}#stage[data-step=single] .box,#stage[data-step=ready] .box{width:min(44vw,180px);height:71px}#stage:not([data-step=double]) .inner{opacity:0}#stage[data-step=ready] .box:after{content:"SHIP READY";position:absolute;right:8%;bottom:12%;background:#fff4df;color:#261c15;border-radius:2px;padding:.18rem .25rem;font-size:.58rem}.action{border:0;border-radius:8px;background:#ffd086;color:#24180f;padding:.45rem .75rem;font-weight:750}a{color:#ffd086}#counter{font-weight:800;color:#ffd086}.qr{text-align:center;padding:1rem}.qr img{width:min(78vw,410px);display:block;margin:1rem auto;image-rendering:pixelated}@keyframes float{to{transform:translateY(-8px)}}@media(prefers-reduced-motion:reduce){.object,.box{animation:none;transition:none}}
+</style></head><body>
+<video id="camera" autoplay muted playsinline hidden></video>
+<main id="map-screen"><header><h1>Nike One Box</h1><p>Turn a double-boxed order into one ship-ready package.</p></header>
+<section id="stage" data-step="double" hidden aria-label="Floating packaging controls"><div class="objects">
+<button id="parcel" class="object" type="button"><span class="box" aria-hidden="true"><span class="inner"></span><span id="box-name">2 BOXES</span></span><span id="parcel-caption" class="caption">Remove outer box</span></button>
+<button id="label" class="object" type="button"><span class="label-art" aria-hidden="true">SHIPPING LABEL</span><span class="caption">Apply label</span></button>
+</div></section>
+<footer>
+<div id="activity" hidden><p id="counter">2 boxes</p><p id="feedback" role="status">Tap the parcel to remove the outer shipping box.</p><button class="action" id="reset" type="button" hidden>Compare again</button><p id="source" hidden><a href="https://www.nike.com/a/nikes-one-box-cuts-packaging-in-half/" target="_blank" rel="noopener">Read Nike’s One Box case study</a></p></div>
+<div id="camera-retry" hidden><p role="status">Allow camera access to see the floating parcel.</p><button type="button" class="action">Open camera</button></div>
+</footer></main>
+<section id="qr" class="qr" hidden><h1>Nike One Box</h1><p>Scan with your phone and allow camera access.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADgElEQVR4nO2cS46cMBCGv4qRZmmkHCBHgRvkSNHcDI4yB4gEy5FAfxZ+YHoym6hb3T2pWqDG9CdsqVSuFzbxbzJ/+0cQnHTSSSeddNJJJx+PtCxd+gWrGXO/p7Esa/nXeOfZOvmQ5CBJWgCixNwDwwKa4oZZDzYSJEk6k/eYrZMPSa7Vvqzd6Q+rmabVTBPQmqXnXKeTtyeLMdow64PSrzFKNt7snU4+N9ld3BsEGN5eBKshCIK12674Tie/Fll0KApYQazfMeK7KY2xd5p/big9ve9snXxEktZNJohh+fRS/jVI0vRc63TydmSyQ4d90dwHIL4bc4+VMSybqmu808mvRWY7NOhweIJyqF/j/UFSCvqHcut2yMkqSVOmuMGgDU0EUXc1TUC6SBsQt0I81zqdvB3Z+kPJ7UmKBIcDJC0525gsktshJ09y7FoQN/KW1ehVvdTtznXIyb+Su0lvL9KU8tS7JbNErMq1dmiKXutw8kJqjjHIhundNGg3sfZpVHP/uyPdRmHEGsQ91zqdvDVpZh16tQ4bCbIxbmhiN1KeGmC2Dlg7bLzzbJ18SHJYwMZUst8tF15TML8bREkTeyq83n+2Tj4UWWP77OfkhFAK62t2Om55TEvwuMzJC8k5xiU0SaImxzgRUqKxpBxDefBc63Ty1mTeo9aOo3/IxuQP7WbWA7OZlQfXeKeTX4UsOcaSQCx5atrNK8X2wJE9cjvkZJWjLJbrGjUdnfVlI+1gE5C8a9/LnDxJo0PZM6rFDbJKfXjqOuRkK4dP3dQ16oOiPqXcOvle5uQHacMvlXrZOZg/zBLgcZmTl3L41E21Pn8WVP2hGv6rRv6uQ04WOSmISutQjdCOVpCctnY75OSlFM2B4k6HxrEGTtantjW6DjlZpfWpdY7BTgFbKX24HXLyUhp9mYDS7bo1D7KffSJch5ysorPk0epiQ9AR0bsdcvIz8jj3I9ucUjRLTUQpZ5T6QTZsvPNsnXws8uz7nL5HrGM56Fcb6rsdcvKSrOd+pB60ZIzMIL6b/Vpo6vZXe6eTX5Ws/fevP7bUAavXPrek6bUP5QSQx5itk/cnL8/9EOuLgA2GBTEsPUZc8uX46P7J1unk7clYYvu5L+1naVcjiOGtI3001Gxoz7lOJ69Pfjj3I11im3c8Pln0ur2TH8X8jHMnnXTSSSeddPI/J/8A1EFC5X9LfgMAAAAASUVORK5CYII=" alt="QR code for the Nike One Box WebAR experience"><a download="UNBOXING_Nike_One_Box_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADgElEQVR4nO2cS46cMBCGv4qRZmmkHCBHgRvkSNHcDI4yB4gEy5FAfxZ+YHoym6hb3T2pWqDG9CdsqVSuFzbxbzJ/+0cQnHTSSSeddNJJJx+PtCxd+gWrGXO/p7Esa/nXeOfZOvmQ5CBJWgCixNwDwwKa4oZZDzYSJEk6k/eYrZMPSa7Vvqzd6Q+rmabVTBPQmqXnXKeTtyeLMdow64PSrzFKNt7snU4+N9ld3BsEGN5eBKshCIK12674Tie/Fll0KApYQazfMeK7KY2xd5p/big9ve9snXxEktZNJohh+fRS/jVI0vRc63TydmSyQ4d90dwHIL4bc4+VMSybqmu808mvRWY7NOhweIJyqF/j/UFSCvqHcut2yMkqSVOmuMGgDU0EUXc1TUC6SBsQt0I81zqdvB3Z+kPJ7UmKBIcDJC0525gsktshJ09y7FoQN/KW1ehVvdTtznXIyb+Su0lvL9KU8tS7JbNErMq1dmiKXutw8kJqjjHIhundNGg3sfZpVHP/uyPdRmHEGsQ91zqdvDVpZh16tQ4bCbIxbmhiN1KeGmC2Dlg7bLzzbJ18SHJYwMZUst8tF15TML8bREkTeyq83n+2Tj4UWWP77OfkhFAK62t2Om55TEvwuMzJC8k5xiU0SaImxzgRUqKxpBxDefBc63Ty1mTeo9aOo3/IxuQP7WbWA7OZlQfXeKeTX4UsOcaSQCx5atrNK8X2wJE9cjvkZJWjLJbrGjUdnfVlI+1gE5C8a9/LnDxJo0PZM6rFDbJKfXjqOuRkK4dP3dQ16oOiPqXcOvle5uQHacMvlXrZOZg/zBLgcZmTl3L41E21Pn8WVP2hGv6rRv6uQ04WOSmISutQjdCOVpCctnY75OSlFM2B4k6HxrEGTtantjW6DjlZpfWpdY7BTgFbKX24HXLyUhp9mYDS7bo1D7KffSJch5ysorPk0epiQ9AR0bsdcvIz8jj3I9ucUjRLTUQpZ5T6QTZsvPNsnXws8uz7nL5HrGM56Fcb6rsdcvKSrOd+pB60ZIzMIL6b/Vpo6vZXe6eTX5Ws/fevP7bUAavXPrek6bUP5QSQx5itk/cnL8/9EOuLgA2GBTEsPUZc8uX46P7J1unk7clYYvu5L+1naVcjiOGtI3001Gxoz7lOJ69Pfjj3I11im3c8Pln0ur2TH8X8jHMnnXTSSSeddPI/J/8A1EFC5X9LfgMAAAAASUVORK5CYII=">Download QR code</a> · <a href="./">Open WebAR</a></section>
+<script>
+const stage=document.querySelector('#stage')
+const activity=document.querySelector('#activity')
+const feedback=document.querySelector('#feedback')
+const counter=document.querySelector('#counter')
+const parcel=document.querySelector('#parcel')
+const label=document.querySelector('#label')
+const reset=document.querySelector('#reset')
+const source=document.querySelector('#source')
+function showStep(step){
+  stage.dataset.step=step
+  document.querySelector('#box-name').textContent=step==='double'?'2 BOXES':'ONE BOX'
+  document.querySelector('#parcel-caption').textContent=step==='double'?'Remove outer box':'Show double-boxing'
+  counter.textContent=step==='double'?'2 boxes':'1 box'
+  reset.hidden=step!=='ready'
+  source.hidden=step!=='ready'
+}
+parcel.addEventListener('click',()=>{
+  if(stage.hidden)return
+  const remove=stage.dataset.step==='double'
+  showStep(remove?'single':'double')
+  feedback.textContent=remove
+    ? 'Nike redesigned the shoebox to act as the shipping package. Tap the label to prepare it for dispatch.'
+    : 'The original setup puts a shoebox inside an outer shipping box.'
+})
+label.addEventListener('click',()=>{
+  if(stage.hidden)return
+  if(stage.dataset.step==='double'){
+    feedback.textContent='Remove the outer box first to try Nike’s One Box design.'
+    return
+  }
+  showStep('ready')
+  feedback.textContent='Ready to ship. One redesigned box does the job of the original two.'
+})
+reset.addEventListener('click',()=>{
+  showStep('double')
+  feedback.textContent='Tap the parcel to remove the outer shipping box.'
+  parcel.focus()
+})
+const camera = document.querySelector('#camera')
+const retry = document.querySelector('#camera-retry')
+const openButton = retry.querySelector('button')
+let stream
+let opening = false
+let visible = true
+
+function closeCamera() {
+  const active = stream
+  stream = undefined
+  active?.getTracks().forEach(track => track.stop())
+  camera.srcObject = null
+  camera.hidden = true
+  stage.hidden = true
+  activity.hidden = true
+}
+
+async function openCamera() {
+  if (opening || stream || !visible) return
+  if (!navigator.mediaDevices?.getUserMedia) {
+    retry.hidden = false
+    retry.querySelector('p').textContent = 'Open this page in Safari or Chrome to use the camera.'
+    openButton.hidden = true
+    return
+  }
+  opening = true
+  openButton.disabled = true
+  try {
+    const active = await navigator.mediaDevices.getUserMedia({audio: false, video: {facingMode: {ideal: 'environment'}}})
+    if (!visible) {
+      active.getTracks().forEach(track => track.stop())
+      return
+    }
+    stream = active
+    camera.muted = true
+    camera.srcObject = active
+    camera.hidden = false
+    await camera.play()
+    if (stream !== active) return
+    retry.hidden = true
+    stage.hidden = false
+    activity.hidden = false
+  } catch {
+    closeCamera()
+    if (visible) retry.hidden = false
+  } finally {
+    opening = false
+    openButton.disabled = false
+  }
+}
+
+openButton.addEventListener('click', openCamera)
+camera.addEventListener('pause',()=>{stage.hidden=true;activity.hidden=true})
+camera.addEventListener('playing',()=>{if(stream&&!camera.hidden){stage.hidden=false;activity.hidden=false}})
+window.addEventListener('pagehide', () => {
+  visible = false
+  closeCamera()
+})
+window.addEventListener('pageshow', event => {
+  visible = true
+  if (event.persisted && !document.querySelector('#map-screen').hidden) openCamera()
+})
+if (new URLSearchParams(location.search).has('qr')) {
+  document.querySelector('#map-screen').hidden = true
+  document.querySelector('#qr').hidden = false
+} else {
+  openCamera()
+}
+
+</script></body></html>
