@@ -4,30 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#192c22">
-<title>VEJA · UNBOXING AR case study</title>
-<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-<script src="./assets.js"></script>
+<title>VEJA · UNBOXING case study</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#192c22;color:#f8f8ed;font:1rem/1.45 system-ui,sans-serif}
-[hidden]{display:none!important}
-body > video{z-index:0!important;pointer-events:none}
-a-scene{position:fixed!important;inset:0;width:100vw!important;height:100dvh!important;z-index:1}
-.overlay{position:fixed;z-index:5;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom));gap:1rem}
-.tag{align-self:center;background:#192c22;color:#c9f0ad;border-radius:2rem;padding:.5rem 1rem;font-weight:700;letter-spacing:.09em;font-size:.78rem}
-section{pointer-events:auto;width:min(100%,29rem);margin-inline:auto;background:#f6f6ed;color:#192c22;border-radius:1rem;padding:1.1rem;box-shadow:0 4px 28px #0004;max-height:75dvh;overflow:auto}
-h1,h2{line-height:1.15;margin:0 0 .5rem}
-h1{font-size:clamp(1.65rem,6vw,2.45rem)}
-h2{font-size:1.3rem}
-p{margin:.4rem 0 .9rem}
-.action{display:inline-flex;justify-content:center;align-items:center;min-height:44px;padding:.65rem 1rem;border:0;border-radius:.5rem;background:#234a32;color:#fff;font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
-.action:disabled{opacity:.65}
-.links{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:.75rem}
-.links a,summary{color:#214931;cursor:pointer}
-#reference{display:block;width:100%;border-radius:.5rem;margin:.75rem 0}
-#status{margin-bottom:.55rem}
-#shoebox{position:fixed;inset:0 0 15%;display:grid;place-items:center;pointer-events:none;z-index:-1}
+body{margin:0;min-height:100svh;display:grid;place-items:center;padding:24px 20px;background:radial-gradient(ellipse at 50% 43%,#3d5946,#192c22 75%);color:#f8f8ed;font:1rem/1.5 system-ui,sans-serif;text-align:center}
+main{width:min(100%,34rem)}
+.project{margin:0 0 .55rem;color:#d2edb7;font-size:.8rem;font-weight:750;letter-spacing:.12em}
+h1{margin:0;font-size:clamp(2.5rem,10vw,4.4rem);line-height:1}
+.topic{margin:.6rem 0 0;color:#e4eadc}
+.objects{display:flex;align-items:center;justify-content:center;gap:clamp(12px,4vw,28px);min-height:clamp(180px,44vw,266px);padding-top:12px}
 .box-art{position:relative;width:min(66vw,340px);aspect-ratio:1.8;filter:drop-shadow(0 20px 12px #0007);animation:float 2.6s ease-in-out infinite alternate}
 .box-art span{position:absolute;inset:0}
 .box-top{background:#e7bf89;clip-path:polygon(1% 39%,27% 8%,99% 24%,73% 56%)}
@@ -37,106 +22,27 @@ p{margin:.4rem 0 .9rem}
 .box-logo{position:absolute;left:34%;top:56%;transform:translateX(-50%) rotate(7deg);color:#282018;font-size:clamp(1.25rem,7vw,2.4rem);font-weight:900;letter-spacing:.18em}
 @keyframes float{from{transform:translateY(10px)}to{transform:translateY(-16px)}}
 @media(prefers-reduced-motion:reduce){.box-art{animation:none}}
-.preview{background:none;border:0;padding:.5rem 0;color:#214931;font:inherit;text-decoration:underline;cursor:pointer}
+.box-art{width:min(53vw,295px);flex:none}
+.youtube{display:inline-flex;align-items:center;justify-content:center;width:clamp(70px,20vw,120px);aspect-ratio:1.42;border-radius:25%;background:#f03;color:white;box-shadow:0 13px 23px #0006;animation:float 2.6s ease-in-out infinite alternate;animation-delay:-1.2s}
+.youtube::before{content:"";width:29%;aspect-ratio:1;background:white;clip-path:polygon(14% 0,100% 50%,14% 100%)}
+.youtube:hover,.youtube:focus-visible{animation-play-state:paused;background:#da002b}
+a:focus-visible{outline:3px solid #d2edb7;outline-offset:5px}
+.watch{display:inline-block;color:white;font-weight:700;text-underline-offset:.25em}
+.film{margin:.35rem 0 0;color:#e4eadc}
+@media(prefers-reduced-motion:reduce){.youtube{animation:none}}
 </style>
 </head>
 <body>
-<a-scene id="scene" embedded color-space="sRGB" renderer="alpha: true; antialias: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-  <a-entity id="anchor" mindar-image-target="targetIndex: 0">
-  </a-entity>
-</a-scene>
-<main class="overlay">
-  <div id="shoebox" role="img" aria-label="Floating VEJA cardboard shoebox" hidden>
-    <div class="box-art" aria-hidden="true"><span class="box-front"></span><span class="box-side"></span><span class="box-top"></span><span class="box-lid"></span><strong class="box-logo">VEJA</strong></div>
+<main>
+  <p class="project">UNBOXING · CASE STUDY</p>
+  <h1>VEJA</h1>
+  <p class="topic">Sustainable packaging &amp; forest-friendly sourcing</p>
+  <div class="objects">
+    <div class="box-art" role="img" aria-label="Floating VEJA shoebox"><span class="box-front"></span><span class="box-side"></span><span class="box-top"></span><span class="box-lid"></span><strong class="box-logo" aria-hidden="true">VEJA</strong></div>
+    <a class="youtube" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" aria-label="Watch VEJA’s Amazonian rubber film on YouTube"></a>
   </div>
-  <div class="tag">UNBOXING · AR CASE STUDY</div>
-  <section aria-label="VEJA case study">
-    <div id="intro">
-      <h1>VEJA</h1>
-      <p>Sustainable packaging &amp; forest-friendly sourcing</p>
-      <button id="start" class="action" disabled>Start AR</button>
-      <div class="links">
-        <details><summary>See the photo to scan</summary><img id="reference" alt="Two cream VEJA sneakers. Use this photo as the AR target."></details>
-      </div>
-    </div>
-    <button id="preview" class="preview" type="button">Preview the floating shoebox</button>
-    <p id="status" role="status" aria-live="polite">Loading camera tools…</p>
-    <div id="discovered" hidden>
-      <h2>From forest to footwear</h2>
-      <p>See how VEJA sources wild Amazonian rubber for its sneaker soles. Then consider how a box sized to the shoes could reduce empty space and the need for filler.</p>
-      <a class="action" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" target="_blank" rel="noopener">▶ Watch VEJA’s film on YouTube</a>
-    </div>
-  </section>
+  <a class="watch" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0">Watch on YouTube</a>
+  <p class="film">A True Story About Amazonian Rubber</p>
 </main>
-<script>
-const scene = document.querySelector('#scene')
-const anchor = document.querySelector('#anchor')
-const start = document.querySelector('#start')
-const status = document.querySelector('#status')
-const intro = document.querySelector('#intro')
-const discovered = document.querySelector('#discovered')
-const shoebox = document.querySelector('#shoebox')
-const preview = document.querySelector('#preview')
-
-function revealShoebox() {
-  shoebox.hidden = false
-  discovered.hidden = false
-  preview.hidden = true
-  status.hidden = true
-  intro.hidden = true
-}
-
-preview.addEventListener('click', revealShoebox)
-
-async function prepare() {
-  if (!window.AFRAME?.components['mindar-image'] || !window.vejaAssets) {
-    status.textContent = 'The AR tools could not load. You can still preview the shoebox and watch the film.'
-    return
-  }
-
-  document.querySelector('#reference').src = window.vejaAssets.reference
-  const targetResponse = await fetch(window.vejaAssets.target)
-  const targetUrl = URL.createObjectURL(await targetResponse.blob())
-  if (!scene.hasLoaded) await new Promise(resolve => scene.addEventListener('loaded', resolve, {once:true}))
-  scene.setAttribute('mindar-image', {
-    imageTargetSrc: targetUrl,
-    autoStart: false,
-    uiScanning: false,
-    uiLoading: false,
-    uiError: false
-  })
-  if (!navigator.mediaDevices?.getUserMedia) {
-    status.textContent = 'Open this page over HTTPS in a browser with camera access.'
-    return
-  }
-
-  status.textContent = 'Start the camera, then aim it at the sneaker photo on the slide.'
-  start.disabled = false
-  const showError = () => {
-    status.textContent = 'AR could not start. Check your camera permission, then try again.'
-    start.disabled = false
-    intro.hidden = false
-  }
-  scene.addEventListener('arError', showError)
-  scene.addEventListener('arReady', () => {
-    intro.hidden = true
-    status.textContent = 'Point your camera at the sneaker photo.'
-  })
-  anchor.addEventListener('targetFound', revealShoebox)
-  start.addEventListener('click', async () => {
-    start.disabled = true
-    status.textContent = 'Starting camera…'
-    try {
-      await scene.systems['mindar-image-system'].start()
-    } catch {
-      showError()
-    }
-  })
-}
-prepare().catch(() => {
-  status.textContent = 'The AR experience could not load. You can still watch VEJA’s film.'
-})
-</script>
 </body>
 </html>
