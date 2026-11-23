@@ -32,6 +32,7 @@ const progress=document.querySelector('#progress')
 const objects=[...document.querySelectorAll('[data-round]')]
 const rounds=[{"title":"Check the supplier file","prompt":"Which evidence would you request to verify this paper box’s FSC claim?","choices":["An ISO 14001 certificate alone","A matching FSC claim on supplier documents","A photo of a recycling symbol"],"correct":1,"feedback":["ISO 14001 concerns environmental management. Check evidence tied to the box itself.","A matching claim helps trace the paper packaging through the supply chain.","A recycling symbol does not establish where the fibre came from."]},{"title":"Choose a durable pack","prompt":"A folded jacket must arrive dry and undamaged. Which pack would you pilot?","choices":["An oversized box with extra filler","A thin sleeve that split in handling","A snug recycled-cardboard pack that passed handling tests"],"correct":2,"feedback":["Extra space can mean more filler. Try a fit that has already passed handling tests.","The split signals a protection problem. Try the format that survived handling.","A snug pack that passed handling tests balances material use and protection."]},{"title":"Write the recycling label","prompt":"The shipment contains a cardboard box and removable plastic film. Which label is clearest?","choices":["Separate the film. Recycle cardboard and check local film collection.","Recycle everything together","Eco-friendly packaging"],"correct":0,"feedback":["Separating the materials gives the customer a practical action and accounts for local collection rules.","Film may require separate collection. Give instructions for each material.","A broad claim does not tell the customer where either material goes."]}]
 const passed=new Set()
+const answered=new Set()
 const fireworks=document.querySelector('#fireworks')
 let celebration
 function celebrate(){
@@ -72,7 +73,8 @@ function selectRound(index){
     button.textContent=choice
     button.addEventListener('click',()=>{
       if(stage.hidden) return
-      const alreadyApproved=passed.size===rounds.length
+      const completedBefore=answered.size===rounds.length
+      answered.add(index)
       Array.from(answerList.children).forEach((option,j)=>{
         option.classList.toggle('correct',j===round.correct)
         option.classList.toggle('incorrect',j===i && i!==round.correct)
@@ -81,7 +83,7 @@ function selectRound(index){
       feedback.textContent=round.feedback[i]
       if(i===round.correct) passed.add(index)
       updateProgress()
-      if(!alreadyApproved && passed.size===rounds.length) celebrate()
+      if(!completedBefore && answered.size===rounds.length) celebrate()
     })
     answerList.append(button)
   })
@@ -91,6 +93,7 @@ objects.forEach((button,i)=>button.addEventListener('click',()=>selectRound(i)))
 document.querySelector('#reset').addEventListener('click',()=>{
   clearTimeout(celebration)
   fireworks.replaceChildren()
+  answered.clear()
   passed.clear()
   objects.forEach(button=>button.setAttribute('aria-pressed','false'))
   task.hidden=true
