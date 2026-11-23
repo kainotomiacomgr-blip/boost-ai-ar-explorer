@@ -12,7 +12,8 @@
 *{box-sizing:border-box}
 body{margin:0;background:#192c22;color:#f8f8ed;font:1rem/1.45 system-ui,sans-serif}
 [hidden]{display:none!important}
-a-scene{position:fixed!important;inset:0;width:100vw!important;height:100dvh!important}
+body > video{z-index:0!important;pointer-events:none}
+a-scene{position:fixed!important;inset:0;width:100vw!important;height:100dvh!important;z-index:1}
 .overlay{position:fixed;z-index:5;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom));gap:1rem}
 .tag{align-self:center;background:#192c22;color:#c9f0ad;border-radius:2rem;padding:.5rem 1rem;font-weight:700;letter-spacing:.09em;font-size:.78rem}
 section{pointer-events:auto;width:min(100%,29rem);margin-inline:auto;background:#f6f6ed;color:#192c22;border-radius:1rem;padding:1.1rem;box-shadow:0 4px 28px #0004;max-height:75dvh;overflow:auto}
@@ -30,12 +31,17 @@ p{margin:.4rem 0 .9rem}
 </head>
 <body>
 <a-scene id="scene" embedded color-space="sRGB" renderer="alpha: true; antialias: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-  <a-assets><img id="sneaker-art" alt="" /></a-assets>
   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
   <a-entity id="anchor" mindar-image-target="targetIndex: 0">
-    <a-image src="#sneaker-art" position="0 .11 .16" width=".82" height=".568"
-      material="shader: flat; transparent: true; alphaTest: .03; depthWrite: false"
-      animation="property: position; from: 0 .11 .16; to: 0 .22 .25; dur: 1600; dir: alternate; loop: true; easing: easeInOutSine"></a-image>
+    <a-entity id="shoebox" position="0 .07 .26"
+      animation="property: position; from: 0 .07 .26; to: 0 .19 .32; dur: 1550; dir: alternate; loop: true; easing: easeInOutSine">
+      <a-entity rotation="26 -22 -7">
+        <a-box width=".74" height=".23" depth=".38" color="#c99e6d"></a-box>
+        <a-box width=".78" height=".065" depth=".42" position="0 .116 0" color="#dfb88a"></a-box>
+        <a-text value="VEJA" align="center" color="#242019" width="1.35" position="0 .002 .192"></a-text>
+        <a-text value="VEJA" align="center" color="#242019" width="1.5" position="0 .15 0" rotation="-90 0 0"></a-text>
+      </a-entity>
+    </a-entity>
   </a-entity>
 </a-scene>
 <main class="overlay">
@@ -72,10 +78,10 @@ async function prepare() {
     return
   }
 
-  document.querySelector('#sneaker-art').src = window.vejaAssets.sneaker
   document.querySelector('#reference').src = window.vejaAssets.reference
   const targetResponse = await fetch(window.vejaAssets.target)
   const targetUrl = URL.createObjectURL(await targetResponse.blob())
+  if (!scene.hasLoaded) await new Promise(resolve => scene.addEventListener('loaded', resolve, {once:true}))
   scene.setAttribute('mindar-image', {
     imageTargetSrc: targetUrl,
     autoStart: false,
@@ -83,7 +89,6 @@ async function prepare() {
     uiLoading: false,
     uiError: false
   })
-  if (!scene.hasLoaded) await new Promise(resolve => scene.addEventListener('loaded', resolve, {once:true}))
   if (!navigator.mediaDevices?.getUserMedia) {
     status.textContent = 'Open this page over HTTPS in a browser with camera access.'
     return
@@ -107,7 +112,7 @@ async function prepare() {
   })
   anchor.addEventListener('targetLost', () => {
     status.hidden = false
-    status.textContent = 'Aim at the sneaker photo again to bring back the floating sneaker.'
+    status.textContent = 'Aim at the sneaker photo again to bring back the floating VEJA shoebox.'
   })
   start.addEventListener('click', async () => {
     start.disabled = true
@@ -119,7 +124,7 @@ async function prepare() {
     }
   })
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    anchor.querySelector('a-image').removeAttribute('animation')
+    document.querySelector('#shoebox').removeAttribute('animation')
   }
 }
 prepare().catch(() => {
