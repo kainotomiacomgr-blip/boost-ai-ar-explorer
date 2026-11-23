@@ -45,7 +45,6 @@ function hideFacts() {
   activeButton?.setAttribute('aria-expanded', 'false')
   activeButton = undefined
 }
-camera.addEventListener('pause', hideFacts)
 function revealBox() {
   if (revealed || !cameraIsActive()) return
   revealed = true
@@ -74,6 +73,7 @@ function closeFact() {
 document.querySelector('#close-fact').addEventListener('click', closeFact)
 window.addEventListener('keydown', event => { if (event.key === 'Escape') closeFact() })
 const camera = document.querySelector('#camera')
+camera.addEventListener('pause', hideFacts)
 const launch = document.querySelector('#launch')
 const status = document.querySelector('#status')
 let stream
