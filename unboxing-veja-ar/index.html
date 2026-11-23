@@ -38,6 +38,12 @@ button:focus-visible,a:focus-visible{outline:3px solid #e0f7ac;outline-offset:4p
 @keyframes open-lid{to{transform:translateY(-28px) rotate(-15deg)}}
 @keyframes box-float{to{transform:translateY(-7px)}}
 @media(prefers-reduced-motion:reduce){#hotspots button,.shoebox,.box-lid{animation:none}.box-lid{transform:translateY(-28px) rotate(-15deg)}}
+ .shoebox{width:clamp(155px,49vw,215px);height:96px}
+.box-lid{height:32px}.box-front{height:60px;font-size:1.35rem}
+#hotspots button.returning{animation:stow-dot .52s ease-in both;pointer-events:none}
+@keyframes stow-dot{to{transform:translate(var(--dx),var(--dy)) scale(.12);opacity:0}}
+@media(prefers-reduced-motion:reduce){#hotspots button.returning{animation:none;opacity:0}}
+#hotspots button[hidden]{display:grid!important;visibility:hidden}
 </style></head>
 <body><video id="camera" autoplay muted playsinline webkit-playsinline hidden></video>
 <main><header><p class="project">UNBOXING · WEBAR</p><h1>Inside the VEJA box</h1></header>
@@ -50,6 +56,7 @@ const hotspots = document.querySelector('#hotspots')
 const fact = document.querySelector('#fact')
 const buttons = [...hotspots.querySelectorAll('button')]
 const facts = [["Box sizes","19 sizes for a closer fit","VEJA reports using 19 shoebox sizes to avoid overusing materials. A box sized to the shoes leaves less empty space."],["Less filler","What a closer fit changes","A closer-fitting box can reduce the filler needed to keep shoes from shifting in transit."],["Recycled fibre","Less reliance on virgin fibre","The UNBOXING case study describes a blend of recycled and FSC-certified cardboard. Using recovered fibre can reduce the need for virgin fibre."],["FSC label","Look for the supplier number","VEJA says all its shoeboxes are FSC-certified. The FSC label on the box includes the certified supplier’s number."]]
+const returnTimers = new Map()
 let activeButton
 let revealed = false
 function cameraIsActive() {
@@ -57,6 +64,12 @@ function cameraIsActive() {
     !camera.hidden && !camera.paused
 }
 function hideFacts() {
+  for (const timer of returnTimers.values()) clearTimeout(timer)
+  returnTimers.clear()
+  for (const button of buttons) {
+    button.classList.remove('returning')
+    button.hidden = false
+  }
   revealed = false
   hotspots.hidden = true
   fact.hidden = true
@@ -71,7 +84,7 @@ function revealBox() {
 }
 for (const button of buttons) {
   button.addEventListener('click', () => {
-    if (!revealed || !cameraIsActive()) return
+    if (!revealed || !cameraIsActive() || button.hidden || button.classList.contains('returning')) return
     activeButton?.setAttribute('aria-expanded', 'false')
     activeButton = button
     button.setAttribute('aria-expanded', 'true')
@@ -80,13 +93,25 @@ for (const button of buttons) {
     document.querySelector('#fact-copy').textContent = copy
     fact.hidden = false
     document.querySelector('#close-fact').focus()
+    clearTimeout(returnTimers.get(button))
+    returnTimers.set(button, setTimeout(() => {
+      button.classList.add('returning')
+      returnTimers.set(button, setTimeout(() => {
+        // Keep its grid slot so the other dots stay in place.
+        button.hidden = true
+        returnTimers.delete(button)
+      }, 520))
+    }, 4000))
   })
 }
 function closeFact() {
   if (fact.hidden) return
   fact.hidden = true
   activeButton?.setAttribute('aria-expanded', 'false')
-  activeButton?.focus()
+  const focusTarget = activeButton && !activeButton.hidden && !activeButton.classList.contains('returning')
+    ? activeButton
+    : buttons.find(button => !button.hidden && !button.classList.contains('returning')) ?? document.querySelector('#launch')
+  focusTarget.focus()
 }
 document.querySelector('#close-fact').addEventListener('click', closeFact)
 window.addEventListener('keydown', event => { if (event.key === 'Escape') closeFact() })
