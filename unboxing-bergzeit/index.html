@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Bergzeit Paper Mailer Trials | UNBOXING WebAR</title>
+<style>
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;color:#fff9e9;background:#182b23;font:1rem/1.45 system-ui,sans-serif}
+video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+main{position:relative;min-height:100svh;width:min(100%,34rem);margin:auto;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:18px;padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom))}
+header,footer{background:#182b23ed;border:1px solid #b4d1aa66;border-radius:16px;padding:.75rem 1rem;text-align:center;width:100%}
+h1,h2,p{margin:.3rem 0}h1{font-size:clamp(1.2rem,5vw,1.85rem)}h2{font-size:1.2rem}
+.project{color:#d6edb7;font-size:.75rem;font-weight:800;letter-spacing:.1em}
+button,a{font:inherit}button{cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid #d6edb7;outline-offset:4px}
+#camera-button,.video-link{display:inline-flex;align-items:center;min-height:44px;padding:.4rem .8rem;border:0;border-radius:9px;background:#d6edb7;color:#182b23;font-weight:750}
+#stage{display:grid;justify-items:center;gap:.65rem;width:100%;padding-top:1.75rem}
+#mailer{position:relative;width:min(65vw,275px);aspect-ratio:1.65;border:0;background:none;padding:0;perspective:600px;animation:float 2.4s ease-in-out infinite alternate;filter:drop-shadow(0 14px 14px #0007)}
+#mailer:focus-visible,#mailer[aria-expanded=true]{animation-play-state:paused}
+.mailer-back,.front,.flap{position:absolute;inset:0;border-radius:8px}
+.mailer-back{background:#765136}
+.front{background:linear-gradient(155deg,#eac192,#c8965f);clip-path:polygon(0 22%,50% 58%,100% 22%,100% 100%,0 100%)}
+.flap{background:linear-gradient(#edc79c,#d3a371);clip-path:polygon(0 0,100% 0,100% 25%,50% 66%,0 25%);transform-origin:50% 0;transition:transform .45s ease;z-index:2}
+#mailer[aria-expanded=true] .flap{transform:rotateX(150deg);z-index:0}
+.letter{position:absolute;left:19%;right:19%;top:13%;height:55%;border-radius:5px;background:#fff5df;transform:translateY(15%);transition:transform .45s ease}
+#mailer[aria-expanded=true] .letter{transform:translateY(-50%)}
+.label{position:absolute;bottom:10%;inset-inline:0;color:#3c2b1e;font-weight:800;letter-spacing:.08em}
+#mailer-hint{background:#182b23ed;border-radius:30px;padding:.3rem .8rem}
+#contents{width:100%;background:#182b23f2;border:1px solid #b4d1aa88;border-radius:16px;padding:.75rem 1rem}#contents a:not(.video-link){color:#d6edb7}
+@keyframes float{to{transform:translateY(-10px)}}
+@media(prefers-reduced-motion:reduce){#mailer{animation:none}.flap,.letter{transition:none}}
+#qr{text-align:center;padding:24px}#qr img{display:block;width:min(78vw,410px);margin:1rem auto;image-rendering:pixelated}#qr a{color:#d6edb7}
+</style></head>
+<body>
+<video id="camera" autoplay playsinline muted hidden></video>
+<main id="experience">
+<header><p class="project">UNBOXING · WEBAR</p><h1>Bergzeit paper mailer trials</h1></header>
+<section id="stage" aria-label="Floating paper mailer" hidden>
+<button id="mailer" type="button" aria-label="Open the paper mailer" aria-controls="contents" aria-expanded="false"><span class="mailer-back"></span><span class="letter"></span><span class="front"></span><span class="flap"></span><span class="label" aria-hidden="true">BERGZEIT</span></button>
+<p id="mailer-hint">Tap the mailer to open it</p>
+<section id="contents" aria-labelledby="contents-title" hidden>
+<h2 id="contents-title">Would paper hold up in delivery?</h2>
+<p>Bergzeit checked water and tear resistance and how the mailers handled at packing stations. A second trial gathered customer feedback before the switch.</p>
+<p><a class="video-link" href="https://www.youtube.com/watch?v=jwHWqmAmoeU&amp;t=760s" target="_blank" rel="noopener">▶ Watch how paper mailers are tested</a></p>
+<p><a href="https://www.bergzeit.de/magazin/nachhaltigkeit-verpackung/" target="_blank" rel="noopener">Read the Bergzeit case study</a></p>
+</section></section>
+<footer><button id="camera-button" type="button">Open AR camera</button><p id="status" role="status">Allow camera access to reveal the mailer.</p></footer>
+</main>
+<section id="qr" hidden><h1>Bergzeit WebAR</h1><p>Scan with your phone, then allow camera access.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADt0lEQVR4nO2cQY7jOAxFH8cGsrSBOkCOIt+gjzSoI/UNrKPUAQqwlgEc/FlIspV0etNdQSUZchEgjh5sAQRF8tMx8WcW//lDEJx00kknnXTSSScfj7RiPTalHqKZ2ZRXnA04m02prpq++WmdfEgySJIW0AzYvwsAZyOOnczGTkAnSdIl+R1P6+RDkmkPPACDpHc7CFIP4cMsO5dZ/3X3dPI1yP7qu4X5ZMC5JyyjEQSKI1j4+VX3dPK1yGsfIo6fiPQmSN0KnPvbLaTn2qeT9ycHSTNA+OixaVixaTiZmR1EWLrsR5LWr7unky9FRjMzGwHoShZEOoiwgE150TmXZV91TydfhMxnWXtaDScjjhjxuKJ4PBkMK7pc9Wz7dPLepE2ATcmMpoRPff4Bktkeqsq1Z9ynk/cgaxxKI4pHYaS3tV57Q/EHiAQWBEayGo6ea59O3o8kB52ZrqbOg3IWVILRsEKombS0lCil+bn26eT9yMZVGm9iWMnelJcsXfar3bnch5zcrHjEUCNN9iG6UuoDRQmZAWnZvj7XPp28H1l7jKlHcO5z5R5+jgZ0K/HHZw9phJwPDVtx9lz7dPLuZNAK0XpK9BnWEnMA9D4CWcFP3h9y8tpqPiRlRwpaS+pcMqMq6Eur50NO3rK2/KqSRnUkADoR6sRHkUPch5xsTZs1J1jxpi4n2yXjHrYo5T7k5C3ybFkli8dapoUFyvzQshVs6eAzaE5eWY1Caz6j9o89BDWdxZIZeRxycrdS28cJFK1bFccFxfGzV6PgD6dcjQm6OvzxXPt08n5kzalr7rP3E/O1bca6rdo8DjnZWu1TS0XSuCzTdoVjzutdL3PyNhk+zMizQsmspM7Dit7rKx3Vr3z2w8kry/mQhXntLXwcZPEoIL01awQnE+kg4tj9/T2dfC2y6VO3FVrtU0taN/1DeTzEzzInL22v2UvaMxSn0Txs7yMOPj/k5O9tjz45IuX+0LIv6NSqZOBah5NXVmv7fXSohKArhSOba65O/mq6tHwxbEmRqoxfG9jeH3LyJrn/70d2lTiC3o8r+UWO/OJZ6oEaqp5zn07ekQybGDZzNs3poGbeLJ9lQxlTs+m7n9bJhyJrJr2wNaY7XcwPwT4/tBN+ljn5OzLHoXc7yOxYCjHNqd9+7WTTF9/TyRcj47jpGh99HbQea9XWKGcP8bROPgDZdIVqA7G8WlZC0C7eD5LX9k7esKaih01fpRXq9/TI3y9z8lcz/49zJ5100kknnXTyf07+B+P3EcumlhaCAAAAAElFTkSuQmCC" alt="QR code for the Bergzeit paper mailer experience"><a download="UNBOXING_Bergzeit_AR_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADt0lEQVR4nO2cQY7jOAxFH8cGsrSBOkCOIt+gjzSoI/UNrKPUAQqwlgEc/FlIspV0etNdQSUZchEgjh5sAQRF8tMx8WcW//lDEJx00kknnXTSSScfj7RiPTalHqKZ2ZRXnA04m02prpq++WmdfEgySJIW0AzYvwsAZyOOnczGTkAnSdIl+R1P6+RDkmkPPACDpHc7CFIP4cMsO5dZ/3X3dPI1yP7qu4X5ZMC5JyyjEQSKI1j4+VX3dPK1yGsfIo6fiPQmSN0KnPvbLaTn2qeT9ycHSTNA+OixaVixaTiZmR1EWLrsR5LWr7unky9FRjMzGwHoShZEOoiwgE150TmXZV91TydfhMxnWXtaDScjjhjxuKJ4PBkMK7pc9Wz7dPLepE2ATcmMpoRPff4Bktkeqsq1Z9ynk/cgaxxKI4pHYaS3tV57Q/EHiAQWBEayGo6ea59O3o8kB52ZrqbOg3IWVILRsEKombS0lCil+bn26eT9yMZVGm9iWMnelJcsXfar3bnch5zcrHjEUCNN9iG6UuoDRQmZAWnZvj7XPp28H1l7jKlHcO5z5R5+jgZ0K/HHZw9phJwPDVtx9lz7dPLuZNAK0XpK9BnWEnMA9D4CWcFP3h9y8tpqPiRlRwpaS+pcMqMq6Eur50NO3rK2/KqSRnUkADoR6sRHkUPch5xsTZs1J1jxpi4n2yXjHrYo5T7k5C3ybFkli8dapoUFyvzQshVs6eAzaE5eWY1Caz6j9o89BDWdxZIZeRxycrdS28cJFK1bFccFxfGzV6PgD6dcjQm6OvzxXPt08n5kzalr7rP3E/O1bca6rdo8DjnZWu1TS0XSuCzTdoVjzutdL3PyNhk+zMizQsmspM7Dit7rKx3Vr3z2w8kry/mQhXntLXwcZPEoIL01awQnE+kg4tj9/T2dfC2y6VO3FVrtU0taN/1DeTzEzzInL22v2UvaMxSn0Txs7yMOPj/k5O9tjz45IuX+0LIv6NSqZOBah5NXVmv7fXSohKArhSOba65O/mq6tHwxbEmRqoxfG9jeH3LyJrn/70d2lTiC3o8r+UWO/OJZ6oEaqp5zn07ekQybGDZzNs3poGbeLJ9lQxlTs+m7n9bJhyJrJr2wNaY7XcwPwT4/tBN+ljn5OzLHoXc7yOxYCjHNqd9+7WTTF9/TyRcj47jpGh99HbQea9XWKGcP8bROPgDZdIVqA7G8WlZC0C7eD5LX9k7esKaih01fpRXq9/TI3y9z8lcz/49zJ5100kknnXTyf07+B+P3EcumlhaCAAAAAElFTkSuQmCC">Download QR code</a> · <a href="./">Open WebAR</a></section>
+<script>
+const camera = document.querySelector('#camera')
+const control = document.querySelector('#camera-button')
+const stage = document.querySelector('#stage')
+const mailer = document.querySelector('#mailer')
+const contents = document.querySelector('#contents')
+const status = document.querySelector('#status')
+let stream
+let requesting = false
+let pageActive = true
+
+function setMailer(open) {
+  mailer.setAttribute('aria-expanded', String(open))
+  mailer.setAttribute('aria-label', open ? 'Close the paper mailer' : 'Open the paper mailer')
+  document.querySelector('#mailer-hint').textContent = open ? 'Tap the mailer to close it' : 'Tap the mailer to open it'
+  contents.hidden = !open
+}
+
+function showCameraStage(visible) {
+  stage.hidden = !visible
+  if (!visible) setMailer(false)
+}
+
+function stopCamera(message = 'Allow camera access to reveal the mailer.') {
+  const previousStream = stream
+  stream = undefined
+  previousStream?.getTracks().forEach(track => track.stop())
+  camera.srcObject = null
+  camera.hidden = true
+  showCameraStage(false)
+  control.textContent = 'Open AR camera'
+  status.textContent = message
+}
+
+function cameraIsActive() {
+  return stream?.getVideoTracks().some(track => track.readyState === 'live') && !camera.paused && !camera.hidden
+}
+
+async function openCamera() {
+  if (requesting || stream || !pageActive) return
+  if (!navigator.mediaDevices?.getUserMedia) {
+    status.textContent = 'Open this page in Safari or Chrome to use the camera.'
+    return
+  }
+  requesting = true
+  control.disabled = true
+  status.textContent = 'Allow camera access when prompted.'
+  try {
+    const activeStream = await navigator.mediaDevices.getUserMedia({audio:false, video:{facingMode:{ideal:'environment'}}})
+    if (!pageActive) {
+      activeStream.getTracks().forEach(track => track.stop())
+      return
+    }
+    stream = activeStream
+    for (const track of stream.getVideoTracks()) {
+      track.addEventListener('ended', () => {
+        if (stream === activeStream) stopCamera('Camera stopped. Tap Open AR camera to restart.')
+      }, {once:true})
+    }
+    camera.muted = true
+    camera.srcObject = activeStream
+    camera.hidden = false
+    await camera.play()
+    if (stream !== activeStream || !cameraIsActive()) return
+    showCameraStage(true)
+    control.textContent = 'Close camera'
+    status.textContent = ''
+  } catch (error) {
+    stopCamera(error.name === 'NotAllowedError'
+      ? 'Allow camera access in your browser settings, then tap Open AR camera.'
+      : 'Camera could not start. Tap Open AR camera to retry.')
+  } finally {
+    requesting = false
+    control.disabled = false
+  }
+}
+
+mailer.addEventListener('click', () => {
+  if (cameraIsActive() && !stage.hidden) setMailer(contents.hidden)
+})
+camera.addEventListener('pause', () => showCameraStage(false))
+camera.addEventListener('playing', () => {
+  if (cameraIsActive()) showCameraStage(true)
+})
+control.addEventListener('click', () => {
+  if (stream) stopCamera()
+  else openCamera()
+})
+window.addEventListener('pagehide', () => {
+  pageActive = false
+  stopCamera()
+})
+window.addEventListener('pageshow', () => { pageActive = true })
+if (new URLSearchParams(location.search).has('qr')) {
+  document.querySelector('#experience').hidden = true
+  document.querySelector('#qr').hidden = false
+} else {
+  openCamera()
+}
+</script></body></html>
