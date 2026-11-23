@@ -41,6 +41,22 @@ body.camera-on header h1{font-size:1.6rem}
 body.camera-on .topic,body.camera-on .film{display:none}
 body.camera-on .objects{position:fixed;left:var(--object-x,50%);top:var(--object-y,46%);transform:translate(-50%,-50%);min-height:0;padding:0}
 body.camera-on a,body.camera-on button{pointer-events:auto}
+#unbox{display:grid;justify-items:center;gap:.25rem;padding:0;border:0;background:none;color:#fff;font:inherit;cursor:pointer}
+#unbox-label{background:#192c22;color:#f8f8ed;border:1px solid #d2edb780;border-radius:2rem;padding:.3rem .75rem;font-weight:700}
+#unbox:focus-visible,dialog button:focus-visible{outline:3px solid #d2edb7;outline-offset:4px}
+#unbox[aria-expanded="true"] .box-art{animation:none}
+.box-top,.box-lid{transition:transform .35s ease}
+#unbox[aria-expanded="true"] .box-top,#unbox[aria-expanded="true"] .box-lid{transform:translateY(-24%) rotate(-7deg)}
+#unbox[aria-expanded="true"] .box-opening{background:#5a3b29;clip-path:polygon(2% 39%,27% 9%,98% 24%,73% 56%)}
+@media(prefers-reduced-motion:reduce){.box-top,.box-lid{transition:none}}
+dialog{width:min(calc(100% - 24px),30rem);max-height:70svh;margin:auto auto max(12px,env(safe-area-inset-bottom));border:1px solid #8b9f81;border-radius:18px;background:#172e23;color:#f8f8ed;padding:1rem;text-align:left}
+dialog::backdrop{background:#07110c66}
+dialog h2,dialog p{margin:.25rem 0 .7rem}
+.dialog-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+dialog button{min-height:44px;border-radius:9px;border:1px solid #b2c4a1;background:#284837;color:white;padding:.36rem .65rem;font:inherit;cursor:pointer}
+dialog button[aria-pressed="true"]{background:#d9efc6;color:#172e23}
+.dialog-actions{display:flex;gap:.45rem;flex-wrap:wrap}
+#answer-feedback{color:#dbefcb;margin-top:.65rem}
 </style>
 <script defer src="./assets.js"></script>
 </head>
@@ -53,7 +69,7 @@ body.camera-on a,body.camera-on button{pointer-events:auto}
   <p class="topic">Sustainable packaging &amp; forest-friendly sourcing</p>
   </header>
   <div class="objects">
-    <div class="box-art" role="img" aria-label="Floating VEJA shoebox"><span class="box-front"></span><span class="box-side"></span><span class="box-top"></span><span class="box-lid"></span><strong class="box-logo" aria-hidden="true">VEJA</strong></div>
+    <button id="unbox" type="button" aria-expanded="false" aria-controls="box-details"><span class="box-art" aria-hidden="true"><span class="box-opening"></span><span class="box-front"></span><span class="box-side"></span><span class="box-top"></span><span class="box-lid"></span><strong class="box-logo" aria-hidden="true">VEJA</strong></span><span id="unbox-label">Open shoebox</span></button>
     <a class="youtube" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" aria-label="Watch VEJA’s Amazonian rubber film on YouTube"></a>
   </div>
   <footer>
@@ -63,7 +79,45 @@ body.camera-on a,body.camera-on button{pointer-events:auto}
   <p id="status" role="status" hidden></p>
   </footer>
 </main>
+<dialog id="box-details" aria-labelledby="box-title">
+  <div class="dialog-top"><h2 id="box-title">What’s inside?</h2><form method="dialog"><button type="submit">Close</button></form></div>
+  <p>The case study describes VEJA using size-specific cardboard boxes to reduce empty space and filler.</p>
+  <h3>Choose a box for one pair</h3>
+  <p>Which size would you test first to protect the shoes while using less filler?</p>
+  <div class="dialog-actions">
+    <button type="button" data-choice="tight" aria-pressed="false">Too tight</button>
+    <button type="button" data-choice="fit" aria-pressed="false">Snug fit</button>
+    <button type="button" data-choice="large" aria-pressed="false">Oversized</button>
+  </div>
+  <p id="answer-feedback" role="status" hidden></p>
+</dialog>
 <script>
+const unbox = document.querySelector('#unbox')
+const details = document.querySelector('#box-details')
+const feedback = document.querySelector('#answer-feedback')
+const choices = [...details.querySelectorAll('[data-choice]')]
+const explanations = {
+  tight: 'Try again. A box that presses against the shoes can damage them and may be hard to close.',
+  fit: 'Good choice. A snug fit leaves room for protection while limiting movement and reducing the need for filler.',
+  large: 'Try again. An oversized box leaves more room for movement and may need extra filler.'
+}
+
+unbox.addEventListener('click', () => {
+  unbox.setAttribute('aria-expanded', 'true')
+  details.showModal()
+})
+details.addEventListener('close', () => {
+  unbox.setAttribute('aria-expanded', 'false')
+  unbox.focus()
+})
+for (const choice of choices) {
+  choice.addEventListener('click', () => {
+    for (const option of choices) option.setAttribute('aria-pressed', String(option === choice))
+    feedback.textContent = explanations[choice.dataset.choice]
+    feedback.hidden = false
+  })
+}
+
 const camera = document.querySelector('#camera')
 const launch = document.querySelector('#launch')
 const status = document.querySelector('#status')
