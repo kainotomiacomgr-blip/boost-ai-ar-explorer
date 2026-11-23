@@ -30,19 +30,158 @@ a:focus-visible{outline:3px solid #d2edb7;outline-offset:5px}
 .watch{display:inline-block;color:white;font-weight:700;text-underline-offset:.25em}
 .film{margin:.35rem 0 0;color:#e4eadc}
 @media(prefers-reduced-motion:reduce){.youtube{animation:none}}
+#camera{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;background:#192c22}
+[hidden]{display:none!important}
+main{position:relative}
+#launch{margin-top:1.3rem;padding:.75rem 1.2rem;border:0;border-radius:2rem;background:#d9efc6;color:#192c22;min-height:44px;font:inherit;font-weight:750;cursor:pointer}
+#status{margin:.55rem 0 0;font-size:.9rem}
+body.camera-on main{position:fixed;inset:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:max(18px,env(safe-area-inset-top)) 16px max(18px,env(safe-area-inset-bottom));pointer-events:none}
+body.camera-on header,body.camera-on footer{padding:.65rem .9rem;border-radius:1rem;background:#192c22e8}
+body.camera-on header h1{font-size:1.6rem}
+body.camera-on .topic,body.camera-on .film{display:none}
+body.camera-on .objects{position:fixed;left:var(--object-x,50%);top:var(--object-y,46%);transform:translate(-50%,-50%);min-height:0;padding:0}
+body.camera-on a,body.camera-on button{pointer-events:auto}
 </style>
+<script defer src="./assets.js"></script>
 </head>
 <body>
+<video id="camera" playsinline autoplay muted hidden></video>
 <main>
+  <header>
   <p class="project">UNBOXING · CASE STUDY</p>
   <h1>VEJA</h1>
   <p class="topic">Sustainable packaging &amp; forest-friendly sourcing</p>
+  </header>
   <div class="objects">
     <div class="box-art" role="img" aria-label="Floating VEJA shoebox"><span class="box-front"></span><span class="box-side"></span><span class="box-top"></span><span class="box-lid"></span><strong class="box-logo" aria-hidden="true">VEJA</strong></div>
     <a class="youtube" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" aria-label="Watch VEJA’s Amazonian rubber film on YouTube"></a>
   </div>
+  <footer>
   <a class="watch" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0">Watch on YouTube</a>
   <p class="film">A True Story About Amazonian Rubber</p>
+  <br><button id="launch" type="button">Open AR camera</button>
+  <p id="status" role="status" hidden></p>
+  </footer>
 </main>
+<script>
+const camera = document.querySelector('#camera')
+const launch = document.querySelector('#launch')
+const status = document.querySelector('#status')
+let stream
+let controller
+let busy = false
+
+function report(message) {
+  status.textContent = message
+  status.hidden = !message
+}
+
+function centerObjects() {
+  document.body.style.removeProperty('--object-x')
+  document.body.style.removeProperty('--object-y')
+}
+
+function placeObjects(matrix, projection, markerSize) {
+  if (!matrix || !markerSize) {
+    centerObjects()
+    return
+  }
+  const [width, height] = markerSize
+  const x = matrix[0] * width / 2 + matrix[4] * height / 2 + matrix[12]
+  const y = matrix[1] * width / 2 + matrix[5] * height / 2 + matrix[13]
+  const z = matrix[2] * width / 2 + matrix[6] * height / 2 + matrix[14]
+  const clipW = projection[3] * x + projection[7] * y + projection[11] * z + projection[15]
+  if (clipW <= 0) return
+  const ndcX = (projection[0] * x + projection[4] * y + projection[8] * z + projection[12]) / clipW
+  const ndcY = (projection[1] * x + projection[5] * y + projection[9] * z + projection[13]) / clipW
+  const coverScale = Math.max(camera.clientWidth / camera.videoWidth, camera.clientHeight / camera.videoHeight)
+  const left = 50 + 50 * ndcX * camera.videoWidth * coverScale / camera.clientWidth
+  const top = 50 - 50 * ndcY * camera.videoHeight * coverScale / camera.clientHeight
+  document.body.style.setProperty('--object-x', Math.min(66, Math.max(34, left)) + '%')
+  document.body.style.setProperty('--object-y', Math.min(64, Math.max(28, top)) + '%')
+}
+
+async function startTracking(activeStream) {
+  let tracker
+  try {
+    const [{Controller}, target] = await Promise.all([
+      import('https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image.prod.js'),
+      fetch(window.vejaAssets.target).then(response => response.arrayBuffer())
+    ])
+    if (stream !== activeStream) return
+    let markerSize
+    let projection
+    tracker = new Controller({
+      inputWidth: camera.videoWidth,
+      inputHeight: camera.videoHeight,
+      onUpdate(update) {
+        if (stream === activeStream && update.type === 'updateMatrix') {
+          placeObjects(update.worldMatrix, projection, markerSize)
+        }
+      }
+    })
+    controller = tracker
+    projection = tracker.getProjectionMatrix()
+    const result = tracker.addImageTargetsFromBuffer(target)
+    markerSize = result.dimensions[0]
+    tracker.dummyRun(camera)
+    if (stream !== activeStream) return
+    tracker.processVideo(camera)
+    report('Aim at the sneaker photo to position the shoebox.')
+  } catch {
+    if (stream !== activeStream) return
+    controller?.stopProcessVideo()
+    controller?.dispose()
+    controller = undefined
+    report('Camera is open. Photo tracking is temporarily unavailable.')
+  }
+}
+
+function stopCamera() {
+  controller?.stopProcessVideo()
+  controller?.dispose()
+  controller = undefined
+  stream?.getTracks().forEach(track => track.stop())
+  stream = undefined
+  camera.srcObject = null
+  camera.hidden = true
+  document.body.classList.remove('camera-on')
+  launch.textContent = 'Open AR camera'
+  centerObjects()
+  report('')
+}
+
+launch.addEventListener('click', async () => {
+  if (busy) return
+  if (stream) {
+    stopCamera()
+    return
+  }
+  if (!navigator.mediaDevices?.getUserMedia) {
+    report('Camera access is unavailable in this browser.')
+    return
+  }
+  busy = true
+  launch.disabled = true
+  report('Opening the camera…')
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({audio:false, video:{facingMode:{ideal:'environment'}}})
+    camera.srcObject = stream
+    camera.hidden = false
+    await camera.play()
+    document.body.classList.add('camera-on')
+    launch.textContent = 'Close camera'
+    report('The camera is open.')
+    startTracking(stream)
+  } catch {
+    stopCamera()
+    report('Camera access was unavailable. Try again and allow camera access when prompted.')
+  } finally {
+    busy = false
+    launch.disabled = false
+  }
+})
+window.addEventListener('pagehide', stopCamera)
+</script>
 </body>
 </html>
