@@ -1,0 +1,163 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Patagonia Packaging Audit</title>
+<style>
+*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:#162820;color:#fff9e9;font:1rem/1.45 system-ui,sans-serif}video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}main{position:relative;margin:auto;width:min(100%,34rem);min-height:100svh;padding:16px;display:flex;flex-direction:column;justify-content:space-between;gap:14px}header,footer,#task{background:#162820f2;border:1px solid #d3e6aa66;border-radius:16px;padding:.8rem 1rem}h1,h2,p{margin:.25rem 0}h1{font-size:1.45rem}h2{font-size:1.12rem}button{font:inherit;min-height:44px;background:#314d39;border:1px solid #b8d09a;border-radius:10px;color:white;padding:.4rem .6rem;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #e5f5ba;outline-offset:3px}.scene{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem;margin:1rem 0}.object{display:grid;justify-items:center;align-content:center;gap:.5rem;background:#162820db;font-size:.8rem;font-weight:700;min-height:115px;animation:float 2.6s ease-in-out infinite alternate}.object:nth-child(2){animation-delay:-.9s}.object:nth-child(3){animation-delay:-1.7s}.object:focus,.object[aria-pressed=true]{animation-play-state:paused;border-color:#e4f5b5}.art{width:56px;height:54px;display:grid;place-items:center;color:#332517;font-weight:900;filter:drop-shadow(0 7px 5px #0006)}.document{background:#f7e9cb;border-radius:5px;transform:rotate(-9deg);font-size:1.5rem;border-bottom:6px solid #bfa579}.parcel{background:linear-gradient(105deg,#e4b47d 0 62%,#9f6c41 63%);clip-path:polygon(0 16%,62% 0,100% 15%,100% 83%,60% 100%,0 81%);font-size:1.6rem}.label{background:#dce9a9;clip-path:polygon(0 0,76% 0,100% 50%,76% 100%,0 100%);font-size:1.5rem}@keyframes float{to{transform:translateY(-9px)}}@media(prefers-reduced-motion:reduce){.object{animation:none}}#answers{display:grid;gap:.4rem;margin:.6rem 0}#feedback,a{color:#e1f2b5}#qr-view{text-align:center;padding:1rem}#qr-view img{display:block;width:min(78vw,410px);margin:1rem auto;image-rendering:pixelated}
+#answers .correct{background:#d8eeac;color:#182b23;font-weight:750;border-color:#e7f7c9}
+#answers .incorrect{background:#653c32;color:#fff4e4;border-color:#e4a58e}
+#fireworks{position:fixed;inset:0;z-index:5;pointer-events:none;overflow:hidden}
+.spark{position:absolute;left:var(--x);top:var(--y);width:7px;height:7px;border-radius:50%;background:var(--color);animation:burst 1.15s var(--delay) ease-out both}
+@keyframes burst{0%{opacity:0;transform:scale(.2)}12%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.35)}}
+</style></head><body>
+<video id="camera" autoplay muted playsinline hidden></video>
+<div id="fireworks" aria-hidden="true"></div>
+<main id="experience"><header><h1>Patagonia Packaging Audit</h1><p>Tap the floating images to inspect the shipment.</p></header>
+<section id="stage" hidden><div class="scene" aria-label="Packaging audit stations">
+<button class="object" data-round="0" aria-pressed="false"><span class="art document" aria-hidden="true">≡</span>Supplier file</button>
+<button class="object" data-round="1" aria-pressed="false"><span class="art parcel" aria-hidden="true">▥</span>Shipping box</button>
+<button class="object" data-round="2" aria-pressed="false"><span class="art label" aria-hidden="true">♻</span>Recycling tag</button>
+</div><section id="task" hidden><h2 id="title"></h2><p id="prompt"></p><div id="answers"></div><p id="feedback" role="status"></p></section></section>
+<footer><p id="progress" role="status">0 of 3 checks passed</p><p id="approved" hidden>Shipment approved. You checked the sourcing evidence, verified protection and gave the customer clear recycling instructions. <button id="reset" type="button">Audit another shipment</button></p><button id="camera-button" type="button">Open AR camera</button><p id="camera-note" role="status"></p><p><a href="https://eu.patagonia.com/gr/en/packaging.html">Patagonia’s packaging guidance</a></p></footer>
+</main>
+<section id="qr-view" hidden><h1>Patagonia Packaging Audit</h1><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEDElEQVR4nO2dTW7jPAyGH3420KUMzAF6FOdmxXekuYF9lB6ggL0soICz0I+VdGcbyGTychE0th4oBghKfEm55hyw+b8jNAgXLly4cOHChQs/F7dsPcDV7FKvXbhaGnJZzdJHvnHa7MJfDcfd3Rnd3X3p3Kfg7r6AT8Ed6BxCTOPSkI2YnvrZhT8aX3P4so8FILjbZe3xKUTcP9/cLk0Q7E+eXfhr4f39hXn46h3A4WoOYISIz8MXznrq7MJfE//hdcnWof557YvrnT+78NfGg7tPAOPSudm7l+3b0jmsZj6tb0lRdvd48uzCXxKfzcxsAFh7GD977LLWDzq3jwXswjWlsKfOLvzF8JKbFiMlrQCjR3yiq/fi/WDlsML3WVlIAeiqaBLZNJRszddOXif8iBUdDjZZjnEBn2j9L40el/ohrxO+19ocdvz95mXD1kUbk6elbAIIC/luqI0qT/3swh+L2wVgfr+Ja3A1WHvsY+mc8dMMQoR5OHd24a+G5xW2Vr+yfOLF/5Jy0pTFbjIMrbDCd1mTvo4ek8OVzKHzXBFrEg4o4+R1wvfa5nApzFWHy2GuyscpEobicIp1wvdbVumC5zV0grSG5miW1JQiqeSek6LcyeuE77J7vW6ieF0r3+WtX15wF+R1wo9Y0etqgpDCXKyy3JZXwOad2tcJP2B5haVs5H6sqyWvJeReTu3rhJ/ldbkOUZwrqyTFzeLt/k9eJ/yQFW/KS+qWpTaraU5fa4hbkHIi/Ii12UTNYZNyciPftU4YpNcJP2KpDuvz0EUj9W120QDz2To31l9uqQ5LF42wwDhRimZP/ezCH4XfNJkEb6WSnEh0RTT2WqANOiMm/JCVvVqkFCNye/pdHbYR7aTXCT+Gt9lESlC3zGGh1esA7jQUeZ3wfdZkEzXWbfnqVofdltnG5HXC91jJJt4dI3ybA1t/XQ9rH21cfkUbp29jtpJSnDK78NfEm9pEyhymdLmrYnCEu3aTCe3rhB+yzeuKXlf7m4LfXGtMdVjhh6zs63IdNpfFtubhdIM2pWhaBZ762YU/Cm/f6bS1luQbZXFtO1KgecWTvE74LiteV7dvTeG1xDqovQGgk4nCT1OJq1QCNGck2r1eaQtIQ+R1wndb42v3vcShtDZlqbiWL3RGTPgZeFJ/F/LZ12SrpfOwecgCpYbxrbfrCD8BX+urhgG7hMgW4fx/e3PmoXNmM4P1zfPgv+PHC38y/Oe7Ot+/jfSuxHXAxk+rtYprD+Grd9ZBsU74Ebuvw7YaSntQ7CbDUB1W+BErsS44sIKzDim4+Tx0AFdj/N1FI8Se3POZ3xr76B8v/Enx+xy26WWvx67Z5LtauVCsE77fTP+9Trhw4cKFCxcu/J/A/wDq51VX4M21JAAAAABJRU5ErkJggg==" alt="QR code for Patagonia Packaging Audit"><a download="UNBOXING_Patagonia_Packaging_Audit_QR.png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAEDElEQVR4nO2dTW7jPAyGH3420KUMzAF6FOdmxXekuYF9lB6ggL0soICz0I+VdGcbyGTychE0th4oBghKfEm55hyw+b8jNAgXLly4cOHChQs/F7dsPcDV7FKvXbhaGnJZzdJHvnHa7MJfDcfd3Rnd3X3p3Kfg7r6AT8Ed6BxCTOPSkI2YnvrZhT8aX3P4so8FILjbZe3xKUTcP9/cLk0Q7E+eXfhr4f39hXn46h3A4WoOYISIz8MXznrq7MJfE//hdcnWof557YvrnT+78NfGg7tPAOPSudm7l+3b0jmsZj6tb0lRdvd48uzCXxKfzcxsAFh7GD977LLWDzq3jwXswjWlsKfOLvzF8JKbFiMlrQCjR3yiq/fi/WDlsML3WVlIAeiqaBLZNJRszddOXif8iBUdDjZZjnEBn2j9L40el/ohrxO+19ocdvz95mXD1kUbk6elbAIIC/luqI0qT/3swh+L2wVgfr+Ja3A1WHvsY+mc8dMMQoR5OHd24a+G5xW2Vr+yfOLF/5Jy0pTFbjIMrbDCd1mTvo4ek8OVzKHzXBFrEg4o4+R1wvfa5nApzFWHy2GuyscpEobicIp1wvdbVumC5zV0grSG5miW1JQiqeSek6LcyeuE77J7vW6ieF0r3+WtX15wF+R1wo9Y0etqgpDCXKyy3JZXwOad2tcJP2B5haVs5H6sqyWvJeReTu3rhJ/ldbkOUZwrqyTFzeLt/k9eJ/yQFW/KS+qWpTaraU5fa4hbkHIi/Ii12UTNYZNyciPftU4YpNcJP2KpDuvz0EUj9W120QDz2To31l9uqQ5LF42wwDhRimZP/ezCH4XfNJkEb6WSnEh0RTT2WqANOiMm/JCVvVqkFCNye/pdHbYR7aTXCT+Gt9lESlC3zGGh1esA7jQUeZ3wfdZkEzXWbfnqVofdltnG5HXC91jJJt4dI3ybA1t/XQ9rH21cfkUbp29jtpJSnDK78NfEm9pEyhymdLmrYnCEu3aTCe3rhB+yzeuKXlf7m4LfXGtMdVjhh6zs63IdNpfFtubhdIM2pWhaBZ762YU/Cm/f6bS1luQbZXFtO1KgecWTvE74LiteV7dvTeG1xDqovQGgk4nCT1OJq1QCNGck2r1eaQtIQ+R1wndb42v3vcShtDZlqbiWL3RGTPgZeFJ/F/LZ12SrpfOwecgCpYbxrbfrCD8BX+urhgG7hMgW4fx/e3PmoXNmM4P1zfPgv+PHC38y/Oe7Ot+/jfSuxHXAxk+rtYprD+Grd9ZBsU74Ebuvw7YaSntQ7CbDUB1W+BErsS44sIKzDim4+Tx0AFdj/N1FI8Se3POZ3xr76B8v/Enx+xy26WWvx67Z5LtauVCsE77fTP+9Trhw4cKFCxcu/J/A/wDq51VX4M21JAAAAABJRU5ErkJggg==">Download QR code</a> · <a href="./audit-fireworks.html">Open WebAR</a></section>
+<script>
+const experience=document.querySelector('#experience')
+const camera=document.querySelector('#camera')
+const cameraButton=document.querySelector('#camera-button')
+const cameraNote=document.querySelector('#camera-note')
+const stage=document.querySelector('#stage')
+const task=document.querySelector('#task')
+const answerList=document.querySelector('#answers')
+const feedback=document.querySelector('#feedback')
+const approved=document.querySelector('#approved')
+const progress=document.querySelector('#progress')
+const objects=[...document.querySelectorAll('[data-round]')]
+const rounds=[{"title":"Check the supplier file","prompt":"Which evidence would you request to verify this paper box’s FSC claim?","choices":["An ISO 14001 certificate alone","A matching FSC claim on supplier documents","A photo of a recycling symbol"],"correct":1,"feedback":["ISO 14001 concerns environmental management. Check evidence tied to the box itself.","A matching claim helps trace the paper packaging through the supply chain.","A recycling symbol does not establish where the fibre came from."]},{"title":"Choose a durable pack","prompt":"A folded jacket must arrive dry and undamaged. Which pack would you pilot?","choices":["An oversized box with extra filler","A thin sleeve that split in handling","A snug recycled-cardboard pack that passed handling tests"],"correct":2,"feedback":["Extra space can mean more filler. Try a fit that has already passed handling tests.","The split signals a protection problem. Try the format that survived handling.","A snug pack that passed handling tests balances material use and protection."]},{"title":"Write the recycling label","prompt":"The shipment contains a cardboard box and removable plastic film. Which label is clearest?","choices":["Separate the film. Recycle cardboard and check local film collection.","Recycle everything together","Eco-friendly packaging"],"correct":0,"feedback":["Separating the materials gives the customer a practical action and accounts for local collection rules.","Film may require separate collection. Give instructions for each material.","A broad claim does not tell the customer where either material goes."]}]
+const passed=new Set()
+const fireworks=document.querySelector('#fireworks')
+let celebration
+function celebrate(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  clearTimeout(celebration)
+  fireworks.replaceChildren()
+  const colors=['#ffcf55','#ff7794','#bdfa88','#78dfff','#f8f5ff']
+  const bursts=[[24,29],[74,34],[48,56],[28,66],[70,64]]
+  bursts.forEach(([x,y],i)=>{
+    for(let j=0;j<20;j++){
+      const spark=document.createElement('span')
+      spark.className='spark'
+      const angle=j*Math.PI/10
+      const distance=32+Math.random()*60
+      for(const [key,value] of Object.entries({
+        x:x+'%',y:y+'%',dx:Math.cos(angle)*distance+'px',dy:Math.sin(angle)*distance+'px',
+        color:colors[(i+j)%colors.length],delay:i*.23+'s'
+      })) spark.style.setProperty('--'+key,value)
+      fireworks.append(spark)
+    }
+  })
+  celebration=setTimeout(()=>fireworks.replaceChildren(),2400)
+}
+function updateProgress(){
+  progress.textContent=passed.size+' of 3 checks passed'
+  approved.hidden=passed.size!==3
+}
+function selectRound(index){
+  const round=rounds[index]
+  objects.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===index)))
+  document.querySelector('#title').textContent=round.title
+  document.querySelector('#prompt').textContent=round.prompt
+  feedback.textContent=''
+  answerList.replaceChildren()
+  round.choices.forEach((choice,i)=>{
+    const button=document.createElement('button')
+    button.type='button'
+    button.textContent=choice
+    button.addEventListener('click',()=>{
+      if(stage.hidden) return
+      const alreadyApproved=passed.size===rounds.length
+      Array.from(answerList.children).forEach((option,j)=>{
+        option.classList.toggle('correct',j===round.correct)
+        option.classList.toggle('incorrect',j===i && i!==round.correct)
+        option.textContent=round.choices[j]+(j===round.correct?' ✓ Correct answer':j===i?' ✕ Your choice':'')
+      })
+      feedback.textContent=round.feedback[i]
+      if(i===round.correct) passed.add(index)
+      updateProgress()
+      if(!alreadyApproved && passed.size===rounds.length) celebrate()
+    })
+    answerList.append(button)
+  })
+  task.hidden=false
+}
+objects.forEach((button,i)=>button.addEventListener('click',()=>selectRound(i)))
+document.querySelector('#reset').addEventListener('click',()=>{
+  clearTimeout(celebration)
+  fireworks.replaceChildren()
+  passed.clear()
+  objects.forEach(button=>button.setAttribute('aria-pressed','false'))
+  task.hidden=true
+  updateProgress()
+  objects[0].focus()
+})
+let stream
+let requestInProgress = false
+let pageHidden = false
+function report(message) {
+  cameraNote.textContent = message
+  cameraNote.hidden = !message
+}
+function stopCamera() {
+  stream?.getTracks().forEach(track => track.stop())
+  stream = undefined
+  camera.srcObject = null
+  camera.hidden = true
+  stage.hidden = true
+  cameraButton.textContent = 'Open AR camera'
+}
+async function openCamera() {
+  if (requestInProgress || stream) return
+  if (!navigator.mediaDevices?.getUserMedia) {
+    report('Open this page in Safari or Chrome to use the camera.')
+    return
+  }
+  requestInProgress = true
+  cameraButton.disabled = true
+  report('Opening camera…')
+  try {
+    const newStream = await navigator.mediaDevices.getUserMedia({audio:false, video:{facingMode:{ideal:'environment'}}})
+    if (pageHidden) {
+      newStream.getTracks().forEach(track => track.stop())
+      return
+    }
+    stream = newStream
+    camera.srcObject = stream
+    await camera.play()
+    if (stream !== newStream) return
+    camera.hidden = false
+    stage.hidden = false
+    cameraButton.textContent = 'Close camera'
+    report('')
+  } catch {
+    stopCamera()
+    if (!pageHidden) report('Allow camera access to see the package over your surroundings.')
+  } finally {
+    requestInProgress = false
+    cameraButton.disabled = false
+  }
+}
+cameraButton.addEventListener('click', () => {
+  if (stream) stopCamera()
+  else openCamera()
+})
+window.addEventListener('pagehide', () => {
+  pageHidden = true
+  stopCamera()
+})
+window.addEventListener('pageshow', () => { pageHidden = false })
+
+if (new URLSearchParams(location.search).has('qr')) {
+  experience.hidden = true
+  document.querySelector('#qr-view').hidden = false
+} else {
+  openCamera()
+}
+
+</script></body></html>
