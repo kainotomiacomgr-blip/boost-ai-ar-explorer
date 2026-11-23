@@ -59,7 +59,7 @@ footer button,.sections button{min-height:44px;border:1px solid #b2c4a1;border-r
 #box-details a{color:#d9efc6}
 #box-details h3{margin:.45rem 0}
 .sections{display:flex;gap:.45rem;flex-wrap:wrap}
-</style><script defer src="./targets.js"></script></head>
+</style></head>
 <body>
 <video id="camera" autoplay muted playsinline webkit-playsinline hidden></video>
 <main>
@@ -207,7 +207,7 @@ async function startTracking(activeStream) {
   try {
     const [{Controller}, target] = await Promise.all([
       import('https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image.prod.js'),
-      Promise.resolve(Uint8Array.from(atob(window.vejaTarget), character => character.charCodeAt(0)).buffer)
+      import("./targets.js").then(() => Uint8Array.from(atob(window.vejaTarget), character => character.charCodeAt(0)).buffer)
     ])
     if (stream !== activeStream) return
     // MindAR draws the video using its width and height attributes.
@@ -267,21 +267,49 @@ function stopCamera() {
   report('')
 }
 
+async function requestCamera() {
+  try {
+    return await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: {facingMode: {ideal: 'environment'}, width: {ideal: 960}, height: {ideal: 720}}
+    })
+  } catch (error) {
+    if (!['NotFoundError', 'OverconstrainedError'].includes(error.name)) throw error
+    return navigator.mediaDevices.getUserMedia({audio: false, video: true})
+  }
+}
+
+function cameraErrorMessage(error) {
+  switch (error.name) {
+    case 'NotAllowedError':
+    case 'SecurityError':
+      return 'Camera access is blocked. Open this link in Safari or Chrome and allow camera access in the site settings.'
+    case 'NotReadableError':
+    case 'AbortError':
+      return 'The camera could not start. Close other apps or tabs using it, then tap Open AR camera.'
+    case 'NotFoundError':
+    case 'OverconstrainedError':
+      return 'No usable camera was found. You can still try Preview without scanning.'
+    default:
+      return 'Could not open the camera. Tap Open AR camera to try again.'
+  }
+}
+
 async function openCamera() {
   if (busy || !pageActive) return
   if (!navigator.mediaDevices?.getUserMedia) {
-    report('Camera access is unavailable in this browser.')
+    report('This browser cannot access the camera. Open the experience in Safari or Chrome, or tap Preview without scanning.')
     return
   }
   busy = true
   launch.disabled = true
   report('Allow camera access, then aim at the sneaker or rubber-tapping photo.')
+  const promptTimer = setTimeout(() => {
+    if (!stream && pageActive) report('Still waiting for camera permission. Check for the browser prompt or open the link in Safari or Chrome.')
+  }, 7000)
   try {
     if (!stream) {
-      const nextStream = await navigator.mediaDevices.getUserMedia({
-        audio: false,
-        video: {facingMode: {ideal: 'environment'}}
-      })
+      const nextStream = await requestCamera()
       if (!pageActive) {
         nextStream.getTracks().forEach(track => track.stop())
         return
@@ -305,12 +333,13 @@ async function openCamera() {
     if (stream !== activeStream) return
     document.body.classList.add('camera-on')
     launch.textContent = 'Close camera'
-    report('The camera is open.')
+    report('Camera is open. Loading photo recognition…')
     startTracking(stream)
-  } catch {
+  } catch (error) {
     stopCamera()
-    report('Camera access was unavailable. Try again and allow camera access when prompted.')
+    if (pageActive) report(cameraErrorMessage(error))
   } finally {
+    clearTimeout(promptTimer)
     busy = false
     launch.disabled = false
   }
