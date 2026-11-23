@@ -170,11 +170,16 @@ async function startTracking(activeStream) {
       Promise.resolve(Uint8Array.from(atob(window.vejaTarget), character => character.charCodeAt(0)).buffer)
     ])
     if (stream !== activeStream) return
+    // MindAR draws the video using its width and height attributes.
+    // CSS sizes the preview independently of the source frame.
+    camera.width = camera.videoWidth
+    camera.height = camera.videoHeight
+    if (!camera.width || !camera.height) throw new Error('Camera frame dimensions are unavailable')
     let markerSize
     let projection
     const tracker = new Controller({
-      inputWidth: camera.videoWidth,
-      inputHeight: camera.videoHeight,
+      inputWidth: camera.width,
+      inputHeight: camera.height,
       onUpdate(update) {
         if (stream === activeStream && update.type === 'updateMatrix') {
           if (update.worldMatrix && markerSize) revealBox()
