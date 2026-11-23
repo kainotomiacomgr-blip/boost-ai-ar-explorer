@@ -6,3 +6,4 @@
 | --- | --- | --- | --- |
 | VEJA — sustainable packaging and forest-friendly sourcing | [Open VEJA WebAR](https://kainotomiacomgr-blip.github.io/boost-ai-ar-explorer/unboxing-veja-ar/) | [Show QR code](https://kainotomiacomgr-blip.github.io/boost-ai-ar-explorer/unboxing-veja-ar/?qr=1) | [VEJA source](./unboxing-veja-ar/) |
 | Paptic® — wood-fibre packaging for fashion and e-commerce | [Open Paptic® WebAR](https://kainotomiacomgr-blip.github.io/boost-ai-ar-explorer/unboxing-paptic/) | [Show or download QR code](https://kainotomiacomgr-blip.github.io/boost-ai-ar-explorer/unboxing-paptic/?qr=1) | [Paptic® source](./unboxing-paptic/) |
+| Patagonia — durable packaging and responsible sourcing | [Open WebAR](https://kainotomiacomgr-blip.github.io/boost-ai-ar-explorer/unboxing-patagonia/) | [Show or download QR code](https://kainotomiacomgr-blip.github.io/boost-ai-ar-explorer/unboxing-patagonia/?qr=1) | [Patagonia source](./unboxing-patagonia/) |
