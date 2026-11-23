@@ -8,13 +8,18 @@
 <small>UNBOXING · Packaging case study</small>
 <h1>VEJA’s shoebox</h1>
 <p>Explore how box size and cardboard sourcing affect the packaging of a pair of trainers.</p>
-<div class="scene" aria-label="Shoebox preview and camera view">
+<div class="scene" aria-label="Packaging preview and sneaker photo camera view">
 <div id="tracker" hidden></div><p id="scanner-hint">Start the camera to scan the sneaker photo.</p><div id="box-preview" hidden>
 <div class="shadow"></div>
 <div class="float"><div class="box" id="box" aria-hidden="true"><div class="face front">KRAFT CARDBOARD</div><div class="face back"></div><div class="face left"></div><div class="face right"></div><div class="face top">VEJA</div><div class="face bottom"></div></div></div>
 </div></div>
-<div class="row"><button id="camera" class="primary">Start camera</button><button id="preview" aria-pressed="false">Preview without camera</button><button id="turn" aria-pressed="false" hidden>Turn the box</button><a class="action" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" target="_blank" rel="noopener">Watch VEJA’s rubber sourcing video</a></div>
+<div class="row"><button id="camera" class="primary">Start camera</button><button id="preview" aria-pressed="false">Preview without camera</button><button id="turn" aria-pressed="false" hidden>Turn the box</button></div>
 <p id="camera-status" role="status">Point your camera at the sneaker photo on the VEJA slide. Keep the entire photo in view.</p>
+<section id="company" class="panel" aria-labelledby="company-title" hidden>
+<h2 id="company-title">Meet VEJA</h2>
+<p>VEJA is a French sneaker brand that uses organic cotton and wild Amazonian rubber. Its kraft shoeboxes are FSC-certified.</p>
+<div class="row"><a class="action primary" href="https://www.youtube.com/watch?v=Q-WrXAsXuO0" target="_blank" rel="noopener">Watch VEJA’s Amazonian rubber story</a><a class="action" href="https://project.veja-store.com/en/single/production" target="_blank" rel="noopener">About VEJA’s materials and packaging</a></div>
+</section>
 <details class="marker-help"><summary>Get the sneaker photo</summary><p>Print this image or display it on a second screen.</p><img id="marker-preview" src="./veja-shoes-marker.jpg" alt="The VEJA sneaker photo used as the AR marker"><a href="./veja-shoes-marker.jpg" download>Download the marker</a></details>
 <section class="panel"><h2>Choose the packaging</h2><p>The trainers need to arrive protected. Which design would you try first to reduce empty space and filler?</p>
 <div class="row"><button data-answer="large">One large box with filler</button><button data-answer="fit">A box sized to fit</button></div><p id="feedback" class="feedback" role="status"></p></section>
@@ -22,12 +27,12 @@
 </main>
 <template id="scene-template">
 <a-scene mindar-image="imageTargetSrc: ./veja-shoes.mind; autoStart: false; uiScanning: no; uiLoading: no; uiError: no" renderer="alpha: true; antialias: true; colorManagement: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+<a-assets><img id="sneaker-texture" src="./veja-shoes-marker.jpg"></a-assets>
 <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 <a-entity id="shoe-target" mindar-image-target="targetIndex: 0">
-<a-entity position="0 .01 .26" rotation="22 -25 0" animation="property: position; from: 0 .01 .26; to: 0 .07 .26; dur: 1700; dir: alternate; loop: true; easing: easeInOutSine">
-<a-box height=".19" width=".53" depth=".30" color="#b68652"></a-box>
-<a-box position="0 .084 0" height=".055" width=".56" depth=".32" color="#d2a975"></a-box>
-<a-text value="VEJA" position="0 -.008 .152" align="center" width="1.9" color="#25391f"></a-text>
+<a-entity position="0 .07 .18" animation__float="property: position; from: 0 .07 .18; to: 0 .14 .18; dur: 1550; dir: alternate; loop: true; easing: easeInOutSine">
+<a-plane width=".79" height=".51" material="shader: flat; color: #eff4db; side: double"></a-plane>
+<a-image src="#sneaker-texture" width=".75" height=".467" position="0 0 .003" material="shader: flat; side: double"></a-image>
 </a-entity>
 </a-entity>
 </a-scene>
@@ -47,6 +52,8 @@ const camera = document.querySelector('#camera');
 const preview = document.querySelector('#preview');
 const hint = document.querySelector('#scanner-hint');
 const statusMessage = document.querySelector('#camera-status');
+const company = document.querySelector("#company");
+let recognised = false;
 let scene;
 let tracker;
 let state = 'idle';
@@ -56,6 +63,7 @@ preview.onclick = () => {
   hint.hidden = !boxPreview.hidden;
   document.querySelector('#turn').hidden = boxPreview.hidden;
   preview.setAttribute('aria-pressed', !boxPreview.hidden);
+  company.hidden = boxPreview.hidden && !recognised;
 };
 function stop(message) {
   const video = tracker?.video;
@@ -86,7 +94,9 @@ function mount() {
   scene.addEventListener('arError', () => stop('Camera tracking could not start. Allow camera access in your browser and try again.'));
   const target = scene.querySelector('#shoe-target');
   target.addEventListener('targetFound', () => {
-    statusMessage.textContent = 'Photo recognised. The shoebox is anchored to the picture.';
+    recognised = true;
+    company.hidden = false;
+    statusMessage.textContent = 'Photo recognised. The floating sneaker image is above. Learn about VEJA or watch its video below.';
   });
   target.addEventListener('targetLost', () => {
     statusMessage.textContent = 'Photo out of view. Aim at the complete sneaker photo again.';
